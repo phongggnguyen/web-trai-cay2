@@ -28,18 +28,6 @@ export interface BlogPost {
   views: string;
 }
 
-// Context Types
-export interface GlobalState {
-  cartItems: CartItem[];
-  isDark: boolean;
-  addToCart: (product: Product, quantity: number) => void;
-  updateQuantity: (id: string, quantity: number) => void;
-  removeFromCart: (id: string) => void;
-  clearCart: () => void;
-  toggleTheme: () => void;
-  cartCount: number;
-}
-
 export enum Page {
   HOME = 'HOME',
   PRODUCT_LIST = 'PRODUCT_LIST',
@@ -54,4 +42,16 @@ export enum Page {
   TERMS = 'TERMS',
   PRIVACY = 'PRIVACY',
   ADMIN = 'ADMIN'
+}
+
+// Context Types
+export interface GlobalState {
+  cartItems: CartItem[];
+  isDark: boolean;
+  addToCart: (product: Product, quantity: number) => void;
+  updateQuantity: (id: string, quantity: number) => void;
+  removeFromCart: (id: string) => void;
+  clearCart: () => void;
+  toggleTheme: () => void;
+  cartCount: number;
 }

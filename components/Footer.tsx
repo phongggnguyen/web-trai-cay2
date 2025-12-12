@@ -7,6 +7,7 @@ interface FooterProps {
 }
 
 const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
+
   const handleNav = (e: React.MouseEvent, page: Page) => {
     if (onNavigate) {
       e.preventDefault();

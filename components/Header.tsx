@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useContext } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { GlobalContext } from '../context/GlobalContext';
+import { useGlobal } from '../context/GlobalContext';
 import { Page } from '../types';
 
 interface HeaderProps {
@@ -14,27 +14,45 @@ interface HeaderProps {
   isDark?: boolean;
 }
 
-const Header: React.FC<HeaderProps> = (props) => {
-  const context = useContext(GlobalContext);
-  
-  // Use context if available, otherwise use props
-  const cartCount = context?.cartCount ?? props.cartCount ?? 0;
-  const toggleTheme = context?.toggleTheme ?? props.toggleTheme ?? (() => {});
-  const isDark = context?.isDark ?? props.isDark ?? false;
-  
+const Header: React.FC<HeaderProps> = ({ 
+  cartCount: propCartCount, 
+  onNavigate, 
+  activePage, 
+  toggleTheme: propToggleTheme, 
+  isDark: propIsDark 
+}) => {
+  const global = useGlobal();
   const pathname = usePathname();
 
-  const isActive = (path: string, pageEnum?: Page) => {
-    if (props.activePage !== undefined && pageEnum !== undefined) {
-      return props.activePage === pageEnum;
+  const cartCount = propCartCount ?? global.cartCount;
+  const toggleTheme = propToggleTheme ?? global.toggleTheme;
+  const isDark = propIsDark ?? global.isDark;
+
+  const getPageFromPath = (path: string): Page => {
+    switch(path) {
+      case '/': return Page.HOME;
+      case '/products': return Page.PRODUCT_LIST;
+      case '/about': return Page.ABOUT;
+      case '/blog': return Page.BLOG;
+      case '/contact': return Page.CONTACT;
+      case '/cart': return Page.CART;
+      case '/login': return Page.LOGIN;
+      default: return Page.HOME;
     }
-    return pathname === path;
   };
 
-  const handleNav = (e: React.MouseEvent, pageEnum?: Page) => {
-    if (props.onNavigate && pageEnum) {
+  const isActive = (path: string) => {
+    if (activePage) {
+      return activePage === getPageFromPath(path);
+    }
+    if (path === '/') return pathname === '/';
+    return pathname?.startsWith(path);
+  };
+
+  const handleNav = (e: React.MouseEvent, path: string) => {
+    if (onNavigate) {
       e.preventDefault();
-      props.onNavigate(pageEnum);
+      onNavigate(getPageFromPath(path));
     }
   };
 
@@ -44,7 +62,7 @@ const Header: React.FC<HeaderProps> = (props) => {
         {/* Logo */}
         <Link 
           href="/" 
-          onClick={(e) => handleNav(e, Page.HOME)}
+          onClick={(e) => handleNav(e, '/')}
           className="flex items-center gap-3 cursor-pointer group"
         >
           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/20 text-primary group-hover:bg-primary group-hover:text-text-main transition-colors">
@@ -59,18 +77,18 @@ const Header: React.FC<HeaderProps> = (props) => {
         {/* Nav Links */}
         <nav className="hidden lg:flex items-center gap-8">
           {[
-            { label: 'Trang chủ', path: '/', page: Page.HOME },
-            { label: 'Sản phẩm', path: '/products', page: Page.PRODUCT_LIST },
-            { label: 'Về chúng tôi', path: '/about', page: Page.ABOUT },
-            { label: 'Blog', path: '/blog', page: Page.BLOG },
-            { label: 'Liên hệ', path: '/contact', page: Page.CONTACT },
+            { label: 'Trang chủ', path: '/' },
+            { label: 'Sản phẩm', path: '/products' },
+            { label: 'Về chúng tôi', path: '/about' },
+            { label: 'Blog', path: '/blog' },
+            { label: 'Liên hệ', path: '/contact' },
           ].map((item) => (
             <Link
               key={item.path}
               href={item.path}
-              onClick={(e) => handleNav(e, item.page)}
+              onClick={(e) => handleNav(e, item.path)}
               className={`text-sm font-medium transition-colors hover:text-primary ${
-                isActive(item.path, item.page) 
+                isActive(item.path) 
                   ? 'text-primary font-bold' 
                   : 'text-text-main dark:text-gray-300'
               }`}
@@ -105,7 +123,7 @@ const Header: React.FC<HeaderProps> = (props) => {
           {/* Cart */}
           <Link 
             href="/cart"
-            onClick={(e) => handleNav(e, Page.CART)}
+            onClick={(e) => handleNav(e, '/cart')}
             className="relative flex h-10 w-10 items-center justify-center rounded-full bg-background-light dark:bg-black/20 hover:bg-primary/20 hover:text-primary transition-colors text-text-main dark:text-white group"
           >
             <span className="material-symbols-outlined text-[20px]">shopping_cart</span>
@@ -119,7 +137,7 @@ const Header: React.FC<HeaderProps> = (props) => {
           {/* User */}
           <Link 
             href="/login"
-            onClick={(e) => handleNav(e, Page.LOGIN)}
+            onClick={(e) => handleNav(e, '/login')}
             className="flex h-10 w-10 items-center justify-center rounded-full bg-background-light dark:bg-black/20 hover:bg-primary/20 hover:text-primary transition-colors text-text-main dark:text-white"
           >
             <span className="material-symbols-outlined text-[20px]">account_circle</span>
