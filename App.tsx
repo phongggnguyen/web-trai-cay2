@@ -13,6 +13,7 @@ import Auth from './pages/Auth';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import OrderSuccess from './pages/OrderSuccess';
+import Privacy from './pages/Privacy';
 import { Page, Product, CartItem } from './types';
 import { PRODUCTS } from './constants';
 
@@ -118,7 +119,7 @@ const App: React.FC = () => {
       case Page.TERMS:
         return <Terms onNavigate={handleNavigate} type="TERMS" />;
       case Page.PRIVACY:
-        return <Terms onNavigate={handleNavigate} type="PRIVACY" />;
+        return <Privacy onNavigate={handleNavigate} />;
       case Page.ADMIN:
         return <Admin onNavigate={handleNavigate} />;
       default:
