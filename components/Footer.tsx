@@ -1,11 +1,19 @@
 import React from 'react';
+import Link from 'next/link';
 import { Page } from '../types';
 
 interface FooterProps {
-  onNavigate: (page: Page) => void;
+  onNavigate?: (page: Page) => void;
 }
 
 const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
+  const handleNav = (e: React.MouseEvent, page: Page) => {
+    if (onNavigate) {
+      e.preventDefault();
+      onNavigate(page);
+    }
+  };
+
   return (
     <footer className="border-t border-border-color dark:border-border-dark bg-surface-light dark:bg-surface-dark pt-16 pb-8 transition-colors duration-200">
       <div className="mx-auto max-w-[1440px] px-4 md:px-10">
@@ -36,9 +44,9 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <div>
             <h3 className="font-bold text-text-main dark:text-white mb-4">Về Tiệm</h3>
             <ul className="flex flex-col gap-3 text-sm text-gray-500 dark:text-gray-400">
-              <li><button onClick={() => onNavigate(Page.ABOUT)} className="hover:text-primary transition-colors">Câu chuyện thương hiệu</button></li>
-              <li><button onClick={() => onNavigate(Page.ADMIN)} className="hover:text-primary transition-colors">Tuyển dụng (Tìm đồng nghiệp)</button></li>
-              <li><button onClick={() => onNavigate(Page.BLOG)} className="hover:text-primary transition-colors">Blog sống khỏe</button></li>
+              <li><Link href="/about" onClick={(e) => handleNav(e, Page.ABOUT)} className="hover:text-primary transition-colors">Câu chuyện thương hiệu</Link></li>
+              <li><Link href="/admin" onClick={(e) => handleNav(e, Page.ADMIN)} className="hover:text-primary transition-colors">Tuyển dụng (Tìm đồng nghiệp)</Link></li>
+              <li><Link href="/blog" onClick={(e) => handleNav(e, Page.BLOG)} className="hover:text-primary transition-colors">Blog sống khỏe</Link></li>
             </ul>
           </div>
 
@@ -46,10 +54,10 @@ const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <div>
             <h3 className="font-bold text-text-main dark:text-white mb-4">Hỗ trợ khách hàng</h3>
             <ul className="flex flex-col gap-3 text-sm text-gray-500 dark:text-gray-400">
-              <li><button onClick={() => onNavigate(Page.TERMS)} className="hover:text-primary transition-colors">Chính sách đổi trả</button></li>
-              <li><button onClick={() => onNavigate(Page.TERMS)} className="hover:text-primary transition-colors">Chính sách giao hàng</button></li>
-              <li><button onClick={() => onNavigate(Page.TERMS)} className="hover:text-primary transition-colors">Điều khoản dịch vụ</button></li>
-              <li><button onClick={() => onNavigate(Page.PRIVACY)} className="hover:text-primary transition-colors">Bảo mật thông tin</button></li>
+              <li><Link href="/terms" onClick={(e) => handleNav(e, Page.TERMS)} className="hover:text-primary transition-colors">Chính sách đổi trả</Link></li>
+              <li><Link href="/terms" onClick={(e) => handleNav(e, Page.TERMS)} className="hover:text-primary transition-colors">Chính sách giao hàng</Link></li>
+              <li><Link href="/terms" onClick={(e) => handleNav(e, Page.TERMS)} className="hover:text-primary transition-colors">Điều khoản dịch vụ</Link></li>
+              <li><Link href="/privacy" onClick={(e) => handleNav(e, Page.PRIVACY)} className="hover:text-primary transition-colors">Bảo mật thông tin</Link></li>
             </ul>
           </div>
 
