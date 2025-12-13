@@ -1,13 +1,15 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useGlobal } from '../context/GlobalContext';
+import MobileMenu from './MobileMenu';
 
 const Header: React.FC = () => {
   const { cartCount, toggleTheme, isDark } = useGlobal();
   const pathname = usePathname();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const isActive = (path: string) => {
     if (path === '/') return pathname === '/';
@@ -18,8 +20,8 @@ const Header: React.FC = () => {
     <header className="sticky top-0 z-50 w-full border-b border-border-color dark:border-border-dark bg-surface-light/95 dark:bg-surface-dark/95 backdrop-blur-md px-4 py-3 md:px-10 transition-colors duration-200">
       <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-4">
         {/* Logo */}
-        <Link 
-          href="/" 
+        <Link
+          href="/"
           className="flex items-center gap-3 cursor-pointer group"
         >
           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/20 text-primary group-hover:bg-primary group-hover:text-text-main transition-colors">
@@ -43,11 +45,10 @@ const Header: React.FC = () => {
             <Link
               key={item.path}
               href={item.path}
-              className={`text-sm font-medium transition-colors hover:text-primary ${
-                isActive(item.path) 
-                  ? 'text-primary font-bold' 
-                  : 'text-text-main dark:text-gray-300'
-              }`}
+              className={`text-sm font-medium transition-colors hover:text-primary ${isActive(item.path)
+                ? 'text-primary font-bold'
+                : 'text-text-main dark:text-gray-300'
+                }`}
             >
               {item.label}
             </Link>
@@ -69,7 +70,7 @@ const Header: React.FC = () => {
           </div>
 
           {/* Theme Toggle */}
-          <button 
+          <button
             onClick={toggleTheme}
             className="flex h-10 w-10 items-center justify-center rounded-full bg-background-light dark:bg-black/20 hover:bg-primary/20 hover:text-primary transition-colors text-text-main dark:text-white"
           >
@@ -77,7 +78,7 @@ const Header: React.FC = () => {
           </button>
 
           {/* Cart */}
-          <Link 
+          <Link
             href="/cart"
             className="relative flex h-10 w-10 items-center justify-center rounded-full bg-background-light dark:bg-black/20 hover:bg-primary/20 hover:text-primary transition-colors text-text-main dark:text-white group"
           >
@@ -90,19 +91,29 @@ const Header: React.FC = () => {
           </Link>
 
           {/* User */}
-          <Link 
+          <Link
             href="/login"
             className="flex h-10 w-10 items-center justify-center rounded-full bg-background-light dark:bg-black/20 hover:bg-primary/20 hover:text-primary transition-colors text-text-main dark:text-white"
           >
             <span className="material-symbols-outlined text-[20px]">account_circle</span>
           </Link>
-          
+
           {/* Mobile Menu */}
-          <button className="lg:hidden flex h-10 w-10 items-center justify-center rounded-full bg-background-light dark:bg-black/20 text-text-main dark:text-white">
+          <button
+            onClick={() => setMobileMenuOpen(true)}
+            className="lg:hidden flex h-10 w-10 items-center justify-center rounded-full bg-background-light dark:bg-black/20 text-text-main dark:text-white"
+          >
             <span className="material-symbols-outlined text-[20px]">menu</span>
           </button>
         </div>
       </div>
+
+      {/* Mobile Menu Drawer */}
+      <MobileMenu
+        isOpen={mobileMenuOpen}
+        onClose={() => setMobileMenuOpen(false)}
+        cartCount={cartCount}
+      />
     </header>
   );
 };

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import toast from 'react-hot-toast';
 import { CartItem, Product, GlobalState } from '../types';
 
 export const GlobalContext = createContext<GlobalState | undefined>(undefined);
@@ -8,6 +9,20 @@ export const GlobalContext = createContext<GlobalState | undefined>(undefined);
 export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isDark, setIsDark] = useState(false);
+
+  // Load cart from localStorage on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedCart = localStorage.getItem('cart');
+      if (savedCart) {
+        try {
+          setCartItems(JSON.parse(savedCart));
+        } catch (error) {
+          console.error('Failed to parse cart from localStorage:', error);
+        }
+      }
+    }
+  }, []);
 
   // Load theme preference
   useEffect(() => {
@@ -32,6 +47,13 @@ export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     }
   }, [isDark]);
 
+  // Persist cart changes to localStorage
+  useEffect(() => {
+    if (typeof window !== 'undefined' && cartItems.length >= 0) {
+      localStorage.setItem('cart', JSON.stringify(cartItems));
+    }
+  }, [cartItems]);
+
   const toggleTheme = () => setIsDark(!isDark);
 
   const addToCart = (product: Product, quantity: number) => {
@@ -42,8 +64,10 @@ export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       }
       return [...prev, { ...product, quantity }];
     });
-    // In a real app, use a Toast notification library like 'sonner' or 'react-hot-toast'
-    alert(`Đã thêm ${quantity} ${product.name} vào giỏ!`);
+    toast.success(`Đã thêm ${quantity} ${product.name} vào giỏ!`, {
+      duration: 3000,
+      position: 'top-right',
+    });
   };
 
   const updateQuantity = (id: string, quantity: number) => {
@@ -58,19 +82,22 @@ export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     setCartItems([]);
   };
 
+
   const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
+  const value = React.useMemo(() => ({
+    cartItems,
+    isDark,
+    addToCart,
+    updateQuantity,
+    removeFromCart,
+    clearCart,
+    toggleTheme,
+    cartCount
+  }), [cartItems, isDark, cartCount, addToCart, updateQuantity, removeFromCart, clearCart, toggleTheme]);
+
   return (
-    <GlobalContext.Provider value={{
-      cartItems,
-      isDark,
-      addToCart,
-      updateQuantity,
-      removeFromCart,
-      clearCart,
-      toggleTheme,
-      cartCount
-    }}>
+    <GlobalContext.Provider value={value}>
       {children}
     </GlobalContext.Provider>
   );

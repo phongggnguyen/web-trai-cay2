@@ -22,7 +22,7 @@ export interface Product {
   image: string;
   unit: string;
   tag?: string;
-  tagColor?: string; // 'red' | 'primary' | 'orange'
+  tagColor?: 'red' | 'primary' | 'orange';
   category?: string;
   rating?: number;
   reviews?: number;
