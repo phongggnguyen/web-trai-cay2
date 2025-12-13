@@ -5,7 +5,7 @@ import { CartItem, Product, GlobalState } from '../types';
 
 export const GlobalContext = createContext<GlobalState | undefined>(undefined);
 
-export const GlobalProvider = ({ children }: { children: ReactNode }) => {
+export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isDark, setIsDark] = useState(false);
 

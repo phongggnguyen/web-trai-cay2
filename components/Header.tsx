@@ -4,56 +4,14 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useGlobal } from '../context/GlobalContext';
-import { Page } from '../types';
 
-interface HeaderProps {
-  cartCount?: number;
-  onNavigate?: (page: Page) => void;
-  activePage?: Page;
-  toggleTheme?: () => void;
-  isDark?: boolean;
-}
-
-const Header: React.FC<HeaderProps> = ({ 
-  cartCount: propCartCount, 
-  onNavigate, 
-  activePage, 
-  toggleTheme: propToggleTheme, 
-  isDark: propIsDark 
-}) => {
-  const global = useGlobal();
+const Header: React.FC = () => {
+  const { cartCount, toggleTheme, isDark } = useGlobal();
   const pathname = usePathname();
 
-  const cartCount = propCartCount ?? global.cartCount;
-  const toggleTheme = propToggleTheme ?? global.toggleTheme;
-  const isDark = propIsDark ?? global.isDark;
-
-  const getPageFromPath = (path: string): Page => {
-    switch(path) {
-      case '/': return Page.HOME;
-      case '/products': return Page.PRODUCT_LIST;
-      case '/about': return Page.ABOUT;
-      case '/blog': return Page.BLOG;
-      case '/contact': return Page.CONTACT;
-      case '/cart': return Page.CART;
-      case '/login': return Page.LOGIN;
-      default: return Page.HOME;
-    }
-  };
-
   const isActive = (path: string) => {
-    if (activePage) {
-      return activePage === getPageFromPath(path);
-    }
     if (path === '/') return pathname === '/';
     return pathname?.startsWith(path);
-  };
-
-  const handleNav = (e: React.MouseEvent, path: string) => {
-    if (onNavigate) {
-      e.preventDefault();
-      onNavigate(getPageFromPath(path));
-    }
   };
 
   return (
@@ -62,7 +20,6 @@ const Header: React.FC<HeaderProps> = ({
         {/* Logo */}
         <Link 
           href="/" 
-          onClick={(e) => handleNav(e, '/')}
           className="flex items-center gap-3 cursor-pointer group"
         >
           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/20 text-primary group-hover:bg-primary group-hover:text-text-main transition-colors">
@@ -86,7 +43,6 @@ const Header: React.FC<HeaderProps> = ({
             <Link
               key={item.path}
               href={item.path}
-              onClick={(e) => handleNav(e, item.path)}
               className={`text-sm font-medium transition-colors hover:text-primary ${
                 isActive(item.path) 
                   ? 'text-primary font-bold' 
@@ -123,7 +79,6 @@ const Header: React.FC<HeaderProps> = ({
           {/* Cart */}
           <Link 
             href="/cart"
-            onClick={(e) => handleNav(e, '/cart')}
             className="relative flex h-10 w-10 items-center justify-center rounded-full bg-background-light dark:bg-black/20 hover:bg-primary/20 hover:text-primary transition-colors text-text-main dark:text-white group"
           >
             <span className="material-symbols-outlined text-[20px]">shopping_cart</span>
@@ -137,7 +92,6 @@ const Header: React.FC<HeaderProps> = ({
           {/* User */}
           <Link 
             href="/login"
-            onClick={(e) => handleNav(e, '/login')}
             className="flex h-10 w-10 items-center justify-center rounded-full bg-background-light dark:bg-black/20 hover:bg-primary/20 hover:text-primary transition-colors text-text-main dark:text-white"
           >
             <span className="material-symbols-outlined text-[20px]">account_circle</span>

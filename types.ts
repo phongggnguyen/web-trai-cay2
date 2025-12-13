@@ -1,3 +1,19 @@
+export enum Page {
+  HOME = 'HOME',
+  PRODUCT_LIST = 'PRODUCT_LIST',
+  PRODUCT_DETAIL = 'PRODUCT_DETAIL',
+  CART = 'CART',
+  CHECKOUT = 'CHECKOUT',
+  ORDER_SUCCESS = 'ORDER_SUCCESS',
+  LOGIN = 'LOGIN',
+  ABOUT = 'ABOUT',
+  CONTACT = 'CONTACT',
+  BLOG = 'BLOG',
+  TERMS = 'TERMS',
+  PRIVACY = 'PRIVACY',
+  ADMIN = 'ADMIN'
+}
+
 export interface Product {
   id: string;
   name: string;
@@ -26,22 +42,6 @@ export interface BlogPost {
   category: string;
   image: string;
   views: string;
-}
-
-export enum Page {
-  HOME = 'HOME',
-  PRODUCT_LIST = 'PRODUCT_LIST',
-  PRODUCT_DETAIL = 'PRODUCT_DETAIL',
-  CART = 'CART',
-  CHECKOUT = 'CHECKOUT',
-  ORDER_SUCCESS = 'ORDER_SUCCESS',
-  LOGIN = 'LOGIN',
-  ABOUT = 'ABOUT',
-  CONTACT = 'CONTACT',
-  BLOG = 'BLOG',
-  TERMS = 'TERMS',
-  PRIVACY = 'PRIVACY',
-  ADMIN = 'ADMIN'
 }
 
 // Context Types
