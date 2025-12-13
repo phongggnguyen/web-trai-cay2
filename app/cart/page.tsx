@@ -15,12 +15,12 @@ export default function CartPage() {
     return (
       <div className="w-full max-w-[1280px] mx-auto px-4 py-12 min-h-[60vh] flex flex-col items-center justify-center">
         <div className="size-24 bg-gray-100 dark:bg-surface-dark rounded-full flex items-center justify-center mb-6">
-            <span className="material-symbols-outlined text-6xl text-gray-300">shopping_cart_off</span>
+          <span className="material-symbols-outlined text-6xl text-gray-300">shopping_cart_off</span>
         </div>
         <h2 className="text-2xl font-bold text-text-main dark:text-white mb-2">Giỏ hàng của bạn đang trống</h2>
         <p className="text-gray-500 dark:text-gray-400 mb-8 text-center max-w-md">Có vẻ như bạn chưa chọn được loại quả "giải nghiệp" nào. Hãy dạo một vòng cửa hàng nhé!</p>
-        <Link 
-          href="/products" 
+        <Link
+          href="/products"
           className="bg-primary text-text-main font-bold px-8 py-3 rounded-full hover:bg-primary-dark shadow-lg shadow-primary/20 transition-all hover:-translate-y-1"
         >
           Tiếp tục mua sắm
@@ -39,7 +39,7 @@ export default function CartPage() {
             Bạn có <span className="text-primary font-bold">{cartItems.length} sản phẩm</span> trong giỏ hàng
           </p>
         </div>
-        <Link 
+        <Link
           href="/products"
           className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:text-primary-dark transition-colors"
         >
@@ -70,7 +70,7 @@ export default function CartPage() {
                   <span className="inline-block px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-wider w-fit">Đang có hàng</span>
                   <h3 className="font-bold text-lg leading-tight text-text-main dark:text-white">{item.name}</h3>
                   <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-1">{item.unit}</p>
-                  <button 
+                  <button
                     onClick={() => removeFromCart(item.id)}
                     className="md:hidden text-xs text-red-500 font-bold mt-2 flex items-center gap-1"
                   >
@@ -87,19 +87,19 @@ export default function CartPage() {
               {/* Quantity Control */}
               <div className="col-span-2 w-full flex justify-center">
                 <div className="flex items-center bg-background-light dark:bg-background-dark rounded-full p-1 border border-border-color dark:border-border-dark">
-                  <button 
+                  <button
                     onClick={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
                     className="size-8 flex items-center justify-center rounded-full hover:bg-white dark:hover:bg-surface-light hover:shadow-sm transition-all text-gray-600 dark:text-gray-300"
                   >
                     <span className="material-symbols-outlined text-sm">remove</span>
                   </button>
-                  <input 
-                    className="w-10 bg-transparent border-none text-center font-bold text-sm focus:ring-0 p-0 text-text-main dark:text-white" 
-                    type="number" 
+                  <input
+                    className="w-10 bg-transparent border-none text-center font-bold text-sm focus:ring-0 p-0 text-text-main dark:text-white"
+                    type="number"
                     value={item.quantity}
                     readOnly
                   />
-                  <button 
+                  <button
                     onClick={() => updateQuantity(item.id, item.quantity + 1)}
                     className="size-8 flex items-center justify-center rounded-full hover:bg-primary hover:text-text-main transition-all text-gray-600 dark:text-gray-300"
                   >
@@ -112,9 +112,9 @@ export default function CartPage() {
               <div className="col-span-2 w-full flex items-center justify-between md:justify-end gap-4 pl-4 md:pl-0 pr-4">
                 <span className="md:hidden text-sm font-medium text-gray-500">Tổng:</span>
                 <span className="font-bold text-primary text-lg">{(item.price * item.quantity).toLocaleString('vi-VN')}đ</span>
-                <button 
+                <button
                   onClick={() => removeFromCart(item.id)}
-                  className="hidden md:flex size-8 items-center justify-center rounded-full text-gray-400 hover:bg-red-50 hover:text-red-500 transition-colors" 
+                  className="hidden md:flex size-8 items-center justify-center rounded-full text-gray-400 hover:bg-red-50 hover:text-red-500 transition-colors"
                   title="Xóa sản phẩm"
                 >
                   <span className="material-symbols-outlined">delete</span>
@@ -142,9 +142,9 @@ export default function CartPage() {
                 <div className="pt-4">
                   <label className="text-xs font-bold uppercase text-gray-400 mb-2 block">Mã giảm giá</label>
                   <div className="flex gap-2">
-                    <input 
-                      className="w-full bg-background-light dark:bg-background-dark border border-border-color dark:border-border-dark rounded-lg px-4 py-2 text-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all text-text-main dark:text-white" 
-                      placeholder="Nhập mã..." 
+                    <input
+                      className="w-full bg-background-light dark:bg-background-dark border border-border-color dark:border-border-dark rounded-lg px-4 py-2 text-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all text-text-main dark:text-white"
+                      placeholder="Nhập mã..."
                       type="text"
                     />
                     <button className="bg-text-main dark:bg-white text-white dark:text-black px-4 py-2 rounded-lg text-sm font-bold hover:opacity-90 transition-opacity whitespace-nowrap">Áp dụng</button>
@@ -158,7 +158,7 @@ export default function CartPage() {
                 </div>
                 <p className="text-xs text-gray-400 text-right mt-1">(Đã bao gồm thuế nếu có)</p>
               </div>
-              <Link 
+              <Link
                 href="/checkout"
                 className="w-full bg-primary hover:bg-primary-dark text-text-main font-bold text-lg py-4 rounded-full shadow-lg shadow-primary/30 transform hover:-translate-y-1 transition-all duration-200 flex items-center justify-center gap-2"
               >

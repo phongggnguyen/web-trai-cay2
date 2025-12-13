@@ -66,19 +66,19 @@ export default function CheckoutPage() {
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <label className="flex flex-col md:col-span-2">
                   <span className="mb-2 text-sm font-semibold text-text-main dark:text-gray-200">Họ và tên</span>
-                  <input required className="h-12 w-full rounded-xl border-border-color bg-background-light dark:bg-black/20 dark:border-white/10 px-4 text-base focus:border-primary focus:ring-primary dark:text-white placeholder:text-gray-400 focus:ring-1 outline-none border transition-all" placeholder="Nguyễn Văn A" type="text"/>
+                  <input required className="h-12 w-full rounded-xl border-border-color bg-background-light dark:bg-black/20 dark:border-white/10 px-4 text-base focus:border-primary focus:ring-primary dark:text-white placeholder:text-gray-400 focus:ring-1 outline-none border transition-all" placeholder="Nguyễn Văn A" type="text" />
                 </label>
                 <label className="flex flex-col">
                   <span className="mb-2 text-sm font-semibold text-text-main dark:text-gray-200">Số điện thoại</span>
-                  <input required className="h-12 w-full rounded-xl border-border-color bg-background-light dark:bg-black/20 dark:border-white/10 px-4 text-base focus:border-primary focus:ring-primary dark:text-white placeholder:text-gray-400 focus:ring-1 outline-none border transition-all" placeholder="0901234567" type="tel"/>
+                  <input required className="h-12 w-full rounded-xl border-border-color bg-background-light dark:bg-black/20 dark:border-white/10 px-4 text-base focus:border-primary focus:ring-primary dark:text-white placeholder:text-gray-400 focus:ring-1 outline-none border transition-all" placeholder="0901234567" type="tel" />
                 </label>
                 <label className="flex flex-col">
                   <span className="mb-2 text-sm font-semibold text-text-main dark:text-gray-200">Email (Không bắt buộc)</span>
-                  <input className="h-12 w-full rounded-xl border-border-color bg-background-light dark:bg-black/20 dark:border-white/10 px-4 text-base focus:border-primary focus:ring-primary dark:text-white placeholder:text-gray-400 focus:ring-1 outline-none border transition-all" placeholder="email@vidu.com" type="email"/>
+                  <input className="h-12 w-full rounded-xl border-border-color bg-background-light dark:bg-black/20 dark:border-white/10 px-4 text-base focus:border-primary focus:ring-primary dark:text-white placeholder:text-gray-400 focus:ring-1 outline-none border transition-all" placeholder="email@vidu.com" type="email" />
                 </label>
                 <label className="flex flex-col md:col-span-2">
                   <span className="mb-2 text-sm font-semibold text-text-main dark:text-gray-200">Địa chỉ nhận hàng</span>
-                  <input required className="h-12 w-full rounded-xl border-border-color bg-background-light dark:bg-black/20 dark:border-white/10 px-4 text-base focus:border-primary focus:ring-primary dark:text-white placeholder:text-gray-400 focus:ring-1 outline-none border transition-all" placeholder="Số nhà, tên đường, phường/xã..." type="text"/>
+                  <input required className="h-12 w-full rounded-xl border-border-color bg-background-light dark:bg-black/20 dark:border-white/10 px-4 text-base focus:border-primary focus:ring-primary dark:text-white placeholder:text-gray-400 focus:ring-1 outline-none border transition-all" placeholder="Số nhà, tên đường, phường/xã..." type="text" />
                 </label>
                 <label className="flex flex-col">
                   <span className="mb-2 text-sm font-semibold text-text-main dark:text-gray-200">Tỉnh / Thành phố</span>
@@ -113,9 +113,9 @@ export default function CheckoutPage() {
               </div>
               <div className="space-y-3">
                 <label className={`group relative flex cursor-pointer items-center rounded-xl border p-4 transition-all ${shippingMethod === 'express' ? 'border-primary bg-primary/5' : 'border-border-color dark:border-white/10 hover:border-primary hover:bg-background-light dark:hover:bg-white/5'}`}>
-                  <input 
-                    type="radio" 
-                    name="shipping" 
+                  <input
+                    type="radio"
+                    name="shipping"
                     className="h-5 w-5 border-gray-300 text-primary focus:ring-primary"
                     checked={shippingMethod === 'express'}
                     onChange={() => setShippingMethod('express')}
@@ -126,11 +126,11 @@ export default function CheckoutPage() {
                   </div>
                   <span className="font-bold text-primary">35.000₫</span>
                 </label>
-                
+
                 <label className={`group relative flex cursor-pointer items-center rounded-xl border p-4 transition-all ${shippingMethod === 'standard' ? 'border-primary bg-primary/5' : 'border-border-color dark:border-white/10 hover:border-primary hover:bg-background-light dark:hover:bg-white/5'}`}>
-                  <input 
-                    type="radio" 
-                    name="shipping" 
+                  <input
+                    type="radio"
+                    name="shipping"
                     className="h-5 w-5 border-gray-300 text-primary focus:ring-primary"
                     checked={shippingMethod === 'standard'}
                     onChange={() => setShippingMethod('standard')}
@@ -158,9 +158,9 @@ export default function CheckoutPage() {
                   { id: 'wallet', label: 'Ví điện tử', icon: 'account_balance_wallet' },
                 ].map((method) => (
                   <label key={method.id} className="group relative cursor-pointer">
-                    <input 
-                      type="radio" 
-                      name="payment" 
+                    <input
+                      type="radio"
+                      name="payment"
                       className="peer sr-only"
                       checked={paymentMethod === method.id}
                       onChange={() => setPaymentMethod(method.id)}
@@ -187,7 +187,7 @@ export default function CheckoutPage() {
             {/* Cart Summary Card */}
             <div className="rounded-2xl bg-surface-light dark:bg-surface-dark p-6 shadow-xl ring-1 ring-black/5 dark:ring-white/10 border border-border-color dark:border-border-dark">
               <h3 className="mb-6 text-xl font-bold text-text-main dark:text-white">Đơn hàng của bạn</h3>
-              
+
               {/* Items List */}
               <div className="mb-6 flex flex-col gap-4 max-h-[300px] overflow-y-auto pr-2">
                 {cartItems.map(item => (
@@ -209,7 +209,7 @@ export default function CheckoutPage() {
 
               {/* Discount Code */}
               <div className="mb-6 flex gap-2">
-                <input className="h-10 w-full rounded-lg border-border-color bg-background-light dark:bg-black/20 dark:border-white/10 px-3 text-sm focus:border-primary focus:ring-primary dark:text-white outline-none border" placeholder="Mã giảm giá" type="text"/>
+                <input className="h-10 w-full rounded-lg border-border-color bg-background-light dark:bg-black/20 dark:border-white/10 px-3 text-sm focus:border-primary focus:ring-primary dark:text-white outline-none border" placeholder="Mã giảm giá" type="text" />
                 <button className="shrink-0 rounded-lg bg-text-main dark:bg-white dark:text-black px-4 text-sm font-bold text-white transition hover:opacity-90">Áp dụng</button>
               </div>
 
@@ -239,7 +239,7 @@ export default function CheckoutPage() {
               </div>
 
               {/* CTA */}
-              <button 
+              <button
                 form="checkout-form"
                 disabled={isProcessing}
                 className="mt-8 w-full rounded-full bg-primary py-4 text-center text-lg font-bold text-[#0d160b] shadow-lg shadow-primary/30 transition-all hover:bg-primary-dark hover:shadow-primary/50 hover:-translate-y-1 disabled:opacity-70 disabled:cursor-not-allowed"
@@ -250,9 +250,9 @@ export default function CheckoutPage() {
                   "Đặt hàng ngay"
                 )}
               </button>
-              
+
               <p className="mt-4 text-center text-xs text-gray-500 dark:text-gray-400 flex items-center justify-center gap-1">
-                <span className="material-symbols-outlined align-middle text-sm" style={{ fontSize: '14px' }}>lock</span> 
+                <span className="material-symbols-outlined align-middle text-sm" style={{ fontSize: '14px' }}>lock</span>
                 Thông tin của bạn được bảo mật tuyệt đối
               </p>
             </div>

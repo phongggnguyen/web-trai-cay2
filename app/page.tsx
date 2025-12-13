@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { PRODUCTS } from '../constants';
 import { useGlobal } from '../context/GlobalContext';
 
@@ -14,9 +15,9 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="relative px-4 py-6 md:px-10 lg:py-10">
         <div className="mx-auto max-w-[1440px]">
-          <div 
-            className="relative overflow-hidden rounded-2xl md:rounded-[3rem] min-h-[500px] flex flex-col justify-end p-6 md:p-12 lg:p-16 bg-cover bg-center group transition-all" 
-            style={{backgroundImage: "linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0) 100%), url('https://lh3.googleusercontent.com/aida-public/AB6AXuBPinBOZpe7w4KtiE6KjCRvkNhecbJW_rGRq08ACc9aLNTkKaLGvikTVy_0bl3YyDnDRfRJvnKsG-OD13TXA-5y0TDnNTSVaI3O8Ot92flzNlzNugK25cZ8JHEmKcva4zSAFW5Vc8tCXTieNF9WF7F0hxgOxHvxRyVlcwh0xa5amguJ8FiMQL1YYryCEPqy1BnlTfc2l0BdnvXrOSms-MbmWuJ3BVY5mAjI2Ue6_TvCsbM6BRw1ajGOBtGPZv1TaaebxBx_0md_Fqtr')"}}
+          <div
+            className="relative overflow-hidden rounded-2xl md:rounded-[3rem] min-h-[500px] flex flex-col justify-end p-6 md:p-12 lg:p-16 bg-cover bg-center group transition-all"
+            style={{ backgroundImage: "linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0) 100%), url('https://lh3.googleusercontent.com/aida-public/AB6AXuBPinBOZpe7w4KtiE6KjCRvkNhecbJW_rGRq08ACc9aLNTkKaLGvikTVy_0bl3YyDnDRfRJvnKsG-OD13TXA-5y0TDnNTSVaI3O8Ot92flzNlzNugK25cZ8JHEmKcva4zSAFW5Vc8tCXTieNF9WF7F0hxgOxHvxRyVlcwh0xa5amguJ8FiMQL1YYryCEPqy1BnlTfc2l0BdnvXrOSms-MbmWuJ3BVY5mAjI2Ue6_TvCsbM6BRw1ajGOBtGPZv1TaaebxBx_0md_Fqtr')" }}
           >
             <div className="relative z-10 max-w-2xl animate-fade-in-up">
               <span className="mb-4 inline-block rounded-full bg-primary/90 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-background-dark backdrop-blur-sm">
@@ -26,11 +27,11 @@ export default function HomePage() {
                 TIỆM QUẢ NGHIỆP
               </h1>
               <p className="mb-8 text-lg font-medium text-gray-200 md:text-xl max-w-lg">
-                "Nghiệp tụ vành môi - Ăn vô trôi hết." <br/>
+                "Nghiệp tụ vành môi - Ăn vô trôi hết." <br />
                 Thưởng thức hương vị trái cây tươi mát, đánh tan mọi ưu phiền.
               </p>
               <div className="flex flex-wrap gap-4">
-                <Link 
+                <Link
                   href="/products"
                   className="inline-flex h-12 items-center justify-center rounded-full bg-primary px-8 text-base font-bold text-background-dark transition-transform hover:scale-105 hover:shadow-[0_0_20px_rgba(76,223,32,0.4)]"
                 >
@@ -64,7 +65,7 @@ export default function HomePage() {
               { title: 'Giỏ Quà Tặng', desc: 'Trao gửi yêu thương', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC3qCUDOQkPLVdL-8q4iwzHMFDB8vED-oLPuKiuB5aj53Qr1x4Ggm-g-fdQK319M_G1qAb2V20-ci-CHaQtL4NWnktV84eFsbDj7zsbxtyhiqb9o5-R_BL-RC92JnCu1JfZoRE7VgcE-LJbfmZ4UQc9hPqvArcCeNo0iysNkmDHIm7Sy7ztebGUm_Ya4v2el4OR5lfLbNaAuyNnuZ6k4Qiqe6SOyIyBlzhL279wZI7NR_0PQGqActesfiKhhAWxnwvvMgr_SCBVv80i' },
             ].map((cat, idx) => (
               <Link key={idx} href="/products" className="group relative overflow-hidden rounded-2xl bg-surface-dark aspect-[4/3] md:aspect-auto md:h-64 cursor-pointer">
-                <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110" style={{backgroundImage: `url('${cat.img}')`}}></div>
+                <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110" style={{ backgroundImage: `url('${cat.img}')` }}></div>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
                 <div className="absolute bottom-0 left-0 p-6">
                   <h3 className="text-xl font-bold text-white">{cat.title}</h3>
@@ -84,15 +85,21 @@ export default function HomePage() {
             <h2 className="mt-2 text-3xl font-black tracking-tight md:text-4xl text-text-main dark:text-white">Sản Phẩm "Giải Nghiệp"</h2>
             <p className="mt-4 text-gray-500 dark:text-text-muted max-w-2xl mx-auto">Những loại trái cây được yêu thích nhất tuần qua. Ăn vào mát lòng mát dạ, nghiệp chướng tiêu tan.</p>
           </div>
-          
+
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {bestSellers.map((product) => (
-              <div 
-                key={product.id} 
+              <div
+                key={product.id}
                 className="group flex flex-col overflow-hidden rounded-2xl bg-background-light dark:bg-surface-dark border border-border-color dark:border-border-dark transition-all hover:shadow-xl hover:shadow-primary/10 cursor-pointer"
               >
                 <Link href={`/products/${product.id}`} className="block relative aspect-square overflow-hidden bg-gray-100 dark:bg-black/20">
-                  <img src={product.image} alt={product.name} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                  <Image
+                    src={product.image}
+                    alt={product.name}
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
                   {product.tag && (
                     <div className={`absolute top-3 right-3 rounded-full px-3 py-1 text-xs font-bold text-white ${product.tagColor === 'red' ? 'bg-red-500' : product.tagColor === 'orange' ? 'bg-orange-500' : 'bg-primary'}`}>
                       {product.tag}
@@ -101,7 +108,7 @@ export default function HomePage() {
                 </Link>
                 <div className="flex flex-1 flex-col p-5">
                   <Link href={`/products/${product.id}`}>
-                     <h3 className="text-lg font-bold text-text-main dark:text-white line-clamp-1 hover:text-primary transition-colors">{product.name}</h3>
+                    <h3 className="text-lg font-bold text-text-main dark:text-white line-clamp-1 hover:text-primary transition-colors">{product.name}</h3>
                   </Link>
                   <p className="text-sm text-gray-500 dark:text-text-muted mt-1">{product.category}</p>
                   <div className="mt-auto flex items-end justify-between pt-4">
@@ -109,7 +116,7 @@ export default function HomePage() {
                       {product.originalPrice && <span className="text-xs text-gray-400 line-through">{product.originalPrice.toLocaleString('vi-VN')}đ</span>}
                       <span className="text-xl font-bold text-primary">{product.price.toLocaleString('vi-VN')}đ<span className="text-xs text-gray-500 dark:text-gray-400 font-normal">/{product.unit}</span></span>
                     </div>
-                    <button 
+                    <button
                       onClick={(e) => {
                         e.preventDefault();
                         addToCart(product, 1);
@@ -123,9 +130,9 @@ export default function HomePage() {
               </div>
             ))}
           </div>
-          
+
           <div className="mt-12 text-center">
-            <Link 
+            <Link
               href="/products"
               className="inline-flex h-12 min-w-[200px] items-center justify-center rounded-full border border-gray-300 dark:border-border-dark bg-transparent px-6 font-bold text-text-main dark:text-white transition-colors hover:bg-white dark:hover:bg-surface-dark hover:border-transparent"
             >
@@ -165,12 +172,12 @@ export default function HomePage() {
           <h2 className="mb-4 text-3xl font-black text-text-main dark:text-white md:text-5xl">Gia Nhập "Hội Đồng Nghiệp"</h2>
           <p className="mb-8 text-lg text-gray-500 dark:text-text-muted">Đăng ký để nhận voucher giảm giá bí mật và thông tin trái cây mới về hàng ngày.</p>
           <form className="flex w-full max-w-md flex-col gap-3 sm:flex-row">
-            <input 
-              className="h-12 w-full rounded-full border border-gray-300 dark:border-border-dark bg-transparent px-6 text-text-main dark:text-white placeholder-gray-400 focus:border-primary focus:ring-1 focus:ring-primary dark:bg-surface-dark" 
-              placeholder="Email của bạn..." 
+            <input
+              className="h-12 w-full rounded-full border border-gray-300 dark:border-border-dark bg-transparent px-6 text-text-main dark:text-white placeholder-gray-400 focus:border-primary focus:ring-1 focus:ring-primary dark:bg-surface-dark"
+              placeholder="Email của bạn..."
               type="email"
             />
-            <button 
+            <button
               type="button"
               className="h-12 rounded-full bg-primary px-8 font-bold text-text-main transition-transform hover:scale-105"
             >

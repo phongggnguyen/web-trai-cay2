@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { PRODUCTS } from '../../constants';
 
 export default function ProductListPage() {
@@ -49,13 +50,12 @@ export default function ProductListPage() {
               <ul className="space-y-2">
                 {categories.map(cat => (
                   <li key={cat}>
-                    <button 
+                    <button
                       onClick={() => setSelectedCategory(cat)}
-                      className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm transition-colors ${
-                        selectedCategory === cat 
-                          ? 'bg-primary text-text-main font-bold' 
-                          : 'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-white/5'
-                      }`}
+                      className={`flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm transition-colors ${selectedCategory === cat
+                        ? 'bg-primary text-text-main font-bold'
+                        : 'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-white/5'
+                        }`}
                     >
                       {cat}
                       {cat === 'All' && <span className="text-xs opacity-60">{PRODUCTS.length}</span>}
@@ -68,10 +68,10 @@ export default function ProductListPage() {
             {/* Price Range */}
             <div>
               <h3 className="mb-4 text-lg font-bold text-text-main dark:text-white">Khoảng Giá</h3>
-              <input 
-                type="range" 
-                min="0" 
-                max="2000000" 
+              <input
+                type="range"
+                min="0"
+                max="2000000"
                 step="50000"
                 value={priceRange}
                 onChange={(e) => setPriceRange(Number(e.target.value))}
@@ -97,7 +97,7 @@ export default function ProductListPage() {
           {filteredProducts.length > 0 ? (
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {filteredProducts.map(product => (
-                <Link 
+                <Link
                   key={product.id}
                   href={`/products/${product.id}`}
                   className="group relative flex flex-col overflow-hidden rounded-2xl border border-border-color bg-surface-light transition-all hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/10 dark:border-border-dark dark:bg-surface-dark cursor-pointer"
@@ -105,9 +105,8 @@ export default function ProductListPage() {
                   <div className="relative aspect-square overflow-hidden bg-gray-100 dark:bg-black/20">
                     <img src={product.image} alt={product.name} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
                     {product.tag && (
-                      <div className={`absolute left-3 top-3 rounded-md px-2 py-1 text-[10px] font-bold text-white shadow-sm ${
-                        product.tagColor === 'red' ? 'bg-red-500' : product.tagColor === 'orange' ? 'bg-orange-500' : 'bg-primary text-black'
-                      }`}>
+                      <div className={`absolute left-3 top-3 rounded-md px-2 py-1 text-[10px] font-bold text-white shadow-sm ${product.tagColor === 'red' ? 'bg-red-500' : product.tagColor === 'orange' ? 'bg-orange-500' : 'bg-primary text-black'
+                        }`}>
                         {product.tag}
                       </div>
                     )}
@@ -137,7 +136,7 @@ export default function ProductListPage() {
               <span className="material-symbols-outlined text-6xl text-gray-300">search_off</span>
               <h3 className="mt-4 text-xl font-bold text-gray-600 dark:text-gray-400">Không tìm thấy sản phẩm</h3>
               <p className="text-gray-500">Thử thay đổi bộ lọc hoặc tìm từ khóa khác nhé.</p>
-              <button onClick={() => {setSelectedCategory('All'); setPriceRange(2000000);}} className="mt-4 text-primary font-bold hover:underline">Xóa bộ lọc</button>
+              <button onClick={() => { setSelectedCategory('All'); setPriceRange(2000000); }} className="mt-4 text-primary font-bold hover:underline">Xóa bộ lọc</button>
             </div>
           )}
         </div>

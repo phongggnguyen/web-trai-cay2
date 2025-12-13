@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter, notFound } from 'next/navigation';
 import Link from 'next/link';
 import { PRODUCTS } from '../../../constants';
 import { useGlobal } from '../../../context/GlobalContext';
@@ -10,7 +10,13 @@ export default function ProductDetailPage() {
   const params = useParams();
   const router = useRouter();
   const { addToCart } = useGlobal();
-  const id = params.id as string;
+
+  // Type-safe params handling
+  if (!params.id || typeof params.id !== 'string') {
+    notFound();
+  }
+
+  const id = params.id;
 
   const product = PRODUCTS.find(p => p.id === id);
 
@@ -50,16 +56,15 @@ export default function ProductDetailPage() {
           {/* Main Image */}
           <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-background-light dark:bg-surface-dark group border border-border-color dark:border-border-dark">
             {product.tag && (
-              <span className={`absolute top-4 left-4 z-10 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm ${
-                product.tagColor === 'red' ? 'bg-red-500' : product.tagColor === 'orange' ? 'bg-orange-500' : 'bg-primary text-text-main'
-              }`}>
+              <span className={`absolute top-4 left-4 z-10 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm ${product.tagColor === 'red' ? 'bg-red-500' : product.tagColor === 'orange' ? 'bg-orange-500' : 'bg-primary text-text-main'
+                }`}>
                 {product.tag}
               </span>
             )}
-            <img 
-              src={product.image} 
-              alt={product.name} 
-              className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105" 
+            <img
+              src={product.image}
+              alt={product.name}
+              className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
             />
             <button className="absolute bottom-4 right-4 bg-surface-light/90 dark:bg-black/50 p-2.5 rounded-full shadow-lg backdrop-blur-sm hover:bg-primary transition-colors group/zoom text-text-main dark:text-white hover:text-text-main">
               <span className="material-symbols-outlined group-hover/zoom:text-text-main">zoom_in</span>
@@ -67,18 +72,17 @@ export default function ProductDetailPage() {
           </div>
           {/* Thumbnails */}
           <div className="flex gap-4 overflow-x-auto hide-scrollbar py-1">
-             {[product.image, product.image, product.image].map((img, idx) => (
-                <button 
-                  key={idx} 
-                  className={`relative flex-shrink-0 w-24 h-24 rounded-xl overflow-hidden border-2 cursor-pointer transition-all ${
-                    idx === 0 
-                      ? 'border-primary ring-2 ring-primary/20 ring-offset-2 dark:ring-offset-background-dark' 
-                      : 'border-transparent hover:border-primary/50'
+            {[product.image, product.image, product.image].map((img, idx) => (
+              <button
+                key={idx}
+                className={`relative flex-shrink-0 w-24 h-24 rounded-xl overflow-hidden border-2 cursor-pointer transition-all ${idx === 0
+                    ? 'border-primary ring-2 ring-primary/20 ring-offset-2 dark:ring-offset-background-dark'
+                    : 'border-transparent hover:border-primary/50'
                   }`}
-                >
-                  <img src={img} className="w-full h-full object-cover" alt="thumbnail" />
-                </button>
-             ))}
+              >
+                <img src={img} className="w-full h-full object-cover" alt="thumbnail" />
+              </button>
+            ))}
           </div>
         </div>
 
@@ -113,14 +117,13 @@ export default function ProductDetailPage() {
               <label className="text-sm font-bold text-text-main dark:text-white">Chọn trọng lượng:</label>
               <div className="flex flex-wrap gap-3">
                 {['500g', '1kg', 'Thùng 2kg', 'Thùng 5kg'].map((w) => (
-                  <button 
+                  <button
                     key={w}
                     onClick={() => setSelectedWeight(w)}
-                    className={`px-6 py-2.5 rounded-full border font-bold transition-all ${
-                      selectedWeight === w 
-                        ? 'bg-primary text-text-main border-primary shadow-lg shadow-primary/20' 
+                    className={`px-6 py-2.5 rounded-full border font-bold transition-all ${selectedWeight === w
+                        ? 'bg-primary text-text-main border-primary shadow-lg shadow-primary/20'
                         : 'border-gray-200 dark:border-border-dark text-text-main dark:text-gray-300 hover:border-primary hover:text-primary'
-                    }`}
+                      }`}
                   >
                     {w}
                   </button>
@@ -182,18 +185,17 @@ export default function ProductDetailPage() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as any)}
-                className={`whitespace-nowrap py-4 px-1 border-b-2 font-bold text-lg transition-colors ${
-                  activeTab === tab.id
+                className={`whitespace-nowrap py-4 px-1 border-b-2 font-bold text-lg transition-colors ${activeTab === tab.id
                     ? 'border-primary text-primary'
                     : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-text-main dark:hover:text-white hover:border-gray-300'
-                }`}
+                  }`}
               >
                 {tab.label}
               </button>
             ))}
           </nav>
         </div>
-        
+
         <div className="py-8 text-base text-gray-600 dark:text-gray-300 leading-relaxed max-w-4xl space-y-4 animate-fade-in-up">
           {activeTab === 'description' && (
             <>
@@ -214,14 +216,14 @@ export default function ProductDetailPage() {
             </div>
           )}
           {activeTab === 'shipping' && (
-             <div className="space-y-4">
-               <p>Giao hàng hỏa tốc trong 2 giờ áp dụng cho các quận nội thành TP.HCM.</p>
-               <p>Phí vận chuyển:</p>
-               <ul className="list-disc pl-5 space-y-2">
-                 <li>Miễn phí cho đơn hàng từ 500.000đ.</li>
-                 <li>30.000đ cho đơn hàng dưới 500.000đ.</li>
-               </ul>
-             </div>
+            <div className="space-y-4">
+              <p>Giao hàng hỏa tốc trong 2 giờ áp dụng cho các quận nội thành TP.HCM.</p>
+              <p>Phí vận chuyển:</p>
+              <ul className="list-disc pl-5 space-y-2">
+                <li>Miễn phí cho đơn hàng từ 500.000đ.</li>
+                <li>30.000đ cho đơn hàng dưới 500.000đ.</li>
+              </ul>
+            </div>
           )}
         </div>
       </div>
