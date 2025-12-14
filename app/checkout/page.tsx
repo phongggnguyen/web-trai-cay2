@@ -8,11 +8,38 @@ import { supabase } from '../../lib/supabase';
 import toast from 'react-hot-toast';
 
 export default function CheckoutPage() {
-  const { cartItems, clearCart } = useGlobal();
+  const { cartItems, clearCart, user } = useGlobal();
   const router = useRouter();
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState('cod');
   const [shippingMethod, setShippingMethod] = useState('express');
+
+  // Form State
+  const [fullName, setFullName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [address, setAddress] = useState('');
+  const [email, setEmail] = useState('');
+
+  // Fetch profile when user loads
+  React.useEffect(() => {
+    if (user) {
+      setEmail(user.email || '');
+      const fetchProfile = async () => {
+        const { data } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', user.id)
+          .single();
+
+        if (data) {
+          setFullName(data.full_name || user.user_metadata?.full_name || '');
+          setPhone(data.phone_number || '');
+          setAddress(data.address || '');
+        }
+      };
+      fetchProfile();
+    }
+  }, [user]);
 
   const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
   const shippingFee = shippingMethod === 'express' ? 35000 : 15000;
@@ -25,12 +52,13 @@ export default function CheckoutPage() {
     try {
       // 1. Create Order
       const orderData = {
-        customer_name: (e.target as any)[0].value, // Hardcoded index for simplicity based on form layout
-        customer_phone: (e.target as any)[1].value,
-        customer_email: (e.target as any)[2].value,
-        shipping_address: (e.target as any)[3].value,
-        shipping_city: (e.target as any)[4].value,
-        shipping_district: (e.target as any)[5].value,
+        user_id: user?.id || null, // Link to user if logged in
+        customer_name: fullName,
+        customer_phone: phone,
+        customer_email: email,
+        shipping_address: address,
+        shipping_city: (e.target as any)['shipping_city'].value, // Use name attribute to get value
+        shipping_district: (e.target as any)['shipping_district'].value,
         payment_method: paymentMethod,
         shipping_method: shippingMethod,
         shipping_fee: shippingFee,
@@ -117,27 +145,54 @@ export default function CheckoutPage() {
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <label className="flex flex-col md:col-span-2">
                   <span className="mb-2 text-sm font-semibold text-text-main dark:text-gray-200">Họ và tên</span>
-                  <input required className="h-12 w-full rounded-xl border-border-color bg-background-light dark:bg-black/20 dark:border-white/10 px-4 text-base focus:border-primary focus:ring-primary dark:text-white placeholder:text-gray-400 focus:ring-1 outline-none border transition-all" placeholder="Nguyễn Văn A" type="text" />
+                  <input
+                    required
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    className="h-12 w-full rounded-xl border-border-color bg-background-light dark:bg-black/20 dark:border-white/10 px-4 text-base focus:border-primary focus:ring-primary dark:text-white placeholder:text-gray-400 focus:ring-1 outline-none border transition-all"
+                    placeholder="Nguyễn Văn A"
+                    type="text"
+                  />
                 </label>
                 <label className="flex flex-col">
                   <span className="mb-2 text-sm font-semibold text-text-main dark:text-gray-200">Số điện thoại</span>
-                  <input required className="h-12 w-full rounded-xl border-border-color bg-background-light dark:bg-black/20 dark:border-white/10 px-4 text-base focus:border-primary focus:ring-primary dark:text-white placeholder:text-gray-400 focus:ring-1 outline-none border transition-all" placeholder="0901234567" type="tel" />
+                  <input
+                    required
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    className="h-12 w-full rounded-xl border-border-color bg-background-light dark:bg-black/20 dark:border-white/10 px-4 text-base focus:border-primary focus:ring-primary dark:text-white placeholder:text-gray-400 focus:ring-1 outline-none border transition-all"
+                    placeholder="0901234567"
+                    type="tel"
+                  />
                 </label>
                 <label className="flex flex-col">
                   <span className="mb-2 text-sm font-semibold text-text-main dark:text-gray-200">Email (Không bắt buộc)</span>
-                  <input className="h-12 w-full rounded-xl border-border-color bg-background-light dark:bg-black/20 dark:border-white/10 px-4 text-base focus:border-primary focus:ring-primary dark:text-white placeholder:text-gray-400 focus:ring-1 outline-none border transition-all" placeholder="email@vidu.com" type="email" />
+                  <input
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="h-12 w-full rounded-xl border-border-color bg-background-light dark:bg-black/20 dark:border-white/10 px-4 text-base focus:border-primary focus:ring-primary dark:text-white placeholder:text-gray-400 focus:ring-1 outline-none border transition-all"
+                    placeholder="email@vidu.com"
+                    type="email"
+                  />
                 </label>
                 <label className="flex flex-col md:col-span-2">
                   <span className="mb-2 text-sm font-semibold text-text-main dark:text-gray-200">Địa chỉ nhận hàng</span>
-                  <input required className="h-12 w-full rounded-xl border-border-color bg-background-light dark:bg-black/20 dark:border-white/10 px-4 text-base focus:border-primary focus:ring-primary dark:text-white placeholder:text-gray-400 focus:ring-1 outline-none border transition-all" placeholder="Số nhà, tên đường, phường/xã..." type="text" />
+                  <input
+                    required
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                    className="h-12 w-full rounded-xl border-border-color bg-background-light dark:bg-black/20 dark:border-white/10 px-4 text-base focus:border-primary focus:ring-primary dark:text-white placeholder:text-gray-400 focus:ring-1 outline-none border transition-all"
+                    placeholder="Số nhà, tên đường, phường/xã..."
+                    type="text"
+                  />
                 </label>
                 <label className="flex flex-col">
                   <span className="mb-2 text-sm font-semibold text-text-main dark:text-gray-200">Tỉnh / Thành phố</span>
                   <div className="relative">
-                    <select className="h-12 w-full appearance-none rounded-xl border-border-color bg-background-light dark:bg-black/20 dark:border-white/10 px-4 pr-8 text-base focus:border-primary focus:ring-primary dark:text-white outline-none border transition-all">
-                      <option>Hồ Chí Minh</option>
-                      <option>Hà Nội</option>
-                      <option>Đà Nẵng</option>
+                    <select name="shipping_city" className="h-12 w-full appearance-none rounded-xl border-border-color bg-background-light dark:bg-black/20 dark:border-white/10 px-4 pr-8 text-base focus:border-primary focus:ring-primary dark:text-white outline-none border transition-all">
+                      <option value="Hồ Chí Minh">Hồ Chí Minh</option>
+                      <option value="Hà Nội">Hà Nội</option>
+                      <option value="Đà Nẵng">Đà Nẵng</option>
                     </select>
                     <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-gray-500">expand_more</span>
                   </div>
@@ -145,10 +200,10 @@ export default function CheckoutPage() {
                 <label className="flex flex-col">
                   <span className="mb-2 text-sm font-semibold text-text-main dark:text-gray-200">Quận / Huyện</span>
                   <div className="relative">
-                    <select className="h-12 w-full appearance-none rounded-xl border-border-color bg-background-light dark:bg-black/20 dark:border-white/10 px-4 pr-8 text-base focus:border-primary focus:ring-primary dark:text-white outline-none border transition-all">
-                      <option>Quận 1</option>
-                      <option>Quận 3</option>
-                      <option>Thủ Đức</option>
+                    <select name="shipping_district" className="h-12 w-full appearance-none rounded-xl border-border-color bg-background-light dark:bg-black/20 dark:border-white/10 px-4 pr-8 text-base focus:border-primary focus:ring-primary dark:text-white outline-none border transition-all">
+                      <option value="Quận 1">Quận 1</option>
+                      <option value="Quận 3">Quận 3</option>
+                      <option value="Thủ Đức">Thủ Đức</option>
                     </select>
                     <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-gray-500">expand_more</span>
                   </div>

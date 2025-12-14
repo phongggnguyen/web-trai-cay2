@@ -16,14 +16,15 @@ const config: Config = {
       colors: {
         primary: "#4cdf20",
         "primary-dark": "#3bc015",
-        "background-light": "#f9fbf8",
+        "background-light": "#f6f8f6",
         "background-dark": "#152111",
         "surface-light": "#ffffff",
-        "surface-dark": "#1e2e19",
+        "surface-dark": "#1a2c15",
         "text-main": "#111b0e",
         "text-muted": "#609550",
+        "text-secondary": "#a0c695",
         "border-color": "#eaf3e8",
-        "border-dark": "#2a3f23"
+        "border-dark": "#2d4625"
       },
       fontFamily: {
         display: ["var(--font-display)", "sans-serif"],
