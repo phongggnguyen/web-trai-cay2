@@ -1,9 +1,13 @@
 'use client';
 
-import React from 'react';
+import React, { Suspense } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 
-export default function OrderSuccessPage() {
+function OrderSuccessContent() {
+  const searchParams = useSearchParams();
+  const orderId = searchParams.get('id');
+
   return (
     <div className="flex flex-col items-center py-8 px-4 md:px-10 lg:px-40 w-full max-w-[1440px] mx-auto gap-8">
       {/* Success Hero */}
@@ -19,19 +23,19 @@ export default function OrderSuccessPage() {
           </div>
         </div>
         <div className="flex flex-col gap-3">
-          <h1 className="text-2xl md:text-4xl font-extrabold text-text-main dark:text-white tracking-tight">Cảm ơn bạn, Minh!</h1>
+          <h1 className="text-2xl md:text-4xl font-extrabold text-text-main dark:text-white tracking-tight">Cảm ơn bạn!</h1>
           <p className="text-gray-500 dark:text-gray-400 text-base md:text-lg max-w-lg mx-auto leading-relaxed">
-            Đơn hàng <span className="font-bold text-text-main dark:text-white">#TQN-8829</span> của bạn đã được tiếp nhận thành công. 
-            <br className="hidden md:block"/>
+            Đơn hàng <span className="font-bold text-text-main dark:text-white">#{orderId?.slice(0, 8) || '...'}</span> của bạn đã được tiếp nhận thành công.
+            <br className="hidden md:block" />
             <span className="italic text-primary font-medium">"Nghiệp này là nghiệp tốt!"</span> Trái cây tươi ngon sẽ sớm đến tay bạn.
           </p>
         </div>
         <div className="flex flex-wrap justify-center gap-4 mt-2">
-          <button className="flex h-12 items-center justify-center rounded-full bg-primary px-8 text-black font-bold hover:brightness-110 transition-all shadow-lg shadow-primary/25">
+          <Link href="/profile" className="flex h-12 items-center justify-center rounded-full bg-primary px-8 text-black font-bold hover:brightness-110 transition-all shadow-lg shadow-primary/25">
             <span className="material-symbols-outlined mr-2 text-xl">local_shipping</span>
             Theo dõi đơn hàng
-          </button>
-          <Link 
+          </Link>
+          <Link
             href="/products"
             className="flex h-12 items-center justify-center rounded-full bg-background-light dark:bg-surface-dark px-8 text-primary font-bold hover:bg-primary/10 transition-all border border-transparent hover:border-primary/20"
           >
@@ -57,7 +61,7 @@ export default function OrderSuccessPage() {
               <div className="text-primary font-bold flex flex-col items-center gap-1 relative">
                 <span className="size-2 bg-primary rounded-full absolute -top-3 left-1/2 transform -translate-x-1/2"></span>
                 Đã đặt hàng
-                <span className="font-normal text-[10px] opacity-80">14:30, 14/10</span>
+                <span className="font-normal text-[10px] opacity-80">{new Date().toLocaleTimeString('vi-VN')}</span>
               </div>
               <div className="text-primary font-bold flex flex-col items-center gap-1 relative">
                 <span className="size-2 bg-primary rounded-full absolute -top-3 left-1/2 transform -translate-x-1/2"></span>
@@ -73,10 +77,18 @@ export default function OrderSuccessPage() {
           </div>
           <div className="flex items-center gap-2 text-sm text-green-700 dark:text-green-300 bg-green-50 dark:bg-green-900/20 p-3 rounded-xl mt-2">
             <span className="material-symbols-outlined">schedule</span>
-            Dự kiến giao hàng: <span className="font-bold">Thứ Ba, 15/10/2023</span>
+            Dự kiến giao hàng: <span className="font-bold">Trong vòng 2 giờ</span>
           </div>
         </div>
       </section>
     </div>
+  );
+}
+
+export default function OrderSuccessPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <OrderSuccessContent />
+    </Suspense>
   );
 }
