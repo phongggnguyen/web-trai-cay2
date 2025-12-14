@@ -53,16 +53,16 @@ export default function CartPage() {
         <div className="lg:col-span-8 space-y-6">
           {/* Table Header (Desktop only) */}
           <div className="hidden md:grid grid-cols-12 gap-4 pb-4 border-b border-border-color dark:border-border-dark text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-            <div className="col-span-6 pl-4">Sản phẩm</div>
+            <div className="col-span-5 pl-4">Sản phẩm</div>
             <div className="col-span-2 text-center">Đơn giá</div>
             <div className="col-span-2 text-center">Số lượng</div>
-            <div className="col-span-2 text-right pr-4">Tạm tính</div>
+            <div className="col-span-3 text-right pr-4">Tạm tính</div>
           </div>
 
           {cartItems.map((item) => (
             <div key={item.id} className="group relative flex flex-col md:grid md:grid-cols-12 gap-4 items-center bg-surface-light dark:bg-surface-dark p-4 rounded-xl shadow-sm border border-transparent hover:border-primary/20 transition-all">
               {/* Product Info */}
-              <div className="col-span-6 w-full flex items-center gap-4">
+              <div className="col-span-5 w-full flex items-center gap-4">
                 <div className="relative size-20 md:size-24 rounded-xl overflow-hidden flex-shrink-0 bg-background-light dark:bg-background-dark">
                   <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
                 </div>
@@ -109,7 +109,7 @@ export default function CartPage() {
               </div>
 
               {/* Total & Remove */}
-              <div className="col-span-2 w-full flex items-center justify-between md:justify-end gap-4 pl-4 md:pl-0 pr-4">
+              <div className="col-span-3 w-full flex items-center justify-between md:justify-end gap-4 pl-4 md:pl-0 pr-4">
                 <span className="md:hidden text-sm font-medium text-gray-500">Tổng:</span>
                 <span className="font-bold text-primary text-lg">{(item.price * item.quantity).toLocaleString('vi-VN')}đ</span>
                 <button

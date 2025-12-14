@@ -65,8 +65,8 @@ export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       return [...prev, { ...product, quantity }];
     });
     toast.success(`Đã thêm ${quantity} ${product.name} vào giỏ!`, {
-      duration: 3000,
-      position: 'top-right',
+      duration: 2500,
+      position: 'bottom-center',
     });
   };
 

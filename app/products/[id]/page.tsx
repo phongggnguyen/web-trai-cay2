@@ -1,28 +1,95 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useRouter, notFound } from 'next/navigation';
 import Link from 'next/link';
-import { PRODUCTS } from '../../../constants';
 import { useGlobal } from '../../../context/GlobalContext';
+import { supabase } from '../../../lib/supabase';
 
 export default function ProductDetailPage() {
   const params = useParams();
   const router = useRouter();
   const { addToCart } = useGlobal();
+  const { id } = params;
 
-  // Type-safe params handling
-  if (!params.id || typeof params.id !== 'string') {
-    notFound();
-  }
-
-  const id = params.id;
-
-  const product = PRODUCTS.find(p => p.id === id);
+  const [product, setProduct] = useState<any>(null);
+  const [relatedProducts, setRelatedProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const [quantity, setQuantity] = useState(1);
   const [selectedWeight, setSelectedWeight] = useState('1kg');
   const [activeTab, setActiveTab] = useState<'description' | 'origin' | 'shipping'>('description');
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      if (!id || typeof id !== 'string') return;
+
+      try {
+        setLoading(true);
+        // Fetch current product
+        const { data: productData, error: productError } = await supabase
+          .from('products')
+          .select(`
+            *,
+            categories ( name )
+          `)
+          .eq('id', id)
+          .single();
+
+        if (productError) throw productError;
+
+        if (productData) {
+          const mappedProduct = {
+            ...productData,
+            image: productData.image_url,
+            originalPrice: productData.original_price,
+            category: productData.categories?.name || 'Khác',
+            tag: productData.tags?.[0],
+            tagColor: productData.tags?.[0] === 'HOT' ? 'red' : productData.tags?.[0] === 'MỚI' ? 'orange' : 'primary'
+          };
+          setProduct(mappedProduct);
+
+          // Fetch related products (same category, different ID)
+          if (productData.category_id) {
+            const { data: relatedData } = await supabase
+              .from('products')
+              .select('*')
+              .eq('category_id', productData.category_id)
+              .neq('id', id)
+              .limit(4);
+
+            if (relatedData) {
+              const mappedRelated = relatedData.map((item: any) => ({
+                ...item,
+                image: item.image_url,
+                originalPrice: item.original_price,
+              }));
+              setRelatedProducts(mappedRelated);
+            }
+          }
+        } else {
+          // notFound() implementation in Next.js client component is tricky inside useEffect, 
+          // usually handled by redirect or conditional render.
+          setProduct(null);
+        }
+
+      } catch (error) {
+        console.error('Error fetching details:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProduct();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div className="flex h-[50vh] w-full items-center justify-center">
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
+      </div>
+    );
+  }
 
   if (!product) {
     return (
@@ -32,8 +99,6 @@ export default function ProductDetailPage() {
       </div>
     );
   }
-
-  const relatedProducts = PRODUCTS.filter(p => p.id !== product.id).slice(0, 4);
 
   const handleAddToCart = () => {
     addToCart(product, quantity);
@@ -72,12 +137,12 @@ export default function ProductDetailPage() {
           </div>
           {/* Thumbnails */}
           <div className="flex gap-4 overflow-x-auto hide-scrollbar py-1">
-            {[product.image, product.image, product.image].map((img, idx) => (
+            {[product.image, product.image, product.image].map((img: string, idx: number) => (
               <button
                 key={idx}
                 className={`relative flex-shrink-0 w-24 h-24 rounded-xl overflow-hidden border-2 cursor-pointer transition-all ${idx === 0
-                    ? 'border-primary ring-2 ring-primary/20 ring-offset-2 dark:ring-offset-background-dark'
-                    : 'border-transparent hover:border-primary/50'
+                  ? 'border-primary ring-2 ring-primary/20 ring-offset-2 dark:ring-offset-background-dark'
+                  : 'border-transparent hover:border-primary/50'
                   }`}
               >
                 <img src={img} className="w-full h-full object-cover" alt="thumbnail" />
@@ -94,8 +159,8 @@ export default function ProductDetailPage() {
               <span className="bg-border-color dark:bg-primary/20 text-secondary dark:text-primary text-[10px] font-bold px-2 py-1 rounded-md uppercase tracking-wide">Best Seller</span>
               <div className="flex items-center gap-1">
                 <span className="material-symbols-outlined text-yellow-400 text-[18px] fill-current">star</span>
-                <span className="text-sm font-bold dark:text-white">{product.rating}</span>
-                <span className="text-sm text-gray-500 dark:text-gray-400">({product.reviews} đánh giá)</span>
+                <span className="text-sm font-bold dark:text-white">{product.rating ?? 5.0}</span>
+                <span className="text-sm text-gray-500 dark:text-gray-400">({product.reviews ?? 0} đánh giá)</span>
               </div>
             </div>
             <h1 className="text-text-main dark:text-white text-3xl md:text-4xl font-black leading-tight mb-3 tracking-tight">{product.name}</h1>
@@ -110,25 +175,6 @@ export default function ProductDetailPage() {
               <span className="text-4xl font-black text-primary tracking-tight">{product.price.toLocaleString('vi-VN')}đ</span>
               {product.originalPrice && <span className="text-xl text-gray-400 line-through mb-1 font-medium">{product.originalPrice.toLocaleString('vi-VN')}đ</span>}
               <span className="text-sm text-gray-500 mb-1 font-medium">/ {product.unit}</span>
-            </div>
-
-            {/* Variants */}
-            <div className="space-y-3">
-              <label className="text-sm font-bold text-text-main dark:text-white">Chọn trọng lượng:</label>
-              <div className="flex flex-wrap gap-3">
-                {['500g', '1kg', 'Thùng 2kg', 'Thùng 5kg'].map((w) => (
-                  <button
-                    key={w}
-                    onClick={() => setSelectedWeight(w)}
-                    className={`px-6 py-2.5 rounded-full border font-bold transition-all ${selectedWeight === w
-                        ? 'bg-primary text-text-main border-primary shadow-lg shadow-primary/20'
-                        : 'border-gray-200 dark:border-border-dark text-text-main dark:text-gray-300 hover:border-primary hover:text-primary'
-                      }`}
-                  >
-                    {w}
-                  </button>
-                ))}
-              </div>
             </div>
 
             {/* Quantity & Add to Cart */}
@@ -186,8 +232,8 @@ export default function ProductDetailPage() {
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as any)}
                 className={`whitespace-nowrap py-4 px-1 border-b-2 font-bold text-lg transition-colors ${activeTab === tab.id
-                    ? 'border-primary text-primary'
-                    : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-text-main dark:hover:text-white hover:border-gray-300'
+                  ? 'border-primary text-primary'
+                  : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-text-main dark:hover:text-white hover:border-gray-300'
                   }`}
               >
                 {tab.label}
