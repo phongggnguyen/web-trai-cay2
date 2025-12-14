@@ -10,7 +10,7 @@ export default function AdminPage() {
         </div>
         <nav className="space-y-1">
           {['Tổng quan', 'Đơn hàng', 'Sản phẩm', 'Khách hàng', 'Mã giảm giá', 'Cài đặt'].map((item, idx) => (
-            <button 
+            <button
               key={item}
               className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-sm font-bold transition-colors ${idx === 0 ? 'bg-primary/20 text-primary' : 'text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-white/5'}`}
             >
@@ -77,11 +77,10 @@ export default function AdminPage() {
                   <td className="py-4 font-bold text-primary">{order.id}</td>
                   <td className="py-4 font-medium text-text-main dark:text-white">{order.customer}</td>
                   <td className="py-4">
-                    <span className={`rounded-full px-2 py-1 text-[10px] font-bold uppercase ${
-                      order.status === 'Hoàn thành' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' :
-                      order.status === 'Đang giao' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' :
-                      'bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400'
-                    }`}>
+                    <span className={`rounded-full px-2 py-1 text-[10px] font-bold uppercase ${order.status === 'Hoàn thành' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' :
+                        order.status === 'Đang giao' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400' :
+                          'bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400'
+                      }`}>
                       {order.status}
                     </span>
                   </td>

@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useGlobal } from '../../context/GlobalContext';
+import { supabase } from '../../lib/supabase';
+import toast from 'react-hot-toast';
 
 export default function CheckoutPage() {
   const { cartItems, clearCart } = useGlobal();
@@ -16,15 +18,64 @@ export default function CheckoutPage() {
   const shippingFee = shippingMethod === 'express' ? 35000 : 15000;
   const total = subtotal + shippingFee;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsProcessing(true);
-    // Simulate API call
-    setTimeout(() => {
-      setIsProcessing(false);
+
+    try {
+      // 1. Create Order
+      const orderData = {
+        customer_name: (e.target as any)[0].value, // Hardcoded index for simplicity based on form layout
+        customer_phone: (e.target as any)[1].value,
+        customer_email: (e.target as any)[2].value,
+        shipping_address: (e.target as any)[3].value,
+        shipping_city: (e.target as any)[4].value,
+        shipping_district: (e.target as any)[5].value,
+        payment_method: paymentMethod,
+        shipping_method: shippingMethod,
+        shipping_fee: shippingFee,
+        total_amount: total,
+        status: 'pending'
+      };
+
+      const { data: order, error: orderError } = await supabase
+        .from('orders')
+        .insert(orderData)
+        .select()
+        .single();
+
+      if (orderError) throw orderError;
+
+      if (!order) throw new Error('Không tạo được đơn hàng');
+
+      // 2. Create Order Items
+      const orderItemsData = cartItems.map(item => ({
+        order_id: order.id,
+        product_id: item.id,
+        product_name: item.name,
+        product_image: item.image,
+        quantity: item.quantity,
+        price: item.price,
+        unit: item.unit
+      }));
+
+      const { error: itemsError } = await supabase
+        .from('order_items')
+        .insert(orderItemsData);
+
+      if (itemsError) throw itemsError;
+
+      // 3. Cleanup & Redirect
+      toast.success('Đặt hàng thành công!');
       clearCart();
-      router.push('/order-success');
-    }, 1500);
+      router.push(`/order-success?id=${order.id}`);
+
+    } catch (error: any) {
+      console.error('Checkout error:', error);
+      toast.error('Lỗi đặt hàng: ' + (error.message || 'Vui lòng thử lại'));
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   if (cartItems.length === 0) {

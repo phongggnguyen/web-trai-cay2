@@ -3,12 +3,21 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import toast from 'react-hot-toast';
 import { CartItem, Product, GlobalState } from '../types';
+import { supabase } from '../lib/supabase';
+import { User } from '@supabase/supabase-js';
 
-export const GlobalContext = createContext<GlobalState | undefined>(undefined);
+// Extend GlobalState to include user
+interface GlobalContextType extends GlobalState {
+  user: User | null;
+  logout: () => Promise<void>;
+}
+
+export const GlobalContext = createContext<GlobalContextType | undefined>(undefined);
 
 export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isDark, setIsDark] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
 
   // Load cart from localStorage on mount
   useEffect(() => {
@@ -54,6 +63,23 @@ export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     }
   }, [cartItems]);
 
+  // Auth Listener
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        if (session) {
+          setUser(session.user);
+        } else {
+          setUser(null);
+        }
+      }
+    );
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
   const toggleTheme = () => setIsDark(!isDark);
 
   const addToCart = (product: Product, quantity: number) => {
@@ -82,19 +108,25 @@ export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     setCartItems([]);
   };
 
+  const logout = async () => {
+    await supabase.auth.signOut();
+    toast.success('Đã đăng xuất thành công');
+  };
 
   const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   const value = React.useMemo(() => ({
     cartItems,
     isDark,
+    user,
     addToCart,
     updateQuantity,
     removeFromCart,
     clearCart,
     toggleTheme,
+    logout,
     cartCount
-  }), [cartItems, isDark, cartCount, addToCart, updateQuantity, removeFromCart, clearCart, toggleTheme]);
+  }), [cartItems, isDark, user, cartCount, addToCart, updateQuantity, removeFromCart, clearCart, toggleTheme, logout]);
 
   return (
     <GlobalContext.Provider value={value}>
