@@ -1,10 +1,8 @@
 {
   "/page": "app/page.js",
-  "/about/page": "app/about/page.js",
-  "/admin/page": "app/admin/page.js",
-  "/blog/page": "app/blog/page.js",
-  "/terms/page": "app/terms/page.js",
-  "/privacy/page": "app/privacy/page.js",
+  "/products/[id]/page": "app/products/[id]/page.js",
   "/products/page": "app/products/page.js",
+  "/about/page": "app/about/page.js",
+  "/blog/page": "app/blog/page.js",
   "/contact/page": "app/contact/page.js"
 }

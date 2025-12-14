@@ -3,19 +3,78 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { PRODUCTS } from '../../constants';
+import { useGlobal } from '../../context/GlobalContext';
+import { supabase } from '../../lib/supabase';
 
 export default function ProductListPage() {
+  const [products, setProducts] = useState<any[]>([]);
+  const [categoriesList, setCategoriesList] = useState<string[]>(['All']);
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [priceRange, setPriceRange] = useState<number>(2000000);
+  const [loading, setLoading] = useState(true);
+  const { addToCart } = useGlobal();
 
-  const categories = ['All', ...Array.from(new Set(PRODUCTS.map(p => p.category || 'Khác')))];
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        // Fetch products
+        const { data: productsData, error: productError } = await supabase
+          .from('products')
+          .select(`
+            *,
+            categories ( name )
+          `);
 
-  const filteredProducts = PRODUCTS.filter(product => {
+        if (productError) throw productError;
+
+        // Fetch categories (optional, or derive from products)
+        const { data: categoriesData, error: catError } = await supabase
+          .from('categories')
+          .select('name');
+
+        if (catError) throw catError;
+
+        if (productsData) {
+          const mappedProducts = productsData.map((item: any) => ({
+            ...item,
+            image: item.image_url,
+            originalPrice: item.original_price,
+            category: item.categories?.name || 'Khác',
+            tag: item.tags?.[0],
+            tagColor: item.tags?.[0] === 'HOT' ? 'red' : item.tags?.[0] === 'MỚI' ? 'orange' : 'primary'
+          }));
+          setProducts(mappedProducts);
+        }
+
+        if (categoriesData) {
+          const cats = ['All', ...categoriesData.map((c: any) => c.name)];
+          setCategoriesList(cats);
+        }
+
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const filteredProducts = products.filter(product => {
     const matchCategory = selectedCategory === 'All' || product.category === selectedCategory;
     const matchPrice = product.price <= priceRange;
     return matchCategory && matchPrice;
   });
+
+  if (loading) {
+    return (
+      <div className="flex h-[50vh] w-full items-center justify-center">
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto max-w-[1440px] px-4 py-8 md:px-10">
@@ -48,7 +107,7 @@ export default function ProductListPage() {
             <div>
               <h3 className="mb-4 text-lg font-bold text-text-main dark:text-white">Danh Mục</h3>
               <ul className="space-y-2">
-                {categories.map(cat => (
+                {categoriesList.map(cat => (
                   <li key={cat}>
                     <button
                       onClick={() => setSelectedCategory(cat)}
@@ -58,7 +117,7 @@ export default function ProductListPage() {
                         }`}
                     >
                       {cat}
-                      {cat === 'All' && <span className="text-xs opacity-60">{PRODUCTS.length}</span>}
+                      {cat === 'All' && <span className="text-xs opacity-60">{products.length}</span>}
                     </button>
                   </li>
                 ))}
@@ -110,7 +169,15 @@ export default function ProductListPage() {
                         {product.tag}
                       </div>
                     )}
-                    <button className="absolute bottom-3 right-3 flex h-10 w-10 translate-y-12 items-center justify-center rounded-full bg-primary text-text-main shadow-lg transition-all duration-300 group-hover:translate-y-0 hover:bg-white hover:text-primary">
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        addToCart(product, 1);
+                      }}
+                      className="absolute bottom-3 right-3 flex h-10 w-10 translate-y-12 items-center justify-center rounded-full bg-primary text-text-main shadow-lg transition-all duration-300 group-hover:translate-y-0 hover:bg-white hover:text-primary"
+                      aria-label={`Thêm ${product.name} vào giỏ hàng`}
+                    >
                       <span className="material-symbols-outlined">add_shopping_cart</span>
                     </button>
                   </div>
@@ -124,7 +191,7 @@ export default function ProductListPage() {
                       </div>
                       <div className="flex items-center gap-1 text-xs font-bold text-gray-500">
                         <span className="material-symbols-outlined text-[16px] text-yellow-400 fill-current">star</span>
-                        {product.rating}
+                        {product.rating ?? 4.5}
                       </div>
                     </div>
                   </div>

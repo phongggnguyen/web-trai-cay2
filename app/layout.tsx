@@ -51,12 +51,14 @@ export default function RootLayout({
           <div className="flex min-h-screen flex-col transition-colors duration-200">
             <Header />
             <Toaster
-              position="top-right"
+              position="bottom-center"
+              gutter={12}
+              containerStyle={{ margin: '0 12px 16px' }}
               toastOptions={{
-                duration: 3000,
+                duration: 2500,
+                className: 'bg-surface-light text-text-main dark:bg-surface-dark dark:text-white border border-border-color dark:border-border-dark shadow-lg rounded-xl px-4 py-3 text-sm font-semibold',
                 style: {
-                  background: 'var(--color-surface-light)',
-                  color: 'var(--color-text-main)',
+                  maxWidth: '420px',
                 },
                 success: {
                   iconTheme: {

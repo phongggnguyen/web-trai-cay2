@@ -3,12 +3,69 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { PRODUCTS } from '../constants';
 import { useGlobal } from '../context/GlobalContext';
+import { supabase } from '../lib/supabase';
 
 export default function HomePage() {
   const { addToCart } = useGlobal();
-  const bestSellers = PRODUCTS.slice(0, 4);
+  const [bestSellers, setBestSellers] = React.useState<any[]>([]);
+  const [categories, setCategories] = React.useState<any[]>([]);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+
+        // Parallel fetching
+        const [bestSellersRes, categoriesRes] = await Promise.all([
+          supabase
+            .from('products')
+            .select(`
+              *,
+              categories ( name )
+            `)
+            .eq('is_best_seller', true)
+            .limit(4),
+          supabase
+            .from('categories')
+            .select('*')
+            .limit(4)
+        ]);
+
+        if (bestSellersRes.error) throw bestSellersRes.error;
+        if (categoriesRes.error) throw categoriesRes.error;
+
+        if (bestSellersRes.data) {
+          const mappedProducts = bestSellersRes.data.map((item: any) => ({
+            ...item,
+            image: item.image_url,
+            originalPrice: item.original_price,
+            category: item.categories?.name,
+            tag: item.tags?.[0],
+            tagColor: item.tags?.[0] === 'HOT' ? 'red' : item.tags?.[0] === 'MỚI' ? 'orange' : 'primary'
+          }));
+          setBestSellers(mappedProducts);
+        }
+
+        if (categoriesRes.data) {
+          const mappedCategories = categoriesRes.data.map((item: any) => ({
+            title: item.name,
+            desc: item.description,
+            img: item.image_url
+          }));
+          setCategories(mappedCategories);
+        }
+
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div className="w-full">
@@ -58,12 +115,9 @@ export default function HomePage() {
             <Link href="/products" className="hidden text-sm font-bold text-primary hover:underline md:block">Xem tất cả -&gt;</Link>
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {[
-              { title: 'Trái Cây Nhập Khẩu', desc: 'Cherry, Nho Mỹ, Táo Envy...', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB5kI_9RsUdu0446uDCVCQUZgzcqtZX0d7gYMDk71PmNHkv_WNUURIwj-pCjBG7rNawWDQ5d57gnlzRqcRXdmUVLk_qrz2Re5lKSE91SKmsyR-dOWntkY8wVhLsMC9DwKvPrY04aOUaLrbpw5QesAX6QRb4N-ttwac-jTsvu6T9joK4jjkWZIivSDlk6r15mnnacR3zIXCpQhTfQLw72aJ01cNOuHB3exTyzj285Pa-YfY5VK7av5H6n0PoEzvas_w1vk8HjEoeBiFD' },
-              { title: 'Đặc Sản Việt Nam', desc: 'Xoài Cát, Vải Thiều, Thanh Long...', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB-N6TPya0ULTNmGUDQ2hooOpfaRUSdopYUQKblGDzYWiatRHITqjjtBed4M_5VcCVn4XXJTwFohAT6dkddnxQsfJpF_Uagt6uOAj9r42XEEUfQKHIy18lQ99e5BKDxR-UglPzkgsBia7JuqHx7Fq9tXddd1VczYLAMcnR51enYWx1ZmuyJPk6LSzsKMGH_5jB8WmNSVVWechrqajjr__DqWj97CGcjeqJ7X3yU7kKz12WIyqnFx2v36F_vgjZyPEPO-AaRPfvw6kt9' },
-              { title: 'Combo Detox', desc: 'Thanh lọc cơ thể, đẹp da', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBtIJFDp9EwiM0TCDx9iUelLZNa34uYParEhc8srzSURH29kvfnV9-owqI6Jjaf-6fV-5ClrJQSXDc19YYibIDh2w_Of-HmgAJ5N2nz2f9f7dtvtPI-3q09eFweMOWaJQ_IVZU1OFseYr-d5oXLj7Do9wPD3I2qesnHWAtyU1gJPAtttIA-7a_Fxo8hgQTvRf_TRJmLx5laFYrmyCSmbiqsG1-VX4kzM3-6PXIuornuaYBt9gOCRnQtz0fBTiNl0rvekw_Z-aFIAvs1' },
-              { title: 'Giỏ Quà Tặng', desc: 'Trao gửi yêu thương', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC3qCUDOQkPLVdL-8q4iwzHMFDB8vED-oLPuKiuB5aj53Qr1x4Ggm-g-fdQK319M_G1qAb2V20-ci-CHaQtL4NWnktV84eFsbDj7zsbxtyhiqb9o5-R_BL-RC92JnCu1JfZoRE7VgcE-LJbfmZ4UQc9hPqvArcCeNo0iysNkmDHIm7Sy7ztebGUm_Ya4v2el4OR5lfLbNaAuyNnuZ6k4Qiqe6SOyIyBlzhL279wZI7NR_0PQGqActesfiKhhAWxnwvvMgr_SCBVv80i' },
-            ].map((cat, idx) => (
+            {(categories.length > 0 ? categories : [
+              // Fallback skeleton or default if needed to avoid layout shift, currently simplified
+            ]).map((cat, idx) => (
               <Link key={idx} href="/products" className="group relative overflow-hidden rounded-2xl bg-surface-dark aspect-[4/3] md:aspect-auto md:h-64 cursor-pointer">
                 <div className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110" style={{ backgroundImage: `url('${cat.img}')` }}></div>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
