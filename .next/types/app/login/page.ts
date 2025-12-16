@@ -1,4 +1,4 @@
-// File: C:\Users\nchd3\OneDrive\Máy tính\project github\web trai cay 2\traicay_gg_studio\web-trai-cay2\app\login\page.tsx
+// File: C:\Users\nchd3\OneDrive\Máy tính\project github\web trai cay 2\web-trai-cay2 - goc\app\login\page.tsx
 import * as entry from '../../../../app/login/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
