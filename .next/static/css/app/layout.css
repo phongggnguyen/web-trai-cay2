@@ -942,9 +942,6 @@ select {
 .left-4 {
   left: 1rem;
 }
-.left-auto {
-  left: auto;
-}
 .right-0 {
   right: 0px;
 }
@@ -956,9 +953,6 @@ select {
 }
 .right-8 {
   right: 2rem;
-}
-.right-auto {
-  right: auto;
 }
 .top-0 {
   top: 0px;
@@ -1435,10 +1429,6 @@ select {
 }
 .-translate-x-1\/2 {
   --tw-translate-x: -50%;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-.-translate-x-\[calc\(100\%-2\.25rem\)\] {
-  --tw-translate-x: calc(calc(100% - 2.25rem) * -1);
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 .-translate-y-1\/2 {
