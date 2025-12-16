@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { STATUS_META } from '../constants';
+import { STATUS_META } from '../../constants'; // Adjusted path to constants
 
 type OrderActionsProps = {
     orderId: string;
@@ -31,14 +31,18 @@ export default function OrderActions({
 
     return (
         <div className="flex justify-end gap-3 items-center">
+            {/* View Details Button */}
             <a
                 href={`/order-success?id=${orderId}`}
-                className="p-2 rounded-full text-gray-400 hover:bg-white/10 hover:text-white transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 rounded-full text-gray-400 hover:bg-white/10 hover:text-primary transition-colors"
                 title="Xem chi tiết"
             >
                 <span className="material-symbols-outlined text-[20px]">visibility</span>
             </a>
 
+            {/* Edit Status Button */}
             <div className="relative" ref={menuRef}>
                 <button
                     onClick={() => setIsOpen(!isOpen)}
@@ -53,7 +57,7 @@ export default function OrderActions({
                 </button>
 
                 {isOpen && (
-                    <div className="absolute right-auto left-auto -translate-x-[calc(100%-2.25rem)] top-full mt-2 z-50 w-52 rounded-2xl border border-gray-100 bg-white/95 backdrop-blur-xl p-2 shadow-xl dark:border-gray-800 dark:bg-[#1a1c1e]/95 animate-in fade-in zoom-in-95 duration-200">
+                    <div className="absolute right-0 top-full mt-2 z-50 w-52 rounded-2xl border border-gray-100 bg-white/95 backdrop-blur-xl p-2 shadow-xl dark:border-gray-800 dark:bg-[#1a1c1e]/95 animate-in fade-in zoom-in-95 duration-200">
                         <div className="mb-2 px-3 py-2 text-[10px] font-black uppercase tracking-wider text-gray-400">
                             Chọn trạng thái
                         </div>
