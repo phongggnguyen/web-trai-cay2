@@ -15,6 +15,33 @@ export default function LoginPage() {
     fullName: ''
   });
 
+  const redirectAfterLogin = async () => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+
+      if (!user) {
+        router.push('/');
+        return;
+      }
+
+      const { data: profile, error } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', user.id)
+        .single();
+
+      if (error && error.code !== 'PGRST116') {
+        console.error('Failed to fetch user role', error);
+      }
+
+      const role = profile?.role || (user.user_metadata as any)?.role;
+      router.push(role === 'admin' ? '/admin' : '/');
+    } catch (fetchError) {
+      console.error('Redirect after login failed', fetchError);
+      router.push('/');
+    }
+  };
+
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -28,7 +55,7 @@ export default function LoginPage() {
         });
         if (error) throw error;
         toast.success('Đăng nhập thành công!');
-        router.push('/');
+        await redirectAfterLogin();
       } else {
         // Sign Up
         const { error } = await supabase.auth.signUp({
@@ -37,6 +64,7 @@ export default function LoginPage() {
           options: {
             data: {
               full_name: formData.fullName,
+              role: 'customer',
             },
           },
         });

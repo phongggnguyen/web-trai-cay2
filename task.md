@@ -1,0 +1,41 @@
+# Supabase Integration Tasks
+
+- [x] **Setup Supabase Project** <!-- id: 0 -->
+    - [x] Login to Supabase and create a new project <!-- id: 1 -->
+    - [x] Retrieve API URL and Anon Key <!-- id: 2 -->
+- [x] **Project Configuration** <!-- id: 3 -->
+    - [x] Create `.env.local` file for environment variables <!-- id: 4 -->
+    - [x] Install `@supabase/supabase-js` library <!-- id: 5 -->
+    - [x] Create `lib/supabase.ts` client initialization <!-- id: 6 -->
+- [x] **Database Schema Setup** <!-- id: 7 -->
+    - [x] Design Schema (Products, Categories, Users) <!-- id: 8 -->
+    - [x] Run SQL migration/setup scripts <!-- id: 9 -->
+- [x] **Data Migration** <!-- id: 10 -->
+    - [x] Migrate static data from `constants.ts` to Database <!-- id: 11 -->
+    - [x] Update `app/page.tsx` to fetch data dynamically <!-- id: 12 -->
+- [ ] **Feature Refactoring** <!-- id: 13 -->
+    - [x] Refactor `app/products/page.tsx` (Product Listing) <!-- id: 14 -->
+    - [x] Refactor `app/products/[id]/page.tsx` (Product Detail) <!-- id: 15 -->
+    - [x] Refactor Categories section in `app/page.tsx` <!-- id: 16 -->
+- [ ] **Authentication** <!-- id: 17 -->
+    - [x] Create Auth Callback Route `app/auth/callback/route.ts` <!-- id: 18 -->
+    - [x] Update `GlobalContext` with User State <!-- id: 19 -->
+    - [x] Implement Logic in `app/login/page.tsx` <!-- id: 20 -->
+    - [x] Update Header UI for Auth State <!-- id: 21 -->
+- [ ] **Checkout & Orders System** <!-- id: 22 -->
+    - [x] Create Database Schema (orders, order_items, RLS) <!-- id: 23 -->
+    - [x] Implement Checkout Logic (Save to DB) <!-- id: 24 -->
+    - [x] Create Order Success Page <!-- id: 25 -->
+    - [x] Create User Profile & Order History <!-- id: 26 -->
+    - [x] **Admin Authentication & Routing** <!-- id: 27 -->
+        - [x] Add `role` column to profiles table
+        - [x] Implement conditional redirect after login (Admin -> /admin, User -> /)
+    - [ ] **Admin Dashboard Upgrade** <!-- id: 28 -->
+        - [ ] Connect Real Database
+        - [ ] Order Management (Approve/Ship/Complete)
+        - [ ] Statistics
+    - [ ] **Profile Page Logic** <!-- id: 29 -->
+        - [ ] Filter & Search
+        - [ ] Re-order functionality
+    - [ ] **Order Detail Page** <!-- id: 30 -->
+        - [ ] View full order details (Modal or Page)
