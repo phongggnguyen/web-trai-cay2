@@ -7,7 +7,7 @@ import { useGlobal } from '../context/GlobalContext';
 import MobileMenu from './MobileMenu';
 
 const Header: React.FC = () => {
-  const { cartCount, toggleTheme, isDark, user, logout } = useGlobal();
+  const { cartCount, toggleTheme, isDark, user, logout, isAdmin } = useGlobal();
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -109,9 +109,11 @@ const Header: React.FC = () => {
               {/* Dropdown Menu */}
               <div className="absolute right-0 top-full mt-2 w-48 origin-top-right scale-95 opacity-0 invisible group-hover:scale-100 group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
                 <div className="rounded-xl bg-white dark:bg-surface-dark shadow-xl border border-gray-100 dark:border-gray-700 p-1 overflow-hidden">
-                  <Link href="/admin" className="block px-4 py-2 text-sm font-medium text-text-main dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 rounded-lg">
-                    Admin
-                  </Link>
+                  {isAdmin && (
+                    <Link href="/admin" className="block px-4 py-2 text-sm font-medium text-text-main dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 rounded-lg">
+                      Admin
+                    </Link>
+                  )}
                   <Link href="/profile" className="block px-4 py-2 text-sm font-medium text-text-main dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 rounded-lg">
                     Thông tin cá nhân
                   </Link>

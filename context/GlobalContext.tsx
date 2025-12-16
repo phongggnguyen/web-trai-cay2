@@ -9,6 +9,8 @@ import { User } from '@supabase/supabase-js';
 // Extend GlobalState to include user
 interface GlobalContextType extends GlobalState {
   user: User | null;
+  role: string | null;
+  isAdmin: boolean;
   logout: () => Promise<void>;
 }
 
@@ -18,6 +20,7 @@ export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isDark, setIsDark] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [role, setRole] = useState<string | null>(null);
 
   // Load cart from localStorage on mount
   useEffect(() => {
@@ -65,12 +68,41 @@ export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) 
 
   // Auth Listener
   useEffect(() => {
+    const loadRole = async (currentUser: User) => {
+      try {
+        const { data: profile, error } = await supabase
+          .from('profiles')
+          .select('role')
+          .eq('id', currentUser.id)
+          .single();
+
+        if (error && error.code !== 'PGRST116') {
+          console.error('Failed to load user role', error);
+        }
+
+        const resolvedRole = profile?.role || (currentUser.user_metadata as any)?.role || null;
+        setRole(resolvedRole);
+      } catch (err) {
+        console.error('Unable to resolve user role', err);
+        setRole(null);
+      }
+    };
+
+    supabase.auth.getSession().then(({ data }) => {
+      if (data.session?.user) {
+        setUser(data.session.user);
+        loadRole(data.session.user);
+      }
+    });
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        if (session) {
+      (_event, session) => {
+        if (session?.user) {
           setUser(session.user);
+          loadRole(session.user);
         } else {
           setUser(null);
+          setRole(null);
         }
       }
     );
@@ -110,6 +142,7 @@ export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) 
 
   const logout = async () => {
     await supabase.auth.signOut();
+    setRole(null);
     toast.success('Đã đăng xuất thành công');
   };
 
@@ -119,6 +152,8 @@ export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     cartItems,
     isDark,
     user,
+    role,
+    isAdmin: role === 'admin',
     addToCart,
     updateQuantity,
     removeFromCart,
@@ -126,7 +161,7 @@ export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     toggleTheme,
     logout,
     cartCount
-  }), [cartItems, isDark, user, cartCount, addToCart, updateQuantity, removeFromCart, clearCart, toggleTheme, logout]);
+  }), [cartItems, isDark, user, role, cartCount, addToCart, updateQuantity, removeFromCart, clearCart, toggleTheme, logout]);
 
   return (
     <GlobalContext.Provider value={value}>
