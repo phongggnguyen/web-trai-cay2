@@ -9,6 +9,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const { user, isAdmin } = useGlobal();
     const router = useRouter();
     const pathname = usePathname();
+    const [isCollapsed, setIsCollapsed] = React.useState(false);
 
     useEffect(() => {
         if (!user) {
@@ -42,26 +43,39 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     return (
         <div className="flex min-h-screen bg-background-light dark:bg-background-dark">
             {/* Sidebar */}
-            <aside className="fixed left-0 top-[65px] hidden h-[calc(100vh-65px)] w-64 border-r border-border-color bg-surface-light p-4 dark:border-border-dark dark:bg-surface-dark lg:block">
-                <div className="mb-8 px-4">
-                    <span className="text-xs font-bold uppercase text-gray-400">Quản lý</span>
+            <aside
+                className={`fixed left-0 top-[65px] hidden h-[calc(100vh-65px)] border-r border-border-color bg-surface-light dark:border-border-dark dark:bg-surface-dark lg:block transition-all duration-300 ${isCollapsed ? 'w-20' : 'w-64'
+                    }`}
+            >
+                <div className="flex items-center justify-between px-4 mb-6 pt-4">
+                    {!isCollapsed && <span className="text-xs font-bold uppercase text-gray-400">Quản lý</span>}
+                    <button
+                        onClick={() => setIsCollapsed(!isCollapsed)}
+                        className={`rounded-lg p-1.5 hover:bg-gray-100 dark:hover:bg-white/5 text-gray-500 transition-colors ${isCollapsed ? 'mx-auto' : ''}`}
+                    >
+                        <span className="material-symbols-outlined text-[20px]">
+                            {isCollapsed ? 'menu_open' : 'menu_open'}
+                        </span>
+                    </button>
                 </div>
-                <nav className="space-y-1">
+
+                <nav className="space-y-1 px-2">
                     {menuItems.map((item) => {
                         const isActive = pathname === item.path;
                         return (
                             <Link
                                 key={item.path}
                                 href={item.path}
-                                className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-sm font-bold transition-colors ${isActive
-                                        ? 'bg-primary/20 text-primary'
-                                        : 'text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-white/5'
-                                    }`}
+                                className={`flex items-center gap-3 rounded-lg px-3 py-3 text-sm font-bold transition-all ${isActive
+                                    ? 'bg-primary/20 text-primary'
+                                    : 'text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-white/5'
+                                    } ${isCollapsed ? 'justify-center' : ''}`}
+                                title={isCollapsed ? item.name : ''}
                             >
-                                <span className="material-symbols-outlined text-[20px]">
+                                <span className="material-symbols-outlined text-[22px]">
                                     {item.icon}
                                 </span>
-                                {item.name}
+                                {!isCollapsed && <span>{item.name}</span>}
                             </Link>
                         );
                     })}
@@ -69,7 +83,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </aside>
 
             {/* Main Content */}
-            <div className="flex-1 p-4 md:p-8 lg:ml-64">
+            <div className={`flex-1 p-4 md:p-8 transition-all duration-300 ${isCollapsed ? 'lg:ml-20' : 'lg:ml-64'}`}>
                 {children}
             </div>
         </div>
