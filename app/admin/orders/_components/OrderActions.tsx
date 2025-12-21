@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
 import { STATUS_META } from '../../constants'; // Adjusted path to constants
 
 type OrderActionsProps = {
@@ -32,15 +33,13 @@ export default function OrderActions({
     return (
         <div className="flex justify-end gap-3 items-center">
             {/* View Details Button */}
-            <a
-                href={`/order-success?id=${orderId}`}
-                target="_blank"
-                rel="noopener noreferrer"
+            <Link
+                href={`/admin/orders/${orderId}`}
                 className="p-2 rounded-full text-gray-400 hover:bg-white/10 hover:text-primary transition-colors"
                 title="Xem chi tiết"
             >
                 <span className="material-symbols-outlined text-[20px]">visibility</span>
-            </a>
+            </Link>
 
             {/* Edit Status Button */}
             <div className="relative" ref={menuRef}>
