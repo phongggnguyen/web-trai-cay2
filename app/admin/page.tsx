@@ -43,7 +43,7 @@ export default function AdminDashboardPage() {
       label: 'Cảnh báo tồn kho',
       value: stats.lowStock,
       change: 'Sản phẩm < 10',
-      trend: (stats.lowStock > 0 ? 'down' : 'up') as const,
+      trend: stats.lowStock > 0 ? ('down' as const) : ('up' as const),
       icon: 'inventory_2',
       color: 'text-orange-600',
       bg: 'bg-orange-100 dark:bg-orange-900/20',
@@ -51,7 +51,7 @@ export default function AdminDashboardPage() {
   ], [stats]);
 
   const quickActions = [
-    { label: 'Thêm sản phẩm', icon: 'add_box', color: 'text-blue-600', link: '/admin/products/new' },
+    { label: 'Thêm sản phẩm', icon: 'add_box', color: 'text-blue-600', link: '/admin/products' },
     { label: 'Tạo mã giảm giá', icon: 'local_offer', color: 'text-pink-600', link: '/admin/vouchers' },
     { label: 'Xem đơn hàng', icon: 'receipt_long', color: 'text-orange-600', link: '/admin/orders' },
     { label: 'Cấu hình', icon: 'settings', color: 'text-gray-600', link: '/admin/settings' },
