@@ -7,15 +7,13 @@ import { STATUS_META } from '../../constants'; // Adjusted path to constants
 type OrderActionsProps = {
     orderId: string;
     currentStatus: string;
-    onUpdateStatus: (newStatus: string) => void;
-    isUpdating: boolean;
+    onStatusUpdate: (orderId: string, newStatus: string) => Promise<void>;
 };
 
 export default function OrderActions({
     orderId,
     currentStatus,
-    onUpdateStatus,
-    isUpdating,
+    onStatusUpdate,
 }: OrderActionsProps) {
     const [isOpen, setIsOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
@@ -45,11 +43,10 @@ export default function OrderActions({
             <div className="relative" ref={menuRef}>
                 <button
                     onClick={() => setIsOpen(!isOpen)}
-                    disabled={isUpdating}
                     className={`h-9 w-9 flex items-center justify-center rounded-full transition-all shadow-sm ${isOpen
                         ? 'bg-primary text-white ring-2 ring-primary/30'
                         : 'bg-primary/10 text-primary hover:bg-primary hover:text-white'
-                        } ${isUpdating ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        }`}
                     title="Cập nhật trạng thái"
                 >
                     <span className="material-symbols-outlined text-[18px]">edit_note</span>
@@ -65,7 +62,7 @@ export default function OrderActions({
                                 <button
                                     key={key}
                                     onClick={() => {
-                                        onUpdateStatus(key);
+                                        onStatusUpdate(orderId, key);
                                         setIsOpen(false);
                                     }}
                                     className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all ${currentStatus === key
