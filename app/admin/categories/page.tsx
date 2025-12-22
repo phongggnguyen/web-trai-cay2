@@ -10,12 +10,20 @@ export default function AdminCategoriesPage() {
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [editingCategory, setEditingCategory] = useState<Category | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
+    const [sortBy, setSortBy] = useState('newest');
 
-    // Filter Logic
-    const filteredCategories = categories.filter(category =>
+    // Filter & Sort Logic
+    let filteredCategories = categories.filter(category =>
         category.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         (category.description && category.description.toLowerCase().includes(searchTerm.toLowerCase()))
     );
+
+    // Sort
+    if (sortBy === 'name') {
+        filteredCategories = [...filteredCategories].sort((a, b) => a.name.localeCompare(b.name));
+    } else if (sortBy === 'products') {
+        filteredCategories = [...filteredCategories].sort((a, b) => (b.product_count || 0) - (a.product_count || 0));
+    }
 
     // Calculate Stats
     const totalCategories = categories.length;
@@ -28,7 +36,6 @@ export default function AdminCategoriesPage() {
             } else {
                 await createCategory(data);
             }
-            // Close form
             setIsFormOpen(false);
             setEditingCategory(null);
         } catch (error) {
@@ -51,7 +58,6 @@ export default function AdminCategoriesPage() {
                 return;
             }
         }
-
         await deleteCategory(category.id);
     };
 
@@ -66,134 +72,164 @@ export default function AdminCategoriesPage() {
     };
 
     return (
-        <div className="flex flex-col gap-6">
-            {/* Header */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                <div>
-                    <h2 className="text-2xl font-black text-text-main dark:text-white tracking-tight">
-                        Quản lý Danh mục
-                    </h2>
-                    <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
-                        Quản lý danh mục sản phẩm trong hệ thống
+        <main className="flex-1 flex flex-col gap-6">
+            {/* Breadcrumbs */}
+            <div className="flex flex-wrap gap-2 text-sm">
+                <a className="text-text-secondary hover:text-primary transition-colors font-medium" href="/admin">
+                    Dashboard
+                </a>
+                <span className="text-text-secondary font-medium">/</span>
+                <span className="text-white font-medium">Danh Mục</span>
+            </div>
+
+            {/* Page Heading & Stats */}
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div className="flex flex-col gap-2">
+                    <h1 className="text-white text-3xl md:text-4xl font-black leading-tight tracking-tight">
+                        Quản Lý Danh Mục
+                    </h1>
+                    <p className="text-text-secondary text-base font-normal">
+                        Xem, chỉnh sửa và quản lý các loại sản phẩm trong cửa hàng.
                     </p>
                 </div>
-
-                <button
-                    onClick={handleAddNew}
-                    className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-primary/90 text-black rounded-xl font-bold shadow-lg shadow-primary/30 transition-all transform hover:scale-105"
-                >
-                    <span className="material-symbols-outlined text-[20px]">add</span>
-                    Thêm Danh mục
-                </button>
-            </div>
-
-            {/* Stats Cards Row */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="bg-white dark:bg-surface-dark p-4 rounded-2xl border border-gray-100 dark:border-border-dark flex items-center gap-4 shadow-sm">
-                    <div className="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400">
-                        <span className="material-symbols-outlined">category</span>
+                <div className="flex gap-4">
+                    <div className="flex flex-col items-end px-4 py-2 bg-surface-dark rounded-lg border border-white/5">
+                        <span className="text-text-secondary text-xs">Tổng danh mục</span>
+                        <span className="text-white text-xl font-bold">{totalCategories}</span>
                     </div>
-                    <div>
-                        <p className="text-xs text-gray-500 font-bold uppercase">Tổng danh mục</p>
-                        <p className="text-2xl font-black text-text-main dark:text-white">{totalCategories}</p>
-                    </div>
-                </div>
-                <div className="bg-white dark:bg-surface-dark p-4 rounded-2xl border border-gray-100 dark:border-border-dark flex items-center gap-4 shadow-sm">
-                    <div className="w-12 h-12 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400">
-                        <span className="material-symbols-outlined">inventory_2</span>
-                    </div>
-                    <div>
-                        <p className="text-xs text-gray-500 font-bold uppercase">Tổng sản phẩm</p>
-                        <p className="text-2xl font-black text-text-main dark:text-white">{totalProducts}</p>
+                    <div className="flex flex-col items-end px-4 py-2 bg-surface-dark rounded-lg border border-white/5">
+                        <span className="text-text-secondary text-xs">Tổng sản phẩm</span>
+                        <span className="text-white text-xl font-bold">{totalProducts}</span>
                     </div>
                 </div>
             </div>
 
-            {/* Search */}
-            <div className="bg-white dark:bg-surface-dark p-4 rounded-2xl border border-gray-100 dark:border-border-dark shadow-sm">
-                <div className="relative w-full sm:w-96">
-                    <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">
-                        <span className="material-symbols-outlined text-[20px]">search</span>
-                    </span>
-                    <input
-                        type="text"
-                        placeholder="Tìm tên danh mục..."
-                        className="block w-full pl-10 pr-3 py-2.5 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50 dark:bg-white/5 text-text-main dark:text-white placeholder-gray-400 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary sm:text-sm transition-all"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                    />
+            {/* Toolbar: Search & Actions */}
+            <div className="flex flex-col md:flex-row gap-4 justify-between items-stretch md:items-center bg-surface-dark/30 p-4 rounded-xl border border-surface-dark">
+                {/* Search */}
+                <div className="flex-1 max-w-lg">
+                    <label className="flex w-full items-center rounded-lg bg-surface-dark border border-transparent focus-within:border-primary/50 focus-within:ring-1 focus-within:ring-primary/50 transition-all h-12 overflow-hidden">
+                        <div className="flex items-center justify-center pl-4 text-text-secondary">
+                            <span className="material-symbols-outlined">search</span>
+                        </div>
+                        <input
+                            className="w-full bg-transparent border-none text-white placeholder:text-text-secondary px-4 focus:ring-0 h-full text-base outline-none"
+                            placeholder="Tìm kiếm tên danh mục..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                    </label>
+                </div>
+                {/* Actions */}
+                <div className="flex items-center gap-3">
+                    <div className="hidden md:flex items-center gap-2">
+                        <span className="text-text-secondary text-sm font-medium">Sắp xếp:</span>
+                        <select
+                            className="bg-surface-dark text-white text-sm border-none rounded-lg focus:ring-1 focus:ring-primary cursor-pointer py-2 pl-3 pr-8"
+                            value={sortBy}
+                            onChange={(e) => setSortBy(e.target.value)}
+                        >
+                            <option value="newest">Mới nhất</option>
+                            <option value="name">Tên A-Z</option>
+                            <option value="products">Số lượng SP</option>
+                        </select>
+                    </div>
+                    <button
+                        onClick={handleAddNew}
+                        className="flex items-center justify-center gap-2 bg-primary hover:bg-green-400 text-black h-12 px-5 rounded-lg font-bold text-sm tracking-wide transition-all shadow-[0_0_15px_rgba(76,223,32,0.3)] hover:shadow-[0_0_20px_rgba(76,223,32,0.5)]"
+                    >
+                        <span className="material-symbols-outlined text-[20px] font-bold">add</span>
+                        <span>Thêm Danh Mục</span>
+                    </button>
                 </div>
             </div>
 
-            {/* Table */}
+            {/* Error State */}
+            {error && (
+                <div className="rounded-xl border border-red-800 bg-red-900/20 p-4">
+                    <div className="flex items-center gap-2">
+                        <span className="material-symbols-outlined text-red-400">error</span>
+                        <p className="text-sm text-red-400">{error}</p>
+                    </div>
+                </div>
+            )}
+
+            {/* Data Table */}
             {loading ? (
                 <div className="flex h-64 items-center justify-center">
                     <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
                 </div>
-            ) : error ? (
-                <div className="rounded-2xl border border-red-200 bg-red-50 p-8 text-center dark:border-red-800 dark:bg-red-900/20">
-                    <p className="text-red-600 dark:text-red-400">{error}</p>
-                </div>
             ) : (
-                <div className="bg-white dark:bg-surface-dark rounded-2xl border border-gray-100 dark:border-border-dark shadow-sm overflow-hidden">
+                <div className="flex flex-col rounded-xl border border-surface-dark bg-surface-dark/20 overflow-hidden">
                     <div className="overflow-x-auto">
                         <table className="w-full text-left border-collapse">
                             <thead>
-                                <tr className="bg-gray-50/50 dark:bg-white/5 border-b border-gray-100 dark:border-border-dark text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">
-                                    <th className="px-6 py-4 font-bold">Tên danh mục</th>
-                                    <th className="px-6 py-4 font-bold">Slug</th>
-                                    <th className="px-6 py-4 font-bold">Mô tả</th>
-                                    <th className="px-6 py-4 font-bold">Số sản phẩm</th>
-                                    <th className="px-6 py-4 font-bold text-right">Hành động</th>
+                                <tr className="bg-surface-dark border-b border-white/5">
+                                    <th className="p-4 text-xs font-bold uppercase tracking-wider text-text-secondary w-16 text-center">
+                                        ID
+                                    </th>
+                                    <th className="p-4 text-xs font-bold uppercase tracking-wider text-text-secondary min-w-[200px]">
+                                        Tên Danh Mục
+                                    </th>
+                                    <th className="p-4 text-xs font-bold uppercase tracking-wider text-text-secondary">
+                                        Slug
+                                    </th>
+                                    <th className="p-4 text-xs font-bold uppercase tracking-wider text-text-secondary">
+                                        Mô Tả
+                                    </th>
+                                    <th className="p-4 text-xs font-bold uppercase tracking-wider text-text-secondary text-center">
+                                        Số Lượng SP
+                                    </th>
+                                    <th className="p-4 text-xs font-bold uppercase tracking-wider text-text-secondary text-right">
+                                        Hành Động
+                                    </th>
                                 </tr>
                             </thead>
-                            <tbody className="divide-y divide-gray-100 dark:divide-border-dark/50">
-                                {filteredCategories.map((category) => (
-                                    <tr
-                                        key={category.id}
-                                        className="group hover:bg-gray-50 dark:hover:bg-white/5 transition-colors"
-                                    >
+                            <tbody className="divide-y divide-white/5">
+                                {filteredCategories.map((category, index) => (
+                                    <tr key={category.id} className="group hover:bg-surface-dark/50 transition-colors">
+                                        {/* ID */}
+                                        <td className="p-4 text-text-secondary text-sm font-medium text-center">
+                                            #{String(index + 1).padStart(3, '0')}
+                                        </td>
+
                                         {/* Name */}
-                                        <td className="px-6 py-4">
-                                            <p className="text-sm font-bold text-text-main dark:text-white">
+                                        <td className="p-4">
+                                            <p className="text-white text-sm font-bold group-hover:text-primary transition-colors">
                                                 {category.name}
                                             </p>
                                         </td>
 
                                         {/* Slug */}
-                                        <td className="px-6 py-4">
-                                            <code className="px-2 py-1 rounded bg-gray-100 dark:bg-white/10 text-gray-600 dark:text-gray-300 text-xs font-mono">
+                                        <td className="p-4">
+                                            <code className="text-text-secondary text-xs font-mono bg-black/20 px-2 py-1 rounded">
                                                 {category.slug}
                                             </code>
                                         </td>
 
                                         {/* Description */}
-                                        <td className="px-6 py-4">
-                                            <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
-                                                {category.description || '—'}
-                                            </p>
+                                        <td className="p-4 text-text-secondary text-sm max-w-xs truncate">
+                                            {category.description || '—'}
                                         </td>
 
                                         {/* Product Count */}
-                                        <td className="px-6 py-4">
-                                            <span className="px-2.5 py-1 rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-xs font-bold">
-                                                {category.product_count || 0} sản phẩm
-                                            </span>
+                                        <td className="p-4 text-white text-sm font-bold text-center">
+                                            {category.product_count || 0}
                                         </td>
 
                                         {/* Actions */}
-                                        <td className="px-6 py-4 text-right">
+                                        <td className="p-4 text-right">
                                             <div className="flex items-center justify-end gap-2">
                                                 <button
                                                     onClick={() => handleEdit(category)}
-                                                    className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all"
+                                                    className="p-2 text-text-secondary hover:text-white hover:bg-white/10 rounded-lg transition-colors"
                                                     title="Chỉnh sửa"
                                                 >
                                                     <span className="material-symbols-outlined text-[20px]">edit</span>
                                                 </button>
                                                 <button
                                                     onClick={() => handleDelete(category)}
-                                                    className="w-8 h-8 rounded-lg flex items-center justify-center text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all"
+                                                    className="p-2 text-text-secondary hover:text-red-400 hover:bg-red-400/10 rounded-lg transition-colors"
                                                     title="Xóa"
                                                 >
                                                     <span className="material-symbols-outlined text-[20px]">delete</span>
@@ -205,12 +241,12 @@ export default function AdminCategoriesPage() {
 
                                 {filteredCategories.length === 0 && (
                                     <tr>
-                                        <td colSpan={5} className="px-6 py-12 text-center text-gray-400">
-                                            <div className="flex flex-col items-center gap-2">
-                                                <span className="material-symbols-outlined text-[48px] opacity-20">
+                                        <td colSpan={6} className="px-6 py-12 text-center text-text-secondary">
+                                            <div className="flex flex-col items-center gap-3">
+                                                <span className="material-symbols-outlined text-[64px] opacity-20">
                                                     category
                                                 </span>
-                                                <p>Không tìm thấy danh mục nào</p>
+                                                <p className="text-base">Không tìm thấy danh mục nào</p>
                                             </div>
                                         </td>
                                     </tr>
@@ -218,14 +254,24 @@ export default function AdminCategoriesPage() {
                             </tbody>
                         </table>
                     </div>
+
+                    {/* Pagination */}
+                    {filteredCategories.length > 0 && (
+                        <div className="flex flex-col md:flex-row items-center justify-between p-4 bg-surface-dark border-t border-white/5 gap-4">
+                            <p className="text-sm text-text-secondary">
+                                Hiển thị <span className="text-white font-bold">1-{filteredCategories.length}</span> trên{' '}
+                                <span className="text-white font-bold">{totalCategories}</span> danh mục
+                            </p>
+                        </div>
+                    )}
                 </div>
             )}
 
             {/* Form Modal */}
             {isFormOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-                    <div className="max-w-lg w-full max-h-[90vh] overflow-y-auto bg-white dark:bg-surface-dark rounded-2xl shadow-2xl p-6">
-                        <h3 className="text-xl font-black text-text-main dark:text-white mb-6">
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
+                    <div className="max-w-lg w-full max-h-[90vh] overflow-y-auto bg-surface-dark rounded-2xl shadow-2xl p-6 border border-white/10">
+                        <h3 className="text-xl font-black text-white mb-6">
                             {editingCategory ? 'Chỉnh sửa danh mục' : 'Thêm danh mục mới'}
                         </h3>
                         <CategoryForm
@@ -236,6 +282,6 @@ export default function AdminCategoriesPage() {
                     </div>
                 </div>
             )}
-        </div>
+        </main>
     );
 }
