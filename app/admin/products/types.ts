@@ -39,14 +39,14 @@ export const productSchema = z.object({
         .optional()
         .or(z.literal('')),
 
-    price: z.number({
-        invalid_type_error: 'Giá phải là số',
+    price: z.coerce.number({
+        message: 'Giá phải là số',
     })
         .positive('Giá phải lớn hơn 0')
         .max(1000000000, 'Giá không hợp lệ'),
 
-    stock: z.number({
-        invalid_type_error: 'Số lượng phải là số',
+    stock: z.coerce.number({
+        message: 'Số lượng phải là số',
     })
         .int('Số lượng phải là số nguyên')
         .min(0, 'Số lượng không thể âm'),
