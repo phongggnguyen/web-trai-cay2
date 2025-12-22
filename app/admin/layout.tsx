@@ -35,6 +35,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         { name: 'Tổng quan', icon: 'dashboard', path: '/admin' },
         { name: 'Đơn hàng', icon: 'receipt_long', path: '/admin/orders' },
         { name: 'Sản phẩm', icon: 'inventory_2', path: '/admin/products' },
+        { name: 'Danh mục', icon: 'category', path: '/admin/categories' },
         { name: 'Khách hàng', icon: 'group', path: '/admin/customers' },
         { name: 'Mã giảm giá', icon: 'local_offer', path: '/admin/vouchers' },
         { name: 'Cài đặt', icon: 'settings', path: '/admin/settings' },
