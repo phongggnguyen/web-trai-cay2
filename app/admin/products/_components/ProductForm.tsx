@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { productSchema, type Product, type ProductFormInput } from '../types';
 import { ImageUpload } from './ImageUpload';
+import { useCategoriesData } from '../hooks/useCategoriesData';
 
 interface ProductFormProps {
     product?: Product | null;
@@ -10,19 +11,10 @@ interface ProductFormProps {
     onCancel: () => void;
 }
 
-const CATEGORIES = [
-    { value: '', label: 'Chọn danh mục' },
-    { value: 'fruits', label: 'Trái cây' },
-    { value: 'vegetables', label: 'Rau củ' },
-    { value: 'meat', label: 'Thịt' },
-    { value: 'seafood', label: 'Hải sản' },
-    { value: 'dairy', label: 'Sữa & Trứng' },
-    { value: 'other', label: 'Khác' },
-];
-
 export function ProductForm({ product, onSubmit, onCancel }: ProductFormProps) {
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const { categories, loading: loadingCategories } = useCategoriesData();
 
     const {
         register,
@@ -36,14 +28,14 @@ export function ProductForm({ product, onSubmit, onCancel }: ProductFormProps) {
                 description: product.description || '',
                 price: product.price,
                 stock: product.stock,
-                category: product.category,
+                category_id: product.category_id,
             }
             : {
                 name: '',
                 description: '',
                 price: 0,
                 stock: 0,
-                category: '',
+                category_id: '',
             },
     });
 
@@ -134,20 +126,24 @@ export function ProductForm({ product, onSubmit, onCancel }: ProductFormProps) {
                     Danh mục <span className="text-red-500">*</span>
                 </label>
                 <select
-                    {...register('category')}
-                    className={`w-full rounded-xl border px-4 py-2.5 text-sm outline-none transition-all focus:ring-2 dark:bg-surface-dark dark:text-white ${errors.category
+                    {...register('category_id')}
+                    disabled={loadingCategories}
+                    className={`w-full rounded-xl border px-4 py-2.5 text-sm outline-none transition-all focus:ring-2 dark:bg-surface-dark dark:text-white ${errors.category_id
                         ? 'border-red-500 focus:border-red-500 focus:ring-red-200'
                         : 'border-gray-200 focus:border-primary focus:ring-primary/20 dark:border-gray-700'
                         }`}
                 >
-                    {CATEGORIES.map((cat) => (
-                        <option key={cat.value} value={cat.value}>
-                            {cat.label}
+                    <option value="">
+                        {loadingCategories ? 'Đang tải danh mục...' : 'Chọn danh mục'}
+                    </option>
+                    {categories.map((cat) => (
+                        <option key={cat.id} value={cat.id}>
+                            {cat.name}
                         </option>
                     ))}
                 </select>
-                {errors.category && (
-                    <p className="mt-1 text-xs text-red-500">{errors.category.message}</p>
+                {errors.category_id && (
+                    <p className="mt-1 text-xs text-red-500">{errors.category_id.message}</p>
                 )}
             </div>
 
