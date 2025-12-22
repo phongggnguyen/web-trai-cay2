@@ -2,11 +2,13 @@
 
 import React, { useState } from 'react';
 import { useProductsData } from './hooks/useProductsData';
+import { useCategoriesData } from './hooks/useCategoriesData';
 import { ProductForm } from './_components/ProductForm';
 import type { Product } from './types';
 
 export default function AdminProductsPage() {
     const { products, loading, error, createProduct, updateProduct, deleteProduct } = useProductsData();
+    const { categories } = useCategoriesData();
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [editingProduct, setEditingProduct] = useState<Product | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
@@ -133,12 +135,11 @@ export default function AdminProductsPage() {
                     className="px-4 py-2.5 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-surface-dark text-text-main dark:text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary text-sm font-medium"
                 >
                     <option value="all">Tất cả danh mục</option>
-                    <option value="fruits">Trái cây</option>
-                    <option value="vegetables">Rau củ</option>
-                    <option value="meat">Thịt</option>
-                    <option value="seafood">Hải sản</option>
-                    <option value="dairy">Sữa & Trứng</option>
-                    <option value="other">Khác</option>
+                    {categories.map((cat) => (
+                        <option key={cat.id} value={cat.id}>
+                            {cat.name}
+                        </option>
+                    ))}
                 </select>
             </div>
 

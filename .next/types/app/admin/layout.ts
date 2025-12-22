@@ -1,4 +1,4 @@
-// File: C:\Users\nchd3\OneDrive\Máy tính\project github\web trai cay 2\web-trai-cay2 - goc\app\admin\layout.tsx
+// File: C:\Users\nchd3\OneDrive\Máy tính\project github\web trai cay 2\web-trai-cay2\app\admin\layout.tsx
 import * as entry from '../../../../app/admin/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

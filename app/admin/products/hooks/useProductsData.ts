@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { supabase } from '../../../../lib/supabase';
 import { useImageUpload } from './useImageUpload';
+import { generateSlug } from '../utils/generateSlug';
 import type { Product, ProductFormData } from '../types';
 
 interface UseProductsDataReturn {
@@ -27,12 +28,21 @@ export function useProductsData(): UseProductsDataReturn {
 
             const { data, error: fetchError } = await supabase
                 .from('products')
-                .select('*')
+                .select(`
+                    *,
+                    categories!inner(name)
+                `)
                 .order('created_at', { ascending: false });
 
             if (fetchError) throw fetchError;
 
-            setProducts(data || []);
+            // Transform data to include category name
+            const productsWithCategory = (data || []).map(item => ({
+                ...item,
+                category: item.categories?.name || 'Không có danh mục',
+            }));
+
+            setProducts(productsWithCategory as Product[]);
         } catch (err: any) {
             console.error('Failed to fetch products:', err);
             setError(err.message || 'Không thể tải danh sách sản phẩm');
@@ -51,15 +61,19 @@ export function useProductsData(): UseProductsDataReturn {
                 imageUrl = await uploadImage(data.image);
             }
 
+            // Generate slug from product name
+            const slug = generateSlug(data.name);
+
             // Insert into database
             const { data: newProduct, error: insertError } = await supabase
                 .from('products')
                 .insert({
                     name: data.name,
+                    slug: slug,
                     description: data.description || null,
                     price: data.price,
                     stock: data.stock,
-                    category: data.category,
+                    category_id: data.category_id,
                     image_url: imageUrl,
                 })
                 .select()
@@ -95,15 +109,19 @@ export function useProductsData(): UseProductsDataReturn {
                 imageUrl = await uploadImage(data.image);
             }
 
+            // Generate new slug from updated name
+            const slug = generateSlug(data.name);
+
             // Update database
             const { data: updatedProduct, error: updateError } = await supabase
                 .from('products')
                 .update({
                     name: data.name,
+                    slug: slug,
                     description: data.description || null,
                     price: data.price,
                     stock: data.stock,
-                    category: data.category,
+                    category_id: data.category_id,
                     image_url: imageUrl,
                 })
                 .eq('id', id)

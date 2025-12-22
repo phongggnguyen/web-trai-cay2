@@ -4,12 +4,19 @@ import { z } from 'zod';
 export interface Product {
     id: string;
     name: string;
+    slug: string;
     description: string | null;
     price: number;
     stock: number;
-    category: string;
+    category_id: string;
+    category?: string; // Category name from join
     image_url: string | null;
     created_at: string;
+}
+
+export interface Category {
+    id: string;
+    name: string;
 }
 
 export interface ProductFormData {
@@ -17,7 +24,7 @@ export interface ProductFormData {
     description?: string;
     price: number;
     stock: number;
-    category: string;
+    category_id: string;
     image?: File | null;
 }
 
@@ -33,20 +40,18 @@ export const productSchema = z.object({
         .or(z.literal('')),
 
     price: z.number({
-        required_error: 'Giá là bắt buộc',
         invalid_type_error: 'Giá phải là số',
     })
         .positive('Giá phải lớn hơn 0')
         .max(1000000000, 'Giá không hợp lệ'),
 
     stock: z.number({
-        required_error: 'Số lượng là bắt buộc',
         invalid_type_error: 'Số lượng phải là số',
     })
         .int('Số lượng phải là số nguyên')
         .min(0, 'Số lượng không thể âm'),
 
-    category: z.string()
+    category_id: z.string()
         .min(1, 'Vui lòng chọn danh mục'),
 });
 
