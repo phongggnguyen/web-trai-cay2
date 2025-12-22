@@ -81,8 +81,26 @@ export function useProductsData(): UseProductsDataReturn {
 
             if (insertError) throw insertError;
 
+            // Fetch the complete product with category name
+            const { data: completeProduct, error: fetchError } = await supabase
+                .from('products')
+                .select(`
+                    *,
+                    categories!inner(name)
+                `)
+                .eq('id', newProduct.id)
+                .single();
+
+            if (fetchError) throw fetchError;
+
+            // Add category name to product
+            const productWithCategory = {
+                ...completeProduct,
+                category: completeProduct.categories?.name || 'Không có danh mục',
+            };
+
             // Optimistic UI update
-            setProducts([newProduct, ...products]);
+            setProducts([productWithCategory as Product, ...products]);
             toast.success('Thêm sản phẩm thành công');
         } catch (err: any) {
             console.error('Failed to create product:', err);

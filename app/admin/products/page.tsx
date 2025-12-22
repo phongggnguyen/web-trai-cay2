@@ -21,7 +21,7 @@ export default function AdminProductsPage() {
             product.id.toString().toLowerCase().includes(searchTerm.toLowerCase());
 
         const matchesCategory =
-            filterCategory === 'all' || product.category === filterCategory;
+            filterCategory === 'all' || product.category_id === filterCategory;
 
         return matchesSearch && matchesCategory;
     });
