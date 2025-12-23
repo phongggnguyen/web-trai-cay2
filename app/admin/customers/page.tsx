@@ -40,7 +40,7 @@ export default function AdminCustomersPage() {
     };
 
     return (
-        <div className="h-[calc(100vh-100px)] flex flex-col">
+        <div className="h-[calc(100vh-100px)] flex flex-col overflow-y-auto custom-scrollbar pr-2">
             {/* Header & Search */}
             <div
                 className={`flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 shrink-0 ${isMobileDetailOpen ? 'hidden xl:flex' : 'flex'
@@ -83,8 +83,8 @@ export default function AdminCustomersPage() {
                             setFilters({ ...filters, filterMode: mode.id as 'all' | 'vip' | 'spending' })
                         }
                         className={`h-9 px-4 rounded-xl text-sm font-bold border transition-all ${filters.filterMode === mode.id
-                                ? 'bg-primary text-white border-primary shadow-lg shadow-primary/30'
-                                : 'bg-white dark:bg-surface-dark border-gray-200 dark:border-border-dark text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/5'
+                            ? 'bg-primary text-white border-primary shadow-lg shadow-primary/30'
+                            : 'bg-white dark:bg-surface-dark border-gray-200 dark:border-border-dark text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-white/5'
                             }`}
                     >
                         {mode.label}
@@ -103,10 +103,10 @@ export default function AdminCustomersPage() {
             )}
 
             {/* Master-Detail Layout */}
-            <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 min-h-0 flex-1 overflow-hidden">
+            <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 min-h-0">
                 {/* Left Column: Customer List */}
                 <div
-                    className={`xl:col-span-4 bg-white dark:bg-surface-dark rounded-2xl border border-gray-200 dark:border-border-dark flex-col overflow-hidden h-full shadow-sm ${isMobileDetailOpen ? 'hidden xl:flex' : 'flex'
+                    className={`xl:col-span-4 bg-white dark:bg-surface-dark rounded-2xl border border-gray-200 dark:border-border-dark flex-col h-fit shadow-sm ${isMobileDetailOpen ? 'hidden xl:flex' : 'flex'
                         }`}
                 >
                     <div className="p-4 border-b border-gray-100 dark:border-border-dark flex justify-between items-center bg-gray-50/50 dark:bg-white/5">
@@ -127,7 +127,7 @@ export default function AdminCustomersPage() {
 
                 {/* Right Column: Detail View */}
                 <div
-                    className={`xl:col-span-8 ${isMobileDetailOpen ? 'flex' : 'hidden xl:flex'
+                    className={`xl:col-span-8 h-fit ${isMobileDetailOpen ? 'flex' : 'hidden xl:flex'
                         }`}
                 >
                     <CustomerDetail
