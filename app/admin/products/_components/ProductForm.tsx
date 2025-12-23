@@ -21,14 +21,14 @@ export function ProductForm({ product, onSubmit, onCancel }: ProductFormProps) {
         handleSubmit,
         formState: { errors },
     } = useForm<ProductFormInput>({
-        resolver: zodResolver(productSchema),
+        resolver: zodResolver(productSchema) as any,
         defaultValues: product
             ? {
                 name: product.name,
                 description: product.description || '',
                 price: product.price,
                 stock: product.stock,
-                category_id: product.category_id,
+                category_id: product.category_id?.toString() || '',
             }
             : {
                 name: '',
