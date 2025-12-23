@@ -68,7 +68,7 @@ export function CustomerDetail({ customer, orderHistory, loading, onBack }: Cust
     };
 
     return (
-        <div className="flex flex-col gap-6 h-full overflow-y-auto custom-scrollbar pr-1 pb-1">
+        <div className="flex flex-col gap-6">
             {/* Mobile Back Button */}
             {onBack && (
                 <div className="flex xl:hidden items-center gap-2">
@@ -178,7 +178,7 @@ export function CustomerDetail({ customer, orderHistory, loading, onBack }: Cust
                         </div>
                     ) : (
                         <table className="w-full text-left border-collapse">
-                            <thead>
+                            <thead className="sticky top-0 bg-white dark:bg-surface-dark z-10">
                                 <tr className="border-b border-gray-100 dark:border-border-dark text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">
                                     <th className="px-4 py-3 font-bold">Mã đơn</th>
                                     <th className="px-4 py-3 font-bold">Ngày đặt</th>

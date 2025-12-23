@@ -37,7 +37,7 @@ export function useCustomerOrders(customerId: string | null): UseCustomerOrdersR
                 `)
                 .eq('user_id', customerId)
                 .order('created_at', { ascending: false })
-                .limit(10);
+                .limit(50);
 
             if (fetchError) throw fetchError;
 

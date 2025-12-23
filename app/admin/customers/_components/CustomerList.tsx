@@ -40,7 +40,7 @@ export function CustomerList({
     }
 
     return (
-        <div className="flex-1 overflow-y-auto custom-scrollbar p-2 space-y-1">
+        <div className="p-2 space-y-1">
             {customers.map((customer, idx) => {
                 const isSelected = selectedId === customer.id;
                 const avatarUrl = getAvatarUrl(customer.full_name, customer.avatar_url);
@@ -52,20 +52,20 @@ export function CustomerList({
                         key={customer.id}
                         onClick={() => onSelect(customer)}
                         className={`p-3 rounded-xl cursor-pointer flex items-center gap-4 group transition-all ${isSelected
-                                ? 'bg-primary/10 border border-primary/20'
-                                : 'hover:bg-gray-50 dark:hover:bg-white/5 border border-transparent'
+                            ? 'bg-primary/10 border border-primary/20'
+                            : 'hover:bg-gray-50 dark:hover:bg-white/5 border border-transparent'
                             }`}
                     >
                         {/* Rank Number for Spending Mode */}
                         {filterMode === 'spending' && (
                             <div
                                 className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${idx === 0
-                                        ? 'bg-yellow-400 text-yellow-900'
-                                        : idx === 1
-                                            ? 'bg-gray-300 text-gray-800'
-                                            : idx === 2
-                                                ? 'bg-orange-300 text-orange-900'
-                                                : 'bg-gray-100 dark:bg-white/10 text-gray-500'
+                                    ? 'bg-yellow-400 text-yellow-900'
+                                    : idx === 1
+                                        ? 'bg-gray-300 text-gray-800'
+                                        : idx === 2
+                                            ? 'bg-orange-300 text-orange-900'
+                                            : 'bg-gray-100 dark:bg-white/10 text-gray-500'
                                     }`}
                             >
                                 {idx + 1}
@@ -89,8 +89,8 @@ export function CustomerList({
                             <div className="flex justify-between items-start">
                                 <h4
                                     className={`font-bold text-sm truncate ${isSelected
-                                            ? 'text-text-main dark:text-white'
-                                            : 'text-text-main dark:text-gray-200'
+                                        ? 'text-text-main dark:text-white'
+                                        : 'text-text-main dark:text-gray-200'
                                         }`}
                                 >
                                     {displayName}
