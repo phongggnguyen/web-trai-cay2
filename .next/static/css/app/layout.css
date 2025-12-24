@@ -1298,6 +1298,10 @@ select {
 .h-\[calc\(100vh-65px\)\] {
   height: calc(100vh - 65px);
 }
+.h-fit {
+  height: -moz-fit-content;
+  height: fit-content;
+}
 .h-full {
   height: 100%;
 }
@@ -1307,15 +1311,8 @@ select {
 .h-screen {
   height: 100vh;
 }
-.h-fit {
-  height: -moz-fit-content;
-  height: fit-content;
-}
 .max-h-\[300px\] {
   max-height: 300px;
-}
-.max-h-\[350px\] {
-  max-height: 350px;
 }
 .max-h-\[90vh\] {
   max-height: 90vh;
@@ -2153,6 +2150,10 @@ select {
   --tw-bg-opacity: 1;
   background-color: rgb(202 138 4 / var(--tw-bg-opacity, 1));
 }
+.bg-gray-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(75 85 99 / var(--tw-bg-opacity, 1));
+}
 .bg-gradient-to-b {
   background-image: linear-gradient(to bottom, var(--tw-gradient-stops));
 }
@@ -2393,9 +2394,6 @@ select {
   padding-top: 2rem;
   padding-bottom: 2rem;
 }
-.pb-1 {
-  padding-bottom: 0.25rem;
-}
 .pb-10 {
   padding-bottom: 2.5rem;
 }
@@ -2431,9 +2429,6 @@ select {
 }
 .pl-5 {
   padding-left: 1.25rem;
-}
-.pr-1 {
-  padding-right: 0.25rem;
 }
 .pr-12 {
   padding-right: 3rem;
@@ -3667,6 +3662,10 @@ select {
 .group:hover .group-hover\:border-primary {
   --tw-border-opacity: 1;
   border-color: rgb(76 223 32 / var(--tw-border-opacity, 1));
+}
+
+.group:hover .group-hover\:border-primary\/50 {
+  border-color: rgb(76 223 32 / 0.5);
 }
 
 .group:hover .group-hover\:bg-primary {

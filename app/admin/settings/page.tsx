@@ -15,12 +15,7 @@ export default function AdminSettingsPage() {
         address: '123 Đường Lê Lợi, Quận 1, TP.HCM'
     });
 
-    const [notifications, setNotifications] = useState({
-        emailAlerts: true,
-        newOrder: true,
-        lowStock: true,
-        marketing: false
-    });
+
 
     const handleSave = () => {
         setIsLoading(true);
@@ -34,8 +29,6 @@ export default function AdminSettingsPage() {
 
     const tabs = [
         { id: 'general', label: 'Chung', icon: 'store' },
-        { id: 'account', label: 'Tài khoản', icon: 'person' },
-        { id: 'notifications', label: 'Thông báo', icon: 'notifications' },
         { id: 'appearance', label: 'Giao diện', icon: 'palette' },
     ];
 
@@ -157,72 +150,7 @@ export default function AdminSettingsPage() {
                         </div>
                     )}
 
-                    {/* Tab: Account */}
-                    {activeTab === 'account' && (
-                        <div className="bg-white dark:bg-surface-dark rounded-2xl border border-gray-100 dark:border-border-dark p-6 shadow-sm animate-fade-in">
-                            <h3 className="text-lg font-bold text-text-main dark:text-white mb-6">Hồ sơ của tôi</h3>
 
-                            <div className="flex items-start gap-6 mb-8">
-                                <div className="w-24 h-24 rounded-full bg-gray-100 dark:bg-white/5 border-2 border-white dark:border-gray-700 shadow-lg overflow-hidden shrink-0">
-                                    <img src="https://ui-avatars.com/api/?name=Admin+User&background=0D8ABC&color=fff" alt="Avatar" className="w-full h-full object-cover" />
-                                </div>
-                                <div className="pt-2">
-                                    <h4 className="text-xl font-bold text-text-main dark:text-white">Admin User</h4>
-                                    <p className="text-gray-500 dark:text-gray-400">Super Administrator</p>
-                                    <button className="mt-2 text-sm text-primary font-bold hover:underline">Thay đổi Avatar</button>
-                                </div>
-                            </div>
-
-                            <div className="space-y-6 max-w-lg">
-                                <h4 className="text-sm font-bold text-gray-500 uppercase tracking-wider border-b border-gray-100 dark:border-border-dark pb-2">Đổi mật khẩu</h4>
-
-                                <div>
-                                    <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Mật khẩu hiện tại</label>
-                                    <input type="password" placeholder="••••••••" className="block w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50/50 dark:bg-white/5 text-text-main dark:text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Mật khẩu mới</label>
-                                    <input type="password" placeholder="••••••••" className="block w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50/50 dark:bg-white/5 text-text-main dark:text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Nhập lại mật khẩu mới</label>
-                                    <input type="password" placeholder="••••••••" className="block w-full px-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-gray-50/50 dark:bg-white/5 text-text-main dark:text-white focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" />
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Tab: Notifications */}
-                    {activeTab === 'notifications' && (
-                        <div className="bg-white dark:bg-surface-dark rounded-2xl border border-gray-100 dark:border-border-dark p-6 shadow-sm animate-fade-in">
-                            <h3 className="text-lg font-bold text-text-main dark:text-white mb-6">Cấu hình thông báo</h3>
-
-                            <div className="space-y-6">
-                                {[
-                                    { key: 'emailAlerts', label: 'Thông báo qua Email', desc: 'Nhận email tổng hợp báo cáo hàng ngày' },
-                                    { key: 'newOrder', label: 'Đơn hàng mới', desc: 'Thông báo ngay lập tức khi có khách đặt hàng' },
-                                    { key: 'lowStock', label: 'Cảnh báo kho hàng', desc: 'Thông báo khi sản phẩm sắp hết hàng (< 10)' },
-                                    { key: 'marketing', label: 'Tin tức & Cập nhật', desc: 'Nhận thông tin về tính năng mới từ hệ thống' },
-                                ].map((item: any) => (
-                                    <div key={item.key} className="flex justify-between items-center py-2">
-                                        <div>
-                                            <h4 className="font-bold text-text-main dark:text-white">{item.label}</h4>
-                                            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">{item.desc}</p>
-                                        </div>
-                                        <label className="relative inline-flex items-center cursor-pointer">
-                                            <input
-                                                type="checkbox"
-                                                className="sr-only peer"
-                                                checked={(notifications as any)[item.key]}
-                                                onChange={() => setNotifications({ ...notifications, [item.key]: !(notifications as any)[item.key] })}
-                                            />
-                                            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
-                                        </label>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    )}
 
                     {/* Tab: Appearance */}
                     {activeTab === 'appearance' && (
