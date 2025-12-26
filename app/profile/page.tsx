@@ -20,6 +20,7 @@ export default function ProfilePage() {
     // Orders Filter & Search State
     const [statusFilter, setStatusFilter] = useState('all');
     const [searchQuery, setSearchQuery] = useState('');
+    const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
 
     // Profile Form State
     const [fullName, setFullName] = useState('');
@@ -311,67 +312,157 @@ export default function ProfilePage() {
                                     </div>
                                 )}
 
-                                {filteredOrders.map((order) => (
-                                    <div key={order.id} className="flex flex-col gap-4 rounded-xl border border-gray-200 dark:border-border-dark bg-white dark:bg-surface-dark p-5 transition-colors hover:border-primary/50 group shadow-sm">
-                                        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-gray-100 dark:border-border-dark pb-4 border-dashed">
-                                            <div className="flex flex-col gap-1">
-                                                <div className="flex items-center gap-3">
-                                                    <div className="bg-primary/10 p-1.5 rounded text-primary flex items-center justify-center">
-                                                        <span className="material-symbols-outlined text-[18px]">inventory_2</span>
+                                {filteredOrders.map((order) => {
+                                    const isExpanded = expandedOrderId === order.id;
+                                    return (
+                                        <div key={order.id} className={`flex flex-col gap-4 rounded-xl border transition-all group shadow-sm overflow-hidden ${isExpanded ? 'border-primary/50 bg-white dark:bg-surface-dark shadow-lg shadow-black/20' : 'border-gray-200 dark:border-border-dark bg-white dark:bg-surface-dark hover:border-primary/50'}`}>
+                                            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-gray-100 dark:border-border-dark pb-4 border-dashed p-5">
+                                                <div className="flex flex-col gap-1">
+                                                    <div className="flex items-center gap-3">
+                                                        <div className="bg-primary/10 p-1.5 rounded text-primary flex items-center justify-center">
+                                                            <span className="material-symbols-outlined text-[18px]">{order.status === 'completed' ? 'local_shipping' : 'inventory_2'}</span>
+                                                        </div>
+                                                        <span className="text-text-main dark:text-white text-lg font-bold tracking-tight">#{order.id.slice(0, 8).toUpperCase()}</span>
                                                     </div>
-                                                    <span className="text-text-main dark:text-white text-lg font-bold tracking-tight">#{order.id.slice(0, 8).toUpperCase()}</span>
+                                                    <span className="text-text-muted dark:text-text-secondary text-sm pl-10">
+                                                        {new Date(order.created_at).toLocaleString('vi-VN', {
+                                                            day: '2-digit',
+                                                            month: 'long',
+                                                            year: 'numeric',
+                                                            hour: '2-digit',
+                                                            minute: '2-digit'
+                                                        })}
+                                                    </span>
                                                 </div>
-                                                <span className="text-text-muted dark:text-text-secondary text-sm pl-10">{new Date(order.created_at).toLocaleString('vi-VN')}</span>
-                                            </div>
-                                            <div className="flex items-center gap-2 md:self-center self-start pl-10 md:pl-0">
-                                                <span className={`px-3 py-1 rounded-full text-xs font-bold border uppercase tracking-wide flex items-center gap-1 ${order.status === 'completed' ? 'bg-green-100 text-green-700 border-green-200' :
-                                                    order.status === 'pending' ? 'bg-yellow-100 text-yellow-700 border-yellow-200' :
-                                                        'bg-gray-100 text-gray-700 border-gray-200'
-                                                    }`}>
-                                                    {order.status === 'pending' && <span className="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse"></span>}
-                                                    {order.status}
-                                                </span>
-                                            </div>
-                                        </div>
-
-                                        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-2">
-                                            <div className="flex items-center gap-3 w-full sm:w-auto">
-                                                {/* Show up to 2 images */}
-                                                {order.order_items.slice(0, 2).map((item: any) => (
-                                                    <div key={item.id} className="size-16 rounded-lg bg-cover bg-center border border-gray-200 dark:border-border-dark shrink-0" style={{ backgroundImage: `url(${item.product_image || 'https://placehold.co/100'})` }}></div>
-                                                ))}
-                                                {order.order_items.length > 2 && (
-                                                    <div className="flex items-center justify-center size-16 rounded-lg bg-gray-50 dark:bg-border-dark text-text-main dark:text-white text-xs font-bold shrink-0 border border-gray-200 dark:border-border-dark/50">
-                                                        +{order.order_items.length - 2}
-                                                    </div>
-                                                )}
-
-                                                <div className="flex flex-col justify-center">
-                                                    <p className="text-text-main dark:text-white text-sm font-medium line-clamp-1">{order.order_items[0]?.product_name} {order.order_items.length > 1 && '...'}</p>
-                                                    <p className="text-text-muted dark:text-text-secondary text-xs">{order.order_items.length} sản phẩm</p>
+                                                <div className="flex items-center gap-2 md:self-center self-start pl-10 md:pl-0">
+                                                    <span className={`px-3 py-1 rounded-full text-xs font-bold border uppercase tracking-wide flex items-center gap-1 ${order.status === 'completed' ? 'bg-green-100 text-green-700 border-green-200 dark:bg-primary/10 dark:text-primary dark:border-primary/20' :
+                                                        order.status === 'pending' ? 'bg-yellow-100 text-yellow-700 border-yellow-200' :
+                                                            'bg-gray-100 text-gray-700 border-gray-200'
+                                                        }`}>
+                                                        {order.status === 'pending' && <span className="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse"></span>}
+                                                        {order.status === 'completed' && <span className="material-symbols-outlined text-[14px]">check_circle</span>}
+                                                        {order.status === 'pending' ? 'Đang xử lý' :
+                                                            order.status === 'completed' ? 'Giao hàng thành công' :
+                                                                order.status === 'shipping' ? 'Đang giao hàng' : 'Đã hủy'}
+                                                    </span>
                                                 </div>
                                             </div>
 
-                                            <div className="flex flex-row sm:flex-col justify-between sm:justify-center w-full sm:w-auto items-center sm:items-end gap-1">
-                                                <span className="text-text-muted dark:text-text-secondary text-xs font-medium uppercase tracking-wider">Tổng tiền</span>
-                                                <span className="text-primary text-xl font-bold">{order.total_amount.toLocaleString('vi-VN')}đ</span>
+                                            {/* Order Content - COLLAPSED (Summary) */}
+                                            {!isExpanded && (
+                                                <div className="flex flex-col sm:flex-row justify-between items-center gap-4 px-5 pb-5">
+                                                    <div className="flex items-center gap-3 w-full sm:w-auto">
+                                                        {/* Show up to 2 images */}
+                                                        {order.order_items.slice(0, 2).map((item: any) => (
+                                                            <div key={item.id} className="size-16 rounded-lg bg-cover bg-center border border-gray-200 dark:border-border-dark shrink-0" style={{ backgroundImage: `url(${item.product_image || 'https://placehold.co/100'})` }}></div>
+                                                        ))}
+                                                        {order.order_items.length > 2 && (
+                                                            <div className="flex items-center justify-center size-16 rounded-lg bg-gray-50 dark:bg-border-dark text-text-main dark:text-white text-xs font-bold shrink-0 border border-gray-200 dark:border-border-dark/50">
+                                                                +{order.order_items.length - 2}
+                                                            </div>
+                                                        )}
+
+                                                        <div className="flex flex-col justify-center">
+                                                            <p className="text-text-main dark:text-white text-sm font-medium line-clamp-1">
+                                                                {order.order_items.map((it: any) => it.product_name).join(', ')}
+                                                            </p>
+                                                            <p className="text-text-muted dark:text-text-secondary text-xs">{order.order_items.length} sản phẩm</p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="flex flex-row sm:flex-col justify-between sm:justify-center w-full sm:w-auto items-center sm:items-end gap-1">
+                                                        <span className="text-text-muted dark:text-text-secondary text-xs font-medium uppercase tracking-wider">Tổng tiền</span>
+                                                        <span className="text-primary text-xl font-bold">{order.total_amount.toLocaleString('vi-VN')}đ</span>
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            {/* Order Content - EXPANDED (Details) */}
+                                            {isExpanded && (
+                                                <div className="flex flex-col gap-6 px-5 pb-5 pt-2">
+                                                    <div className="flex flex-col gap-4">
+                                                        {order.order_items.map((item: any) => (
+                                                            <div key={item.id} className="flex items-start justify-between gap-4">
+                                                                <div className="flex items-start gap-4">
+                                                                    <div className="size-16 rounded-lg bg-cover bg-center border border-gray-200 dark:border-border-dark shrink-0" style={{ backgroundImage: `url(${item.product_image || 'https://placehold.co/100'})` }}></div>
+                                                                    <div className="flex flex-col">
+                                                                        <p className="text-text-main dark:text-white text-sm font-bold">{item.product_name}</p>
+                                                                        <p className="text-text-muted dark:text-text-secondary text-xs mt-1">Số lượng: {item.quantity} {item.unit || 'kg'}</p>
+                                                                        <p className="text-primary text-xs mt-1">{item.price.toLocaleString('vi-VN')}đ / {item.unit || 'kg'}</p>
+                                                                    </div>
+                                                                </div>
+                                                                <span className="text-text-main dark:text-white text-sm font-bold">{(item.price * item.quantity).toLocaleString('vi-VN')}đ</span>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+
+                                                    <div className="h-px w-full bg-gray-100 dark:bg-border-dark border-dashed"></div>
+
+                                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                                        <div className="flex flex-col gap-2">
+                                                            <div className="flex items-center gap-2 text-primary mb-1">
+                                                                <span className="material-symbols-outlined text-[18px]">location_on</span>
+                                                                <span className="text-xs font-bold uppercase tracking-wider">Địa chỉ nhận hàng</span>
+                                                            </div>
+                                                            <div className="pl-7 flex flex-col gap-1">
+                                                                <p className="text-text-main dark:text-white text-sm font-bold">{order.full_name || fullName}</p>
+                                                                <p className="text-text-muted dark:text-text-secondary text-sm">{order.phone_number || phone}</p>
+                                                                <p className="text-text-muted dark:text-text-secondary text-sm">{order.address || address}</p>
+                                                            </div>
+                                                        </div>
+                                                        <div className="flex flex-col gap-2">
+                                                            <div className="flex items-center gap-2 text-primary mb-1">
+                                                                <span className="material-symbols-outlined text-[18px]">payments</span>
+                                                                <span className="text-xs font-bold uppercase tracking-wider">Phương thức thanh toán</span>
+                                                            </div>
+                                                            <div className="pl-7 flex flex-col gap-1">
+                                                                <p className="text-text-main dark:text-white text-sm">{order.payment_method === 'cod' ? 'Thanh toán khi nhận hàng (COD)' : 'Chuyển khoản / QR Code'}</p>
+                                                                <p className="text-text-muted dark:text-text-secondary text-xs">Phí vận chuyển: Giao hàng tiêu chuẩn</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="bg-gray-50 dark:bg-background-dark/50 rounded-lg p-4 flex flex-col gap-2">
+                                                        <div className="flex justify-between items-center">
+                                                            <span className="text-text-muted dark:text-text-secondary text-sm">Tổng tiền hàng</span>
+                                                            <span className="text-text-main dark:text-white text-sm">{order.total_amount.toLocaleString('vi-VN')}đ</span>
+                                                        </div>
+                                                        <div className="flex justify-between items-center">
+                                                            <span className="text-text-muted dark:text-text-secondary text-sm">Phí vận chuyển</span>
+                                                            <span className="text-text-main dark:text-white text-sm">0đ</span>
+                                                        </div>
+                                                        <div className="flex justify-between items-center">
+                                                            <span className="text-text-muted dark:text-text-secondary text-sm">Voucher giảm giá</span>
+                                                            <span className="text-primary text-sm">-0đ</span>
+                                                        </div>
+                                                        <div className="h-px w-full bg-gray-200 dark:bg-border-dark my-1"></div>
+                                                        <div className="flex justify-between items-center">
+                                                            <span className="text-text-main dark:text-white text-base font-bold">Thành tiền</span>
+                                                            <span className="text-primary text-xl font-bold">{order.total_amount.toLocaleString('vi-VN')}đ</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            <div className="flex justify-end gap-3 px-5 pb-5">
+                                                <button
+                                                    onClick={() => setExpandedOrderId(isExpanded ? null : order.id)}
+                                                    className="flex-1 sm:flex-none px-4 py-2 rounded-lg border border-gray-200 dark:border-border-dark text-text-main dark:text-white text-sm font-bold hover:bg-gray-50 dark:hover:bg-border-dark transition-colors flex items-center justify-center gap-2"
+                                                >
+                                                    <span className="material-symbols-outlined text-[18px]">{isExpanded ? 'expand_less' : 'expand_more'}</span>
+                                                    {isExpanded ? 'Thu gọn' : 'Chi tiết'}
+                                                </button>
+                                                <button
+                                                    onClick={() => handleReorder(order)}
+                                                    className="flex-1 sm:flex-none px-4 py-2 rounded-lg bg-primary text-[#0d160b] text-sm font-bold hover:bg-primary/90 transition-colors flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(76,223,32,0.2)]"
+                                                >
+                                                    <span className="material-symbols-outlined text-[18px]">replay</span>
+                                                    {isExpanded ? 'Đặt lại' : 'Mua lại'}
+                                                </button>
                                             </div>
                                         </div>
-
-                                        <div className="flex justify-end gap-3 pt-2">
-                                            <Link href={`/order-success?id=${order.id}`} className="flex-1 sm:flex-none px-4 py-2 rounded-lg border border-gray-200 dark:border-border-dark text-text-main dark:text-white text-sm font-bold hover:bg-gray-50 dark:hover:bg-border-dark transition-colors flex items-center justify-center gap-2">
-                                                Chi tiết
-                                            </Link>
-                                            <button
-                                                onClick={() => handleReorder(order)}
-                                                className="flex-1 sm:flex-none px-4 py-2 rounded-lg bg-primary text-[#0d160b] text-sm font-bold hover:bg-primary/90 transition-colors flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(76,223,32,0.2)]"
-                                            >
-                                                <span className="material-symbols-outlined text-[18px]">replay</span>
-                                                Mua lại
-                                            </button>
-                                        </div>
-                                    </div>
-                                ))}
+                                    );
+                                })}
                             </div>
                         </div>
                     )}
