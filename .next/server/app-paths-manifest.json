@@ -1,10 +1,8 @@
 {
-  "/page": "app/page.js",
-  "/login/page": "app/login/page.js",
-  "/_not-found/page": "app/_not-found/page.js",
+  "/order-success/page": "app/order-success/page.js",
+  "/cart/page": "app/cart/page.js",
+  "/profile/page": "app/profile/page.js",
+  "/products/page": "app/products/page.js",
   "/admin/customers/page": "app/admin/customers/page.js",
-  "/admin/page": "app/admin/page.js",
-  "/admin/settings/page": "app/admin/settings/page.js",
-  "/admin/categories/page": "app/admin/categories/page.js",
-  "/admin/orders/page": "app/admin/orders/page.js"
+  "/admin/settings/page": "app/admin/settings/page.js"
 }

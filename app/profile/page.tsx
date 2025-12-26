@@ -5,14 +5,21 @@ import { supabase } from '../../lib/supabase';
 import { useGlobal } from '../../context/GlobalContext';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
+import { Product } from '../../types';
 
 export default function ProfilePage() {
-    const { user, logout } = useGlobal();
+    const { user, logout, addToCart } = useGlobal();
     const [activeTab, setActiveTab] = useState<'info' | 'orders'>('orders');
     const [orders, setOrders] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [profile, setProfile] = useState<any>(null);
     const [isSaving, setIsSaving] = useState(false);
+    const router = useRouter();
+
+    // Orders Filter & Search State
+    const [statusFilter, setStatusFilter] = useState('all');
+    const [searchQuery, setSearchQuery] = useState('');
 
     // Profile Form State
     const [fullName, setFullName] = useState('');
@@ -96,6 +103,32 @@ export default function ProfilePage() {
             setIsSaving(false);
         }
     };
+
+    const handleReorder = (order: any) => {
+        try {
+            order.order_items.forEach((item: any) => {
+                const product: Product = {
+                    id: item.product_id,
+                    name: item.product_name,
+                    price: item.price,
+                    image: item.product_image,
+                    unit: item.unit || 'kg',
+                };
+                addToCart(product, item.quantity);
+            });
+            toast.success('Đã thêm các sản phẩm vào giỏ hàng!');
+            router.push('/cart');
+        } catch (error) {
+            console.error('Error re-ordering:', error);
+            toast.error('Có lỗi xảy ra khi đặt hàng lại.');
+        }
+    };
+
+    const filteredOrders = orders.filter(order => {
+        const matchesStatus = statusFilter === 'all' || order.status === statusFilter;
+        const matchesSearch = order.id.toLowerCase().includes(searchQuery.toLowerCase());
+        return matchesStatus && matchesSearch;
+    });
 
     if (!user) {
         return (
@@ -224,16 +257,28 @@ export default function ProfilePage() {
 
                             {/* Filter Chips */}
                             <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide no-scrollbar -mx-4 px-4 md:mx-0 md:px-0">
-                                <button className="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-primary text-background-dark font-bold px-5 transition-transform hover:scale-105 shadow-lg shadow-primary/25">
+                                <button
+                                    onClick={() => setStatusFilter('all')}
+                                    className={`flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full font-bold px-5 transition-all ${statusFilter === 'all' ? 'bg-primary text-background-dark shadow-lg shadow-primary/25' : 'bg-white dark:bg-surface-dark border border-gray-200 dark:border-border-dark text-text-main dark:text-white hover:border-primary hover:text-primary'}`}
+                                >
                                     Tất cả
                                 </button>
-                                <button className="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-white dark:bg-surface-dark border border-gray-200 dark:border-border-dark text-text-main dark:text-white hover:border-primary hover:text-primary font-medium px-5 transition-all">
+                                <button
+                                    onClick={() => setStatusFilter('pending')}
+                                    className={`flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full font-medium px-5 transition-all ${statusFilter === 'pending' ? 'bg-primary text-background-dark shadow-lg shadow-primary/25 font-bold' : 'bg-white dark:bg-surface-dark border border-gray-200 dark:border-border-dark text-text-main dark:text-white hover:border-primary hover:text-primary'}`}
+                                >
                                     Đang xử lý
                                 </button>
-                                <button className="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-white dark:bg-surface-dark border border-gray-200 dark:border-border-dark text-text-main dark:text-white hover:border-primary hover:text-primary font-medium px-5 transition-all">
+                                <button
+                                    onClick={() => setStatusFilter('shipping')}
+                                    className={`flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full font-medium px-5 transition-all ${statusFilter === 'shipping' ? 'bg-primary text-background-dark shadow-lg shadow-primary/25 font-bold' : 'bg-white dark:bg-surface-dark border border-gray-200 dark:border-border-dark text-text-main dark:text-white hover:border-primary hover:text-primary'}`}
+                                >
                                     Đang giao
                                 </button>
-                                <button className="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-white dark:bg-surface-dark border border-gray-200 dark:border-border-dark text-text-main dark:text-white hover:border-primary hover:text-primary font-medium px-5 transition-all">
+                                <button
+                                    onClick={() => setStatusFilter('completed')}
+                                    className={`flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full font-medium px-5 transition-all ${statusFilter === 'completed' ? 'bg-primary text-background-dark shadow-lg shadow-primary/25 font-bold' : 'bg-white dark:bg-surface-dark border border-gray-200 dark:border-border-dark text-text-main dark:text-white hover:border-primary hover:text-primary'}`}
+                                >
                                     Đã hoàn thành
                                 </button>
                             </div>
@@ -242,7 +287,12 @@ export default function ProfilePage() {
                             <div className="flex w-full md:w-2/3 lg:w-1/2">
                                 <div className="flex w-full items-center rounded-lg h-10 bg-white dark:bg-surface-dark border border-gray-200 dark:border-border-dark px-3 focus-within:border-primary transition-colors">
                                     <span className="material-symbols-outlined text-text-muted dark:text-text-secondary text-[20px]">filter_list</span>
-                                    <input className="w-full bg-transparent border-none focus:ring-0 text-text-main dark:text-white text-sm placeholder:text-text-muted dark:placeholder:text-text-secondary ml-2 outline-none" placeholder="Tìm theo mã đơn hàng..." />
+                                    <input
+                                        className="w-full bg-transparent border-none focus:ring-0 text-text-main dark:text-white text-sm placeholder:text-text-muted dark:placeholder:text-text-secondary ml-2 outline-none"
+                                        placeholder="Tìm theo mã đơn hàng..."
+                                        value={searchQuery}
+                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                    />
                                 </div>
                             </div>
 
@@ -254,14 +304,14 @@ export default function ProfilePage() {
                                     </div>
                                 )}
 
-                                {!loading && orders.length === 0 && (
+                                {!loading && filteredOrders.length === 0 && (
                                     <div className="text-center py-12 bg-white dark:bg-surface-dark rounded-xl border border-gray-200 dark:border-border-dark">
-                                        <p className="text-gray-500 mb-4">Bạn chưa có đơn hàng nào.</p>
+                                        <p className="text-gray-500 mb-4">{searchQuery || statusFilter !== 'all' ? 'Không tìm thấy đơn hàng phù hợp.' : 'Bạn chưa có đơn hàng nào.'}</p>
                                         <Link href="/products" className="text-primary font-bold hover:underline">Đặt hàng ngay</Link>
                                     </div>
                                 )}
 
-                                {orders.map((order) => (
+                                {filteredOrders.map((order) => (
                                     <div key={order.id} className="flex flex-col gap-4 rounded-xl border border-gray-200 dark:border-border-dark bg-white dark:bg-surface-dark p-5 transition-colors hover:border-primary/50 group shadow-sm">
                                         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-gray-100 dark:border-border-dark pb-4 border-dashed">
                                             <div className="flex flex-col gap-1">
@@ -275,8 +325,8 @@ export default function ProfilePage() {
                                             </div>
                                             <div className="flex items-center gap-2 md:self-center self-start pl-10 md:pl-0">
                                                 <span className={`px-3 py-1 rounded-full text-xs font-bold border uppercase tracking-wide flex items-center gap-1 ${order.status === 'completed' ? 'bg-green-100 text-green-700 border-green-200' :
-                                                        order.status === 'pending' ? 'bg-yellow-100 text-yellow-700 border-yellow-200' :
-                                                            'bg-gray-100 text-gray-700 border-gray-200'
+                                                    order.status === 'pending' ? 'bg-yellow-100 text-yellow-700 border-yellow-200' :
+                                                        'bg-gray-100 text-gray-700 border-gray-200'
                                                     }`}>
                                                     {order.status === 'pending' && <span className="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse"></span>}
                                                     {order.status}
@@ -312,7 +362,10 @@ export default function ProfilePage() {
                                             <Link href={`/order-success?id=${order.id}`} className="flex-1 sm:flex-none px-4 py-2 rounded-lg border border-gray-200 dark:border-border-dark text-text-main dark:text-white text-sm font-bold hover:bg-gray-50 dark:hover:bg-border-dark transition-colors flex items-center justify-center gap-2">
                                                 Chi tiết
                                             </Link>
-                                            <button className="flex-1 sm:flex-none px-4 py-2 rounded-lg bg-primary text-[#0d160b] text-sm font-bold hover:bg-primary/90 transition-colors flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(76,223,32,0.2)]">
+                                            <button
+                                                onClick={() => handleReorder(order)}
+                                                className="flex-1 sm:flex-none px-4 py-2 rounded-lg bg-primary text-[#0d160b] text-sm font-bold hover:bg-primary/90 transition-colors flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(76,223,32,0.2)]"
+                                            >
                                                 <span className="material-symbols-outlined text-[18px]">replay</span>
                                                 Mua lại
                                             </button>
