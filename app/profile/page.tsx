@@ -7,6 +7,7 @@ import Link from 'next/link';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import { Product } from '../../types';
+import ReviewModal from '../../components/ReviewModal';
 
 export default function ProfilePage() {
     const { user, logout, addToCart } = useGlobal();
@@ -21,6 +22,9 @@ export default function ProfilePage() {
     const [statusFilter, setStatusFilter] = useState('all');
     const [searchQuery, setSearchQuery] = useState('');
     const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
+    const [reviewedItems, setReviewedItems] = useState<Record<string, boolean>>({});
+    const [reviewModalOpen, setReviewModalOpen] = useState(false);
+    const [selectedReviewItem, setSelectedReviewItem] = useState<any>(null);
 
     // Profile Form State
     const [fullName, setFullName] = useState('');
@@ -51,9 +55,44 @@ export default function ProfilePage() {
 
             if (error) throw error;
             setOrders(data || []);
+
+            // Check review status for all items
+            if (data && data.length > 0) {
+                await checkReviewStatus(data);
+            }
         } catch (error) {
             console.error('Error fetching orders:', error);
         }
+    };
+
+    const checkReviewStatus = async (orders: any[]) => {
+        if (!user) return;
+        const reviewStatus: Record<string, boolean> = {};
+
+        for (const order of orders) {
+            for (const item of order.order_items) {
+                const key = `${order.id}_${item.product_id}`;
+                const { data } = await supabase
+                    .from('reviews')
+                    .select('id')
+                    .eq('user_id', user.id)
+                    .eq('product_id', item.product_id)
+                    .eq('order_id', order.id)
+                    .single();
+
+                reviewStatus[key] = !!data;
+            }
+        }
+        setReviewedItems(reviewStatus);
+    };
+
+    const openReviewModal = (item: any, orderId: string) => {
+        setSelectedReviewItem({ ...item, orderId });
+        setReviewModalOpen(true);
+    };
+
+    const handleReviewSuccess = () => {
+        fetchOrders(); // Refresh to update review status
     };
 
     const fetchProfile = async () => {
@@ -383,15 +422,35 @@ export default function ProfilePage() {
                                                     <div className="flex flex-col gap-4">
                                                         {order.order_items.map((item: any) => (
                                                             <div key={item.id} className="flex items-start justify-between gap-4">
-                                                                <div className="flex items-start gap-4">
+                                                                <div className="flex items-start gap-4 flex-1">
                                                                     <div className="size-16 rounded-lg bg-cover bg-center border border-gray-200 dark:border-border-dark shrink-0" style={{ backgroundImage: `url(${item.product_image || 'https://placehold.co/100'})` }}></div>
-                                                                    <div className="flex flex-col">
+                                                                    <div className="flex flex-col flex-1">
                                                                         <p className="text-text-main dark:text-white text-sm font-bold">{item.product_name}</p>
                                                                         <p className="text-text-muted dark:text-text-secondary text-xs mt-1">Số lượng: {item.quantity} {item.unit || 'kg'}</p>
                                                                         <p className="text-primary text-xs mt-1">{item.price.toLocaleString('vi-VN')}đ / {item.unit || 'kg'}</p>
+
+                                                                        {/* Review Button */}
+                                                                        {order.status === 'completed' && (
+                                                                            <div className="mt-2">
+                                                                                {reviewedItems[`${order.id}_${item.product_id}`] ? (
+                                                                                    <span className="text-xs text-green-600 dark:text-primary font-medium flex items-center gap-1">
+                                                                                        <span className="material-symbols-outlined text-[14px]">check_circle</span>
+                                                                                        Đã đánh giá
+                                                                                    </span>
+                                                                                ) : (
+                                                                                    <button
+                                                                                        onClick={() => openReviewModal(item, order.id)}
+                                                                                        className="text-xs text-primary hover:text-primary-dark font-bold flex items-center gap-1 hover:underline"
+                                                                                    >
+                                                                                        <span className="material-symbols-outlined text-[14px]">star</span>
+                                                                                        Đánh giá sản phẩm
+                                                                                    </button>
+                                                                                )}
+                                                                            </div>
+                                                                        )}
                                                                     </div>
                                                                 </div>
-                                                                <span className="text-text-main dark:text-white text-sm font-bold">{(item.price * item.quantity).toLocaleString('vi-VN')}đ</span>
+                                                                <span className="text-text-main dark:text-white text-sm font-bold shrink-0">{(item.price * item.quantity).toLocaleString('vi-VN')}đ</span>
                                                             </div>
                                                         ))}
                                                     </div>
@@ -468,6 +527,20 @@ export default function ProfilePage() {
                     )}
                 </main>
             </div>
+
+            {/* Review Modal */}
+            {selectedReviewItem && (
+                <ReviewModal
+                    isOpen={reviewModalOpen}
+                    onClose={() => setReviewModalOpen(false)}
+                    productId={selectedReviewItem.product_id}
+                    productName={selectedReviewItem.product_name}
+                    productImage={selectedReviewItem.product_image}
+                    orderId={selectedReviewItem.orderId}
+                    userId={user!.id}
+                    onSuccess={handleReviewSuccess}
+                />
+            )}
         </div>
     );
 }

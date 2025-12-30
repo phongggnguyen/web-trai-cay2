@@ -5,6 +5,7 @@ import { useParams, useRouter, notFound } from 'next/navigation';
 import Link from 'next/link';
 import { useGlobal } from '../../../context/GlobalContext';
 import { supabase } from '../../../lib/supabase';
+import ReviewSection from '../../../components/ReviewSection';
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -273,6 +274,9 @@ export default function ProductDetailPage() {
           )}
         </div>
       </div>
+
+      {/* Review Section */}
+      {product && <ReviewSection productId={product.id} />}
 
       {/* Related Products */}
       <div className="mt-20 mb-10">

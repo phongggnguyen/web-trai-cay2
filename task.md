@@ -39,3 +39,9 @@
         - [ ] Re-order functionality
     - [ ] **Order Detail Page** <!-- id: 30 -->
         - [ ] View full order details (Modal or Page)
+
+- [ ] **Product Reviews** <!-- id: 31 -->
+    - [x] Create `reviews` table, Policies, and Triggers <!-- id: 32 -->
+    - [x] Add `Review` type definition <!-- id: 33 -->
+    - [x] Create `ReviewSection` Component <!-- id: 34 -->
+    - [x] Integrate into Product Detail Page <!-- id: 35 -->
