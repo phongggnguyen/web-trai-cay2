@@ -137,3 +137,11 @@ export const BLOG_POSTS: BlogPost[] = [
     views: '3.8k'
   }
 ];
+
+// ============== GEMINI AI CONFIGURATION ==============
+export const GEMINI_CONFIG = {
+  MODEL_NAME: 'gemini-2.5-flash',
+  API_ENDPOINT: 'https://generativelanguage.googleapis.com/v1beta/models',
+  MAX_IMAGE_SIZE: 4 * 1024 * 1024, // 4MB
+  TIMEOUT: 30000, // 30 seconds
+} as const;

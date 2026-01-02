@@ -7,11 +7,16 @@ import { useGlobal } from '../../context/GlobalContext';
 import { supabase } from '../../lib/supabase';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useDebounce } from '../../hooks/useDebounce';
+import ImageSearchModal from '../../components/ImageSearchModal';
 
 export default function ProductListPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const searchQuery = searchParams.get('search') || '';
+  const aiTextQuery = searchParams.get('query') || '';
+  const aiImageMode = searchParams.get('aiImage') === 'true';
+  const imageDesc = searchParams.get('imageDesc') || '';
+  const imageProductIds = searchParams.get('ids')?.split(',') || [];
   const debouncedSearch = useDebounce(searchQuery, 300);
 
   const [products, setProducts] = useState<any[]>([]);
@@ -19,12 +24,121 @@ export default function ProductListPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [priceRange, setPriceRange] = useState<number>(2000000);
   const [loading, setLoading] = useState(true);
+  const [aiSearchType, setAiSearchType] = useState<'none' | 'text' | 'image'>('none');
+  const [localSearchQuery, setLocalSearchQuery] = useState('');
+  const [aiTextMode, setAiTextMode] = useState(false);
+  const [imageModalOpen, setImageModalOpen] = useState(false);
   const { addToCart } = useGlobal();
+
+  const handleLocalSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && localSearchQuery.trim()) {
+      if (aiTextMode) {
+        router.push(`/products?aiText=true&query=${encodeURIComponent(localSearchQuery.trim())}`);
+      } else {
+        router.push(`/products?search=${encodeURIComponent(localSearchQuery.trim())}`);
+      }
+    }
+  };
+
+  // Sync local search query with URL params
+  React.useEffect(() => {
+    if (searchQuery) {
+      setLocalSearchQuery(searchQuery);
+    }
+  }, [searchQuery]);
 
   React.useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
+
+        // Check if this is AI text search from URL params
+        const isAiTextSearch = searchParams.get('aiText') === 'true';
+
+        // Handle AI Text Search
+        if (isAiTextSearch && aiTextQuery) {
+          setAiSearchType('text');
+
+          // Call AI Text Search API
+          const aiResponse = await fetch(
+            `/api/search/ai/text?query=${encodeURIComponent(aiTextQuery)}`
+          );
+          const aiData = await aiResponse.json();
+
+          if (aiData.success && aiData.productIds.length > 0) {
+            // Fetch products with matching IDs
+            const { data: productsData, error } = await supabase
+              .from('products')
+              .select(`
+                *,
+                categories ( name )
+              `)
+              .in('id', aiData.productIds);
+
+            if (!error && productsData) {
+              const mappedProducts = productsData.map((item: any) => ({
+                ...item,
+                image: item.image_url,
+                originalPrice: item.original_price,
+                category: item.categories?.name || 'Khác',
+                tag: item.tags?.[0],
+                tagColor: item.tags?.[0] === 'HOT' ? 'red' : item.tags?.[0] === 'MỚI' ? 'orange' : 'primary'
+              }));
+              setProducts(mappedProducts);
+            }
+          } else {
+            setProducts([]);
+          }
+
+          // Fetch categories
+          const { data: categoriesData } = await supabase
+            .from('categories')
+            .select('name');
+          if (categoriesData) {
+            setCategoriesList(['All', ...categoriesData.map((c: any) => c.name)]);
+          }
+
+          setLoading(false);
+          return;
+        }
+
+        // Handle AI Image Search
+        if (aiImageMode && imageProductIds.length > 0) {
+          setAiSearchType('image');
+
+          const { data: productsData, error } = await supabase
+            .from('products')
+            .select(`
+              *,
+              categories ( name )
+            `)
+            .in('id', imageProductIds);
+
+          if (!error && productsData) {
+            const mappedProducts = productsData.map((item: any) => ({
+              ...item,
+              image: item.image_url,
+              originalPrice: item.original_price,
+              category: item.categories?.name || 'Khác',
+              tag: item.tags?.[0],
+              tagColor: item.tags?.[0] === 'HOT' ? 'red' : item.tags?.[0] === 'MỚI' ? 'orange' : 'primary'
+            }));
+            setProducts(mappedProducts);
+          }
+
+          const { data: categoriesData } = await supabase
+            .from('categories')
+            .select('name');
+          if (categoriesData) {
+            setCategoriesList(['All', ...categoriesData.map((c: any) => c.name)]);
+          }
+
+          setLoading(false);
+          return;
+        }
+
+        // Regular search (existing logic)
+        setAiSearchType('none');
 
         // Build query with search filter
         let query = supabase
@@ -75,7 +189,7 @@ export default function ProductListPage() {
     };
 
     fetchData();
-  }, [debouncedSearch]); // Trigger when debounced search changes
+  }, [debouncedSearch, aiTextMode, aiTextQuery, aiImageMode, imageProductIds.join(',')]); // Trigger when any search param changes
 
   const filteredProducts = products.filter(product => {
     const matchCategory = selectedCategory === 'All' || product.category === selectedCategory;
@@ -84,9 +198,16 @@ export default function ProductListPage() {
   });
 
   if (loading) {
+    const loadingText = aiSearchType === 'text'
+      ? 'AI đang phân tích và chọn lọc sản phẩm...'
+      : aiSearchType === 'image'
+        ? 'AI đang tìm kiếm từ hình ảnh...'
+        : 'Đang tải...';
+
     return (
-      <div className="flex h-[50vh] w-full items-center justify-center">
+      <div className="flex h-[50vh] w-full flex-col items-center justify-center gap-4">
         <div className="h-10 w-10 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
+        <p className="text-sm font-medium text-gray-600 dark:text-gray-400">{loadingText}</p>
       </div>
     );
   }
@@ -94,23 +215,86 @@ export default function ProductListPage() {
   return (
     <div className="mx-auto max-w-[1440px] px-4 py-8 md:px-10">
       {/* Header & Breadcrumb */}
-      <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <div>
-          <h1 className="text-3xl font-black text-text-main dark:text-white">Cửa Hàng Trái Cây</h1>
-          <div className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-            <Link href="/" className="hover:text-primary hover:underline">Trang chủ</Link>
-            <span className="mx-2">/</span>
-            <span className="text-text-main dark:text-primary font-bold">Tất cả sản phẩm</span>
+      <div className="mb-8">
+        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between mb-6">
+          <div>
+            <h1 className="text-3xl font-black text-text-main dark:text-white">Cửa Hàng Trái Cây</h1>
+            <div className="mt-2 text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2">
+              <Link href="/" className="hover:text-primary hover:underline">Trang chủ</Link>
+              <span className="mx-2">/</span>
+              <span className="text-text-main dark:text-primary font-bold">Tất cả sản phẩm</span>
+            </div>
+
+            {/* AI Search Indicator */}
+            {aiSearchType === 'text' && (
+              <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1.5 text-sm">
+                <span className="material-symbols-outlined text-[18px] text-primary">auto_awesome</span>
+                <span className="font-bold text-primary">Tìm kiếm với AI: "{aiTextQuery}"</span>
+              </div>
+            )}
+            {aiSearchType === 'image' && imageDesc && (
+              <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1.5 text-sm">
+                <span className="material-symbols-outlined text-[18px] text-primary">image_search</span>
+                <span className="font-bold text-primary">AI nhận dạng: {decodeURIComponent(imageDesc)}</span>
+              </div>
+            )}
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-500">Sắp xếp:</span>
+            <select className="rounded-lg border-gray-200 bg-transparent text-sm font-bold text-text-main focus:border-primary focus:ring-0 dark:border-gray-700 dark:text-white">
+              <option>Mới nhất</option>
+              <option>Giá tăng dần</option>
+              <option>Giá giảm dần</option>
+              <option>Bán chạy</option>
+            </select>
           </div>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="text-sm text-gray-500">Sắp xếp:</span>
-          <select className="rounded-lg border-gray-200 bg-transparent text-sm font-bold text-text-main focus:border-primary focus:ring-0 dark:border-gray-700 dark:text-white">
-            <option>Mới nhất</option>
-            <option>Giá tăng dần</option>
-            <option>Giá giảm dần</option>
-            <option>Bán chạy</option>
-          </select>
+
+        {/* Search Bar */}
+        <div className="flex items-center gap-2 mb-6">
+          {/* AI Text Mode Toggle */}
+          <button
+            onClick={() => setAiTextMode(!aiTextMode)}
+            className={`flex h-12 w-12 items-center justify-center rounded-full transition-all flex-shrink-0 ${aiTextMode
+              ? 'bg-primary text-text-main'
+              : 'bg-background-light dark:bg-black/20 text-text-main dark:text-white hover:bg-primary/20 hover:text-primary'
+              }`}
+            title="AI Text Search"
+          >
+            <span className="material-symbols-outlined text-[22px]">auto_awesome</span>
+          </button>
+
+          {/* Image Search Toggle */}
+          <button
+            onClick={() => setImageModalOpen(true)}
+            className="flex h-12 w-12 items-center justify-center rounded-full bg-background-light dark:bg-black/20 hover:bg-primary/20 hover:text-primary transition-colors text-text-main dark:text-white flex-shrink-0"
+            title="AI Image Search"
+          >
+            <span className="material-symbols-outlined text-[22px]">image_search</span>
+          </button>
+
+          {/* Search Input */}
+          <div className="group relative flex-1">
+            <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none text-text-muted">
+              <span className="material-symbols-outlined text-[22px]">search</span>
+            </div>
+            <input
+              className={`block w-full rounded-full border-none py-3 pl-12 pr-4 text-base text-text-main dark:text-white placeholder-text-muted/60 focus:ring-2 transition-all ${aiTextMode
+                ? 'bg-primary/10 focus:ring-primary focus:bg-primary/20'
+                : 'bg-background-light dark:bg-black/20 focus:ring-primary focus:bg-white dark:focus:bg-black/40'
+                }`}
+              placeholder={aiTextMode ? 'Tìm với AI (vd: "trái cây giải nhiệt")...' : 'Tìm kiếm sản phẩm...'}
+              type="text"
+              value={localSearchQuery}
+              onChange={(e) => setLocalSearchQuery(e.target.value)}
+              onKeyDown={handleLocalSearch}
+            />
+            {aiTextMode && (
+              <div className="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none">
+                <span className="material-symbols-outlined text-[18px] text-primary">auto_awesome</span>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -242,6 +426,12 @@ export default function ProductListPage() {
           )}
         </div>
       </div>
+
+      {/* Image Search Modal */}
+      <ImageSearchModal
+        isOpen={imageModalOpen}
+        onClose={() => setImageModalOpen(false)}
+      />
     </div>
   );
 }
