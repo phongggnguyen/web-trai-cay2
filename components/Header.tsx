@@ -2,18 +2,26 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useGlobal } from '../context/GlobalContext';
 import MobileMenu from './MobileMenu';
 
 const Header: React.FC = () => {
   const { cartCount, toggleTheme, isDark, user, logout, isAdmin } = useGlobal();
   const pathname = usePathname();
+  const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const isActive = (path: string) => {
     if (path === '/') return pathname === '/';
     return pathname?.startsWith(path);
+  };
+
+  const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && searchQuery.trim()) {
+      router.push(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
+    }
   };
 
   return (
@@ -66,6 +74,9 @@ const Header: React.FC = () => {
               className="block w-full rounded-full border-none bg-background-light dark:bg-black/20 py-2.5 pl-10 pr-4 text-sm text-text-main dark:text-white placeholder-text-muted/60 focus:ring-2 focus:ring-primary focus:bg-white dark:focus:bg-black/40 transition-all"
               placeholder="Tìm kiếm..."
               type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={handleSearch}
             />
           </div>
 

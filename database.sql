@@ -38,6 +38,11 @@ CREATE TABLE public.orders (
   shipping_fee numeric NOT NULL,
   total_amount numeric NOT NULL,
   status USER-DEFINED DEFAULT 'pending'::order_status,
+  payment_provider text,
+  external_transaction_id text,
+  payment_url text,
+  payment_expired_at timestamp with time zone,
+  payment_callback_data jsonb,
   CONSTRAINT orders_pkey PRIMARY KEY (id),
   CONSTRAINT orders_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth.users(id)
 );
@@ -82,4 +87,15 @@ CREATE TABLE public.reviews (
   CONSTRAINT reviews_product_id_fkey FOREIGN KEY (product_id) REFERENCES public.products(id) ON DELETE CASCADE,
   CONSTRAINT reviews_order_id_fkey FOREIGN KEY (order_id) REFERENCES public.orders(id) ON DELETE CASCADE,
   CONSTRAINT reviews_user_product_order_unique UNIQUE (user_id, product_id, order_id)
+);
+CREATE TABLE public.payment_logs (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  order_id uuid,
+  event_type text NOT NULL,
+  provider text NOT NULL,
+  request_data jsonb,
+  response_data jsonb,
+  created_at timestamp with time zone NOT NULL DEFAULT now(),
+  CONSTRAINT payment_logs_pkey PRIMARY KEY (id),
+  CONSTRAINT payment_logs_order_id_fkey FOREIGN KEY (order_id) REFERENCES public.orders(id) ON DELETE CASCADE
 );

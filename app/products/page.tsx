@@ -5,8 +5,15 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useGlobal } from '../../context/GlobalContext';
 import { supabase } from '../../lib/supabase';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useDebounce } from '../../hooks/useDebounce';
 
 export default function ProductListPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const searchQuery = searchParams.get('search') || '';
+  const debouncedSearch = useDebounce(searchQuery, 300);
+
   const [products, setProducts] = useState<any[]>([]);
   const [categoriesList, setCategoriesList] = useState<string[]>(['All']);
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
@@ -18,17 +25,25 @@ export default function ProductListPage() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        // Fetch products
-        const { data: productsData, error: productError } = await supabase
+
+        // Build query with search filter
+        let query = supabase
           .from('products')
           .select(`
             *,
             categories ( name )
           `);
 
+        // Add search filter if search query exists
+        if (debouncedSearch) {
+          query = query.ilike('name', `%${debouncedSearch}%`);
+        }
+
+        const { data: productsData, error: productError } = await query;
+
         if (productError) throw productError;
 
-        // Fetch categories (optional, or derive from products)
+        // Fetch categories
         const { data: categoriesData, error: catError } = await supabase
           .from('categories')
           .select('name');
@@ -60,7 +75,7 @@ export default function ProductListPage() {
     };
 
     fetchData();
-  }, []);
+  }, [debouncedSearch]); // Trigger when debounced search changes
 
   const filteredProducts = products.filter(product => {
     const matchCategory = selectedCategory === 'All' || product.category === selectedCategory;
@@ -202,8 +217,27 @@ export default function ProductListPage() {
             <div className="flex flex-col items-center justify-center py-20 text-center">
               <span className="material-symbols-outlined text-6xl text-gray-300">search_off</span>
               <h3 className="mt-4 text-xl font-bold text-gray-600 dark:text-gray-400">Không tìm thấy sản phẩm</h3>
-              <p className="text-gray-500">Thử thay đổi bộ lọc hoặc tìm từ khóa khác nhé.</p>
-              <button onClick={() => { setSelectedCategory('All'); setPriceRange(2000000); }} className="mt-4 text-primary font-bold hover:underline">Xóa bộ lọc</button>
+              {searchQuery ? (
+                <>
+                  <p className="text-gray-500">Không có kết quả cho từ khóa "<span className="font-bold text-primary">{searchQuery}</span>"</p>
+                  <button
+                    onClick={() => router.push('/products')}
+                    className="mt-4 text-primary font-bold hover:underline"
+                  >
+                    Xóa tìm kiếm
+                  </button>
+                </>
+              ) : (
+                <>
+                  <p className="text-gray-500">Thử thay đổi bộ lọc hoặc tìm từ khóa khác nhé.</p>
+                  <button
+                    onClick={() => { setSelectedCategory('All'); setPriceRange(2000000); }}
+                    className="mt-4 text-primary font-bold hover:underline"
+                  >
+                    Xóa bộ lọc
+                  </button>
+                </>
+              )}
             </div>
           )}
         </div>
