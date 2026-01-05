@@ -5,6 +5,7 @@ import { Toaster } from 'react-hot-toast';
 import { GlobalProvider } from '../context/GlobalContext';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import AIAssistant from '../components/AIAssistant';
 import './globals.css';
 
 const fontDisplay = Plus_Jakarta_Sans({
@@ -71,6 +72,7 @@ export default function RootLayout({
             <main className="flex-1">
               {children}
             </main>
+            <AIAssistant />
             <Footer />
           </div>
         </GlobalProvider>
