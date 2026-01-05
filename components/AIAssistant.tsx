@@ -42,7 +42,7 @@ const AIAssistant: React.FC = () => {
             const welcomeMessage: AIMessage = {
                 id: 'welcome',
                 role: 'assistant',
-                content: 'Xin chào! 👋 Tôi là trợ lý AI của Tiệm Quả Nghiệp. Tôi có thể giúp bạn tìm hiểu về sản phẩm, giá cả, danh mục trái cây. Bạn muốn hỏi gì ạ? 🍎🍇',
+                content: 'Xin chào! 👋 Tôi là Trợ lý Cam của Tiệm Quả Nghiệp. Tôi có thể giúp bạn tìm hiểu về sản phẩm, giá cả, danh mục trái cây. Bạn muốn hỏi gì ạ? 🍊',
                 timestamp: new Date(),
             };
             setMessages([welcomeMessage]);
@@ -133,12 +133,28 @@ const AIAssistant: React.FC = () => {
             {/* Floating Trigger Button */}
             <button
                 onClick={() => setIsOpen(true)}
-                className={`fixed bottom-6 right-6 z-[90] flex h-16 w-16 items-center justify-center rounded-full bg-primary text-text-main shadow-[0_4px_20px_rgba(76,223,32,0.4)] hover:scale-110 active:scale-95 transition-all duration-300 group ${isOpen ? 'scale-0 opacity-0 pointer-events-none' : 'scale-100 opacity-100'}`}
+                className={`fixed bottom-6 right-6 z-[90] flex h-16 w-16 items-center justify-center rounded-full bg-[#ff7b00] text-white shadow-[0_4px_20px_rgba(255,123,0,0.5)] hover:scale-110 active:scale-95 transition-all duration-300 group ${isOpen ? 'scale-0 opacity-0 pointer-events-none' : 'scale-100 opacity-100'}`}
                 title="Chat với AI"
             >
                 {/* Pulse Effect Background */}
-                <span className="absolute inset-0 rounded-full bg-primary opacity-30 animate-ping group-hover:animate-none"></span>
-                <span className="material-symbols-outlined text-[32px] relative z-10">smart_toy</span>
+                <span className="absolute inset-0 rounded-full bg-[#ff7b00] opacity-30 animate-ping group-hover:animate-none"></span>
+                {/* Custom Orange Bot SVG Icon */}
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    className="w-10 h-10 relative z-10 text-white fill-current drop-shadow-md"
+                >
+                    {/* Leaf */}
+                    <path d="M12,2c0,0,1,0.5,2.5,1.5c1,0.7,1.5,2,1.5,2s-1.5,0-3-1C12,4,11.5,3,12,2z" fill="#4ade80" />
+                    {/* Stem */}
+                    <path d="M12,4.5c0,0-0.5-1.5-0.5-2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" fill="none" />
+                    {/* Body (Orange shape - rounder) */}
+                    <circle cx="12" cy="13" r="8.5" className="text-white" fill="currentColor" />
+                    {/* Robot Face details */}
+                    <circle cx="9" cy="12" r="1.2" fill="#ff7b00" />
+                    <circle cx="15" cy="12" r="1.2" fill="#ff7b00" />
+                    <path d="M10,15.5c0.5,0.5,2,0.5,4,0" stroke="#ff7b00" strokeWidth="1" strokeLinecap="round" fill="none" />
+                </svg>
             </button>
 
             {/* Modal */}
@@ -166,11 +182,23 @@ const AIAssistant: React.FC = () => {
                         {/* Header */}
                         <div className="flex items-center p-4 border-b border-border-color dark:border-border-dark bg-surface-light dark:bg-surface-dark">
                             <div className="flex items-center gap-3">
-                                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/20 text-primary">
-                                    <span className="material-symbols-outlined text-[24px]">smart_toy</span>
+                                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#ff7b00]/10 text-[#ff7b00]">
+                                    {/* Custom Orange Bot SVG Icon for Header */}
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 24 24"
+                                        className="w-6 h-6 fill-current"
+                                    >
+                                        <path d="M12,2c0,0,1,0.5,2.5,1.5c1,0.7,1.5,2,1.5,2s-1.5,0-3-1C12,4,11.5,3,12,2z" fill="#4ade80" />
+                                        <path d="M12,4.5c0,0-0.5-1.5-0.5-2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" fill="none" />
+                                        <circle cx="12" cy="13" r="8.5" fill="currentColor" />
+                                        <circle cx="9" cy="12" r="1.2" fill="white" />
+                                        <circle cx="15" cy="12" r="1.2" fill="white" />
+                                        <path d="M10,15.5c0.5,0.5,2,0.5,4,0" stroke="white" strokeWidth="1" strokeLinecap="round" fill="none" />
+                                    </svg>
                                 </div>
                                 <div>
-                                    <h2 className="text-lg font-bold text-text-main dark:text-white">Trợ lý AI</h2>
+                                    <h2 className="text-lg font-bold text-text-main dark:text-white">Trợ lý Cam</h2>
                                     <p className="text-xs text-gray-500 dark:text-gray-400">Hỏi đáp về sản phẩm</p>
                                 </div>
                             </div>
