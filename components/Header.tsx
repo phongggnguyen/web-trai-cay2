@@ -5,11 +5,13 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useGlobal } from '../context/GlobalContext';
 import MobileMenu from './MobileMenu';
+import AIAssistantModal from './AIAssistantModal';
 
 const Header: React.FC = () => {
   const { cartCount, toggleTheme, isDark, user, logout, isAdmin } = useGlobal();
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [aiAssistantOpen, setAIAssistantOpen] = useState(false);
 
   const isActive = (path: string) => {
     if (path === '/') return pathname === '/';
@@ -64,6 +66,15 @@ const Header: React.FC = () => {
             className="flex h-10 w-10 items-center justify-center rounded-full bg-background-light dark:bg-black/20 hover:bg-primary/20 hover:text-primary transition-colors text-text-main dark:text-white"
           >
             <span className="material-symbols-outlined text-[20px]">{isDark ? 'light_mode' : 'dark_mode'}</span>
+          </button>
+
+          {/* AI Assistant */}
+          <button
+            onClick={() => setAIAssistantOpen(true)}
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-background-light dark:bg-black/20 hover:bg-primary/20 hover:text-primary transition-colors text-text-main dark:text-white"
+            title="Trợ lý AI"
+          >
+            <span className="material-symbols-outlined text-[20px]">smart_toy</span>
           </button>
 
           {/* Cart */}
@@ -140,6 +151,12 @@ const Header: React.FC = () => {
         isOpen={mobileMenuOpen}
         onClose={() => setMobileMenuOpen(false)}
         cartCount={cartCount}
+      />
+
+      {/* AI Assistant Modal */}
+      <AIAssistantModal
+        isOpen={aiAssistantOpen}
+        onClose={() => setAIAssistantOpen(false)}
       />
     </header>
   );

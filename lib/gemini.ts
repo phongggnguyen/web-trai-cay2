@@ -272,3 +272,121 @@ export function fileToBase64(file: File): Promise<string> {
         reader.readAsDataURL(file);
     });
 }
+
+// ============== AI ASSISTANT FUNCTIONS ==============
+
+export interface AIMessage {
+    role: 'user' | 'assistant';
+    content: string;
+}
+
+export interface DatabaseContext {
+    totalCategories: number;
+    categories: Array<{ id: number; name: string; slug: string }>;
+    totalProducts: number;
+    productsSummary: Array<{
+        id: string;
+        name: string;
+        price: number;
+        category: string;
+        stock: number;
+        isBestSeller: boolean;
+    }>;
+    priceRange: { min: number; max: number };
+}
+
+/**
+ * Query AI Assistant with database context
+ * @param userMessage User's question
+ * @param databaseContext Current database state
+ * @param conversationHistory Previous messages
+ * @returns AI's response
+ */
+export async function queryAIAssistant(
+    userMessage: string,
+    databaseContext: DatabaseContext,
+    conversationHistory: AIMessage[] = []
+): Promise<string> {
+    // Build system prompt with database context
+    const systemPrompt = buildSystemPrompt(databaseContext);
+
+    // Build conversation parts
+    const parts: GeminiPart[] = [
+        { text: systemPrompt },
+    ];
+
+    // Add conversation history (last 5 messages to keep context manageable)
+    const recentHistory = conversationHistory.slice(-5);
+    if (recentHistory.length > 0) {
+        const historyText = recentHistory
+            .map(msg => `${msg.role === 'user' ? 'Khách hàng' : 'Bạn'}: ${msg.content}`)
+            .join('\n');
+        parts.push({ text: `\n\nLịch sử hội thoại:\n${historyText}` });
+    }
+
+    // Add current user message
+    parts.push({ text: `\n\nKhách hàng hỏi: ${userMessage}\n\nHãy trả lời:` });
+
+    const payload: GeminiRequest = {
+        contents: [{ parts }],
+    };
+
+    const response = await callGeminiAPI(payload);
+    return response.trim();
+}
+
+/**
+ * Build system prompt with database context
+ */
+function buildSystemPrompt(context: DatabaseContext): string {
+    const { totalCategories, categories, totalProducts, productsSummary, priceRange } = context;
+
+    // Format categories list
+    const categoriesList = categories.map(c => c.name).join(', ');
+
+    // Format top products (first 20)
+    const topProducts = productsSummary.slice(0, 20).map(p =>
+        `- ${p.name}: ${p.price.toLocaleString('vi-VN')}đ (${p.category})${p.isBestSeller ? ' ⭐ Bán chạy' : ''}`
+    ).join('\n');
+
+    // Format price in Vietnamese
+    const minPrice = priceRange.min.toLocaleString('vi-VN');
+    const maxPrice = priceRange.max.toLocaleString('vi-VN');
+
+    return `Bạn là trợ lý AI thông minh cho cửa hàng trái cây cao cấp "Tiệm Quả Nghiệp".
+
+THÔNG TIN CỬA HÀNG HIỆN TẠI:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📊 Tổng số danh mục: ${totalCategories}
+📂 Danh sách danh mục: ${categoriesList}
+🛒 Tổng số sản phẩm: ${totalProducts}
+💰 Khoảng giá: ${minPrice}đ - ${maxPrice}đ
+
+SẢN PHẨM TIÊU BIỂU:
+${topProducts}
+
+NHIỆM VỤ CỦA BẠN:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Trả lời câu hỏi của khách hàng về sản phẩm, giá cả, danh mục
+2. Đưa ra gợi ý sản phẩm phù hợp dựa trên nhu cầu
+3. Cung cấp thông tin chính xác từ database
+4. Trả lời thân thiện, nhiệt tình, chuyên nghiệp
+
+QUY TẮC QUAN TRỌNG:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ Trả lời ngắn gọn, dễ hiểu (100-150 từ tối đa)
+✅ Sử dụng emoji phù hợp để sinh động
+✅ Chỉ cung cấp thông tin có trong database
+✅ Format giá tiền theo kiểu Việt Nam (VD: 240,000đ)
+✅ Nếu không chắc chắn, nói rõ và đề xuất liên hệ nhân viên
+❌ KHÔNG trả lời về những sản phẩm không có trong danh sách
+❌ KHÔNG sử dụng markdown (**, ##, etc.)
+❌ KHÔNG đưa ra thông tin sai lệch
+
+VÍ DỤ CÂU TRẢ LỜI TỐT:
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+"Dạ, hiện tại shop có ${totalCategories} danh mục trái cây: ${categoriesList}. Tất cả đều là trái cây tươi ngon, nhập khẩu và trong nước. Bạn muốn xem sản phẩm nào ạ? 🍎🍇"
+
+"Cherry Đỏ Size 30+ có giá 520,000đ/kg, xuất xứ từ Úc, đang giảm 20% từ giá gốc 650,000đ. Sản phẩm này rất được yêu thích, bạn có muốn thêm vào giỏ hàng không? 🍒"`;
+}
+
