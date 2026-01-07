@@ -29,33 +29,46 @@ export default function ProductSuggestionWidget({ product }: ProductSuggestionWi
     const displayProduct = product || defaultProduct;
 
     return (
-        <div className="relative overflow-hidden rounded-2xl bg-[#111b0e] text-white p-6 text-center">
-            <div className="relative z-10 flex flex-col items-center gap-3">
-                <span className="text-primary text-xs font-bold uppercase tracking-widest">
-                    Sản phẩm hot
-                </span>
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#1a472a] via-primary/80 to-red-600 text-white p-6 text-center shadow-lg group hover:shadow-red-500/30 transition-all duration-500 border border-white/10">
+            {/* Gradient Overlay for blending */}
+            <div className="absolute inset-0 bg-gradient-to-t from-red-600/20 to-transparent mix-blend-overlay"></div>
 
-                <div className="size-24 rounded-full bg-white p-1 mb-1">
+            <div className="relative z-10 flex flex-col items-center gap-3">
+                <div className="flex items-center gap-1.5 bg-black/20 backdrop-blur-sm px-3 py-1 rounded-full border border-white/20 shadow-inner">
+                    <span className="material-symbols-outlined text-[16px] text-red-500 animate-pulse">local_fire_department</span>
+                    <span className="text-white text-xs font-bold uppercase tracking-widest text-shadow-sm">
+                        Sản phẩm hot
+                    </span>
+                </div>
+
+                <div className="size-28 rounded-full bg-white p-1 my-2 shadow-2xl relative group-hover:scale-105 transition-transform duration-500">
+                    <div className="absolute -inset-1 rounded-full bg-gradient-to-tr from-green-400 to-red-500 opacity-70 blur animate-pulse"></div>
                     <div
-                        className="w-full h-full rounded-full bg-cover bg-center"
+                        className="w-full h-full rounded-full bg-cover bg-center relative z-10 border-2 border-white"
                         style={{ backgroundImage: `url("${displayProduct.image}")` }}
                     />
                 </div>
 
-                <h4 className="text-xl font-bold">{displayProduct.name}</h4>
-                <p className="text-sm text-gray-300">{displayProduct.description}</p>
+                <h4 className="text-2xl font-black text-white drop-shadow-md">{displayProduct.name}</h4>
+                <p className="text-sm text-gray-100 font-medium">{displayProduct.description}</p>
+
+                <div className="flex items-center justify-center gap-2 mt-2 mb-1">
+                    <span className="text-2xl font-bold text-white">{displayProduct.price.toLocaleString()}đ</span>
+                    <span className="text-sm text-white/80">/{displayProduct.unit}</span>
+                </div>
 
                 <Link
                     href={`/products/${displayProduct.id}`}
-                    className="mt-2 w-full py-2 bg-primary text-text-main font-bold rounded-full hover:bg-opacity-90 transition text-center block"
+                    className="w-full py-2.5 bg-white text-red-600 font-black uppercase tracking-wide rounded-full hover:bg-red-50 hover:scale-105 hover:shadow-lg transition-all transform shadow-md flex items-center justify-center gap-2"
                 >
-                    Mua ngay
+                    <span>Mua ngay</span>
+                    <span className="material-symbols-outlined text-lg">arrow_forward</span>
                 </Link>
             </div>
 
-            {/* Abstract Background Pattern */}
-            <div className="absolute top-0 right-0 -mr-8 -mt-8 size-32 rounded-full bg-primary opacity-20 blur-xl" />
-            <div className="absolute bottom-0 left-0 -ml-8 -mb-8 size-32 rounded-full bg-primary opacity-20 blur-xl" />
+            {/* Abstract Background Patterns - Green & Red blending */}
+            <div className="absolute -bottom-12 -right-12 size-48 rounded-full bg-red-600 opacity-40 blur-3xl animate-pulse" />
+            <div className="absolute -top-12 -left-12 size-48 rounded-full bg-primary opacity-30 blur-3xl" />
         </div>
     );
 }
