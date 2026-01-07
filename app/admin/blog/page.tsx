@@ -1,63 +1,17 @@
 'use client';
 
 import React, { useState } from 'react';
-import type { BlogPost } from './types';
+import type { BlogPost, BlogFormData } from './types';
 import { BlogTable } from './_components/BlogTable';
-
-// Mock data cho demo
-const MOCK_BLOGS: BlogPost[] = [
-    {
-        id: '1',
-        title: '10 Loại Trái Cây Tốt Nhất Cho Sức Khỏe',
-        slug: '10-loai-trai-cay-tot-nhat-cho-suc-khoe',
-        excerpt: 'Khám phá những loại trái cây giàu dinh dưỡng giúp tăng cường sức khỏe và miễn dịch...',
-        content: 'Nội dung bài viết đầy đủ...',
-        coverImage: null,
-        author: 'Admin',
-        status: 'published',
-        publishedAt: new Date('2024-01-15'),
-        createdAt: new Date('2024-01-10'),
-        updatedAt: new Date('2024-01-15'),
-        tags: ['sức khỏe', 'dinh dưỡng'],
-        views: 1250,
-    },
-    {
-        id: '2',
-        title: 'Cách Bảo Quản Trái Cây Tươi Lâu Hơn',
-        slug: 'cach-bao-quan-trai-cay-tuoi-lau-hon',
-        excerpt: 'Mẹo hay giúp bạn giữ trái cây tươi ngon trong nhiều ngày...',
-        content: 'Nội dung bài viết đầy đủ...',
-        coverImage: null,
-        author: 'Admin',
-        status: 'published',
-        publishedAt: new Date('2024-01-20'),
-        createdAt: new Date('2024-01-18'),
-        updatedAt: new Date('2024-01-20'),
-        tags: ['mẹo hay', 'bảo quản'],
-        views: 890,
-    },
-    {
-        id: '3',
-        title: 'Trái Cây Nhập Khẩu vs Trái Cây Nội Địa',
-        slug: 'trai-cay-nhap-khau-vs-trai-cay-noi-dia',
-        excerpt: 'So sánh chi tiết về chất lượng, giá cả và dinh dưỡng...',
-        content: 'Nội dung bài viết đầy đủ...',
-        coverImage: null,
-        author: 'Admin',
-        status: 'draft',
-        publishedAt: null,
-        createdAt: new Date('2024-01-25'),
-        updatedAt: new Date('2024-01-25'),
-        tags: ['so sánh', 'nhập khẩu'],
-        views: 0,
-    },
-];
+import { BlogFormModal } from './_components/BlogFormModal';
+import { useBlogData } from './hooks/useBlogData';
 
 export default function AdminBlogPage() {
-    const [blogs, setBlogs] = useState<BlogPost[]>(MOCK_BLOGS);
+    const { blogs, loading, error, createBlog, updateBlog, deleteBlog } = useBlogData();
     const [searchQuery, setSearchQuery] = useState('');
     const [statusFilter, setStatusFilter] = useState<'all' | 'draft' | 'published'>('all');
-    const [isLoading] = useState(false);
+    const [isFormOpen, setIsFormOpen] = useState(false);
+    const [editingBlog, setEditingBlog] = useState<BlogPost | null>(null);
 
     // Filter Logic
     const filteredBlogs = blogs.filter((blog) => {
@@ -77,22 +31,36 @@ export default function AdminBlogPage() {
     const draftBlogs = blogs.filter((b) => b.status === 'draft').length;
     const totalViews = blogs.reduce((sum, b) => sum + b.views, 0);
 
-    const handleDelete = (blog: BlogPost) => {
-        if (confirm(`Bạn có chắc muốn xóa "${blog.title}"?`)) {
-            setBlogs(blogs.filter((b) => b.id !== blog.id));
+    const handleFormSubmit = async (data: BlogFormData, imageFile?: File | null, currentImageUrl?: string | null) => {
+        if (editingBlog) {
+            await updateBlog(editingBlog.id, data, currentImageUrl);
+        } else {
+            await createBlog(data);
         }
+
+        // Close form
+        setIsFormOpen(false);
+        setEditingBlog(null);
     };
 
     const handleEdit = (blog: BlogPost) => {
-        alert(`Chỉnh sửa: ${blog.title}`);
+        setEditingBlog(blog);
+        setIsFormOpen(true);
+    };
+
+    const handleDelete = async (blog: BlogPost) => {
+        if (confirm(`Bạn có chắc muốn xóa "${blog.title}"?`)) {
+            await deleteBlog(blog.id, blog.cover_image);
+        }
     };
 
     const handleView = (blog: BlogPost) => {
-        alert(`Xem bài viết: ${blog.title}`);
+        // TODO: Navigate to blog detail page or preview
+        window.open(`/blog/${blog.slug}`, '_blank');
     };
 
     return (
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-4">
             {/* Header */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
@@ -105,7 +73,10 @@ export default function AdminBlogPage() {
                 </div>
 
                 <button
-                    onClick={() => alert('Thêm bài viết mới')}
+                    onClick={() => {
+                        setEditingBlog(null);
+                        setIsFormOpen(true);
+                    }}
                     className="flex items-center gap-1.5 px-3 py-2 bg-primary hover:bg-primary/90 text-text-main rounded-lg font-bold shadow-lg shadow-primary/30 transition-all transform hover:scale-105 text-sm"
                 >
                     <span className="material-symbols-outlined text-[18px]">add</span>
@@ -182,9 +153,13 @@ export default function AdminBlogPage() {
             </div>
 
             {/* Blog Table */}
-            {isLoading ? (
+            {loading ? (
                 <div className="flex h-64 items-center justify-center">
                     <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
+                </div>
+            ) : error ? (
+                <div className="rounded-xl border border-red-200 bg-red-50 p-8 text-center dark:border-red-800 dark:bg-red-900/20">
+                    <p className="text-red-600 dark:text-red-400">{error}</p>
                 </div>
             ) : (
                 <BlogTable
@@ -194,6 +169,17 @@ export default function AdminBlogPage() {
                     onView={handleView}
                 />
             )}
+
+            {/* Form Modal */}
+            <BlogFormModal
+                isOpen={isFormOpen}
+                blog={editingBlog}
+                onClose={() => {
+                    setIsFormOpen(false);
+                    setEditingBlog(null);
+                }}
+                onSubmit={handleFormSubmit}
+            />
         </div>
     );
 }
