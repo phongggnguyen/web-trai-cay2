@@ -9,6 +9,7 @@ import BlogHero from './BlogHero';
 import CategoriesWidget from './CategoriesWidget';
 import RecentPostsWidget from './RecentPostsWidget';
 import NewsletterWidget from './NewsletterWidget';
+import ProductSuggestionWidget from './ProductSuggestionWidget';
 
 interface MasonryBlogContentProps {
     initialPosts: BlogPost[];
@@ -118,8 +119,8 @@ export default function MasonryBlogContent({ initialPosts }: MasonryBlogContentP
                                     key={page}
                                     onClick={() => setCurrentPage(page)}
                                     className={`size-10 rounded-full flex items-center justify-center transition-colors ${currentPage === page
-                                            ? 'bg-primary text-text-main font-bold'
-                                            : 'bg-white dark:bg-white/10 hover:bg-primary hover:text-text-main font-medium text-text-main dark:text-white'
+                                        ? 'bg-primary text-text-main font-bold'
+                                        : 'bg-white dark:bg-white/10 hover:bg-primary hover:text-text-main font-medium text-text-main dark:text-white'
                                         }`}
                                 >
                                     {page}
@@ -145,6 +146,7 @@ export default function MasonryBlogContent({ initialPosts }: MasonryBlogContentP
                             onCategoryChange={handleCategoryChange}
                         />
                         <RecentPostsWidget posts={initialPosts} limit={3} />
+                        <ProductSuggestionWidget />
                         <NewsletterWidget />
                     </div>
                 </aside>
