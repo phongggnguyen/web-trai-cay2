@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import type { BlogPost } from '@/lib/blog/types';
+import type { Product } from '@/lib/products/queries';
 import { normalizeTag } from '@/lib/blog/utils';
 import { BLOG_CATEGORIES } from '@/lib/blog/constants';
 import MasonryBlogCard from './MasonryBlogCard';
@@ -13,9 +14,10 @@ import ProductSuggestionWidget from './ProductSuggestionWidget';
 
 interface MasonryBlogContentProps {
     initialPosts: BlogPost[];
+    hotProduct?: Product | null;
 }
 
-export default function MasonryBlogContent({ initialPosts }: MasonryBlogContentProps) {
+export default function MasonryBlogContent({ initialPosts, hotProduct }: MasonryBlogContentProps) {
     const [activeCategory, setActiveCategory] = useState('Tất cả');
     const [searchQuery, setSearchQuery] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
@@ -146,7 +148,7 @@ export default function MasonryBlogContent({ initialPosts }: MasonryBlogContentP
                             onCategoryChange={handleCategoryChange}
                         />
                         <RecentPostsWidget posts={initialPosts} limit={3} />
-                        <ProductSuggestionWidget />
+                        <ProductSuggestionWidget product={hotProduct} />
                         <NewsletterWidget />
                     </div>
                 </aside>

@@ -1,15 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-
-interface Product {
-    id: string;
-    name: string;
-    image: string;
-    description: string;
-    price: number;
-    unit: string;
-}
+import type { Product } from '@/lib/products/queries';
 
 interface ProductSuggestionWidgetProps {
     product?: Product | null;
@@ -23,7 +15,9 @@ export default function ProductSuggestionWidget({ product }: ProductSuggestionWi
         image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCYbAD0bUL9_PmKKGwmIZpV1nyrH8z-h3dj1Y0GuyisdkZEbzGsxO-PqK8un2Do8l-1-7yMxUGtGvQTUg6Z4kuYroEixTMhOt26xNVzqkmVxovHH1U5sjRhLJyxjS9gHupwgWbeRURS_l0qJp2i8HIK07nAApAd-a7atnhUNEi7ZgX4OzrIMALTJFA794fJXXJpoHrENFfI7QOrq_3V8g_Dw1WM4lTQ3FLRIy6zTXvzxloCC-n1WAE2nCb1nfFQDc-7RjEhlaLnSOwG',
         description: 'Ngọt lịm, mọng nước, hái tại vườn.',
         price: 120000,
-        unit: 'kg'
+        unit: 'kg',
+        category: 'Trái Cây',
+        stock: 100
     };
 
     const displayProduct = product || defaultProduct;
@@ -45,7 +39,7 @@ export default function ProductSuggestionWidget({ product }: ProductSuggestionWi
                     <div className="absolute -inset-1 rounded-full bg-gradient-to-tr from-green-400 to-red-500 opacity-70 blur animate-pulse"></div>
                     <div
                         className="w-full h-full rounded-full bg-cover bg-center relative z-10 border-2 border-white"
-                        style={{ backgroundImage: `url("${displayProduct.image}")` }}
+                        style={{ backgroundImage: `url("${displayProduct.image || (displayProduct as any).image_url}")` }}
                     />
                 </div>
 
