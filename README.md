@@ -1,4 +1,4 @@
-# 🍎 Tiệm Quả Nghiệp - E-commerce Platform
+# 🍎 Tiệm Quả Nghiệp - Nền Tảng Thương Mại Điện Tử Trái Cây Cao Cấp
 
 <div align="center">
   
@@ -6,309 +6,215 @@
   [![TypeScript](https://img.shields.io/badge/TypeScript-5.6.3-blue?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
   [![React](https://img.shields.io/badge/React-18.3.1-61DAFB?logo=react&logoColor=white)](https://react.dev/)
   [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4.14-38B2AC?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
-  [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+  [![Supabase](https://img.shields.io/badge/Supabase-2.87.1-3ECF8E?logo=supabase&logoColor=white)](https://supabase.com/)
 
-**Modern e-commerce platform cho trái cây tươi nhập khẩu và đặc sản Việt Nam**
+**Website bán hàng hiện đại tích hợp AI thông minh**
 
 *Nghiệp tụ vành môi - Ăn vô trôi hết* 🎯
 
-[Live Demo](#) · [Report Bug](#) · [Request Feature](#)
+[Tính Năng](#-tính-năng-chính) · [Công Nghệ](#-công-nghệ-sử-dụng) · [Cài Đặt](#-hướng-dẫn-cài-đặt) · [Cấu Trúc](#-cấu-trúc-dự-án)
 
 </div>
 
 ---
 
-## ✨ Highlights
+## ✨ Điểm Nổi Bật
 
-- ⚡ **Next.js 15 App Router** - Server/Client Components optimization với code splitting tự động
-- 🎨 **Modern UI/UX** - Tailwind CSS 3.4 với dark mode support & smooth animations
-- 🛒 **Smart Cart Management** - Context API + localStorage persistence, không mất data khi refresh
-- 📱 **Mobile-First Design** - Responsive hoàn toàn với mobile drawer menu
-- 🚀 **Performance Optimized** - next/image auto-optimization, lazy loading, ISR ready
-- 🔒 **Type-Safe** - Full TypeScript strict mode với comprehensive type definitions
-- ♿ **Accessible** - WCAG compliant với keyboard navigation support
-- 🔍 **SEO Ready** - OpenGraph metadata, semantic HTML, optimized của search engines
+Đây không chỉ là một web bán hàng bình thường, mà là một **Modern Web App** được tối ưu tận răng:
 
----
-
-## 🎯 Key Features
-
-### 🛒 Shopping Experience
-- **Persistent Cart** - Giỏ hàng tự động save vào localStorage
-- **Real-time Updates** - Quantity management với instant feedback
-- **Toast Notifications** - Professional non-blocking UI notifications
-- **Smart Pricing** - Auto-calculate tax, shipping (free cho đơn >500k)
-
-### 🎨 UI/UX Excellence
-- **Dark/Light Mode** - Theme toggle với system preference sync
-- **Smooth Animations** - Micro-interactions enhance user engagement
-- **Loading States** - Skeleton UI cho better perceived performance
-- **Mobile Menu** - Slide-in drawer với backdrop overlay
-
-### 🔍 SEO & Performance
-- **OpenGraph Tags** - Social sharing ready với proper metadata
-- **next/image** - Automatic WebP/AVIF conversion + lazy loading
-- **Code Splitting** - Optimal bundle size (~125kB First Load JS)
-- **Lighthouse Score** - 90+ performance rating
-
-### 🛡️ Production Ready
-- **Error Boundaries** - Graceful error handling, app không crash
-- **Type Safety** - Full TypeScript coverage với strict mode
-- **Custom Hooks** - useCart, useLocalStorage, useDebounce, useMediaQuery
-- **Utility Library** - Reusable helpers với proper typing
+- ⚡ **Siêu Tốc Độ**: Chạy trên **Next.js 15 App Router** mới nhất, load trang cực nhanh nhờ Server Components.
+- 🤖 **Trí Tuệ Nhân Tạo (AI)**:
+  - **Viết Blog Tự Động**: Chỉ cần upload ảnh, AI (Gemini) sẽ tự viết bài blog chuẩn SEO từ A-Z.
+  - **Tìm Kiếm Thông Minh**: Tìm trái cây bằng hình ảnh hoặc mô tả tự nhiên (VD: "trái gì màu đỏ ăn ngọt").
+  - **Trợ Lý Ảo**: Chatbot tư vấn 24/7, am hiểu về sản phẩm của shop.
+- 🎨 **Giao Diện Đẹp Mắt**: Thiết kế với **Tailwind CSS**, có chế độ Sáng/Tối (Dark Mode) xịn xò, hiệu ứng mượt mà.
+- 🛒 **Giỏ Hàng Thông Minh**: Tự động lưu giỏ hàng, tính toán giá tiền real-time, không mất khi F5.
+- 📱 **Tương Thích Mọi Thiết Bị**: Hiển thị đẹp trên cả điện thoại, máy tính bảng và desktop (Mobile-First).
+- 🔐 **Bảo Mật Cao**: Hệ thống đăng nhập/đăng ký với Supabase Auth, phân quyền Admin/Khách hàng chặt chẽ.
 
 ---
 
-## 🚀 Quick Start
+## 🎯 Tính Năng Chính
 
-### Prerequisites
-- Node.js 18.x trở lên
-- npm hoặc yarn
+### 🛍️ Dành Cho Khách Hàng
 
-### Installation
+#### Mua Sắm & Trải Nghiệm
+- ✅ **Danh Mục Sản Phẩm**: Lướt xem trái cây với bộ lọc xịn (theo giá, loại, đánh giá).
+- ✅ **Tìm Kiếm Đỉnh Cao**:
+  - Gõ text: "Tìm quả gì giải nhiệt mùa hè" → AI tự hiểu và gợi ý dưa hấu, cam...
+  - Chụp ảnh: Chụp quả táo → AI nhận diện và tìm sản phẩm tương ứng.
+- ✅ **Đặt Hàng Nhanh Gọn**: Quy trình checkout 3 bước, lưu địa chỉ giao hàng.
+- ✅ **Lịch Sử Đơn Hàng**: Theo dõi trạng thái đơn hàng (đang xử lý, đang giao, đã giao).
+
+#### Tương Tác
+- ⭐ **Đánh Giá & Review**: Chấm sao, viết nhận xét cho sản phẩm.
+- 💬 **Chat Với AI**: Hỏi giá, hỏi công dụng, nhờ tư vấn quà tặng.
+- 👤 **Hồ Sơ Cá Nhân**: Quản lý thông tin, đổi mật khẩu, sổ địa chỉ.
+
+---
+
+### 🎛️ Dành Cho Quản Trị Viên (Admin)
+
+#### Dashboard & Báo Cáo
+- 📊 **Biểu Đồ Doanh Thu**: Xem doanh thu theo ngày/tháng/năm trực quan (Recharts).
+- 📈 **Thống Kê**: Số lượng đơn hàng, khách hàng mới, sản phẩm bán chạy.
+- 👥 **Phân Tích Khách Hàng**: Xem ai mua nhiều, ai là khách hàng thân thiết.
+
+#### Quản Lý Cửa Hàng
+- 📦 **Sản Phẩm**: Thêm/Sửa/Xóa sản phẩm, upload ảnh nhanh chóng.
+- 🏷️ **Danh Mục**: Tạo các nhóm trái cây (Trái cây nhập khẩu, Trái cây Việt Nam...).
+- 🚚 **Đơn Hàng**: Xem chi tiết đơn, cập nhật trạng thái giao hàng.
+- 📝 **Quản Lý Blog (Đặc Biệt)**:
+  - **Chế Độ AI**: Upload ảnh bìa → Bùm! Có ngay bài viết 1000 từ + tiêu đề + tags.
+  - **Chế Độ Thủ Công**: Trình soạn thảo đầy đủ cho bài viết chuyên sâu.
+
+---
+
+## 🛠️ Công Nghệ Sử Dụng
+
+Dự án sử dụng các công nghệ mới và ổn định nhất hiện nay:
+
+### **Frontend (Giao Diện)**
+| Công Nghệ | Phiên Bản | Mục Đích |
+|-----------|-----------|----------|
+| **Next.js** | 15.5.9 | Framework chính, dùng App Router hiện đại |
+| **React** | 18.3.1 | Thư viện UI |
+| **TypeScript** | 5.6.3 | Code an toàn, tránh lỗi ngớ ngẩn |
+| **Tailwind CSS** | 3.4.14 | Viết CSS cực nhanh, utility-first |
+| **Zod** | 4.2.1 | Kiểm tra dữ liệu (Validation) |
+| **Recharts** | 3.6.0 | Vẽ biểu đồ thống kê |
+
+### **Backend & Dịch Vụ**
+| Dịch Vụ | Mục Đích |
+|---------|----------|
+| **Supabase** | Database (PostgreSQL), Xác thực (Auth), Lưu trữ ảnh (Storage) |
+| **Gemini AI** | Trí tuệ nhân tạo của Google (Viết blog, Chatbot, Nhận diện ảnh) |
+
+---
+
+## 🚀 Hướng Dẫn Cài Đặt
+
+Chỉ cần vài bước là bạn có thể chạy dự án này trên máy:
+
+### 1. Chuẩn Bị
+- Cài sẵn **Node.js** (bản 18 trở lên).
+- Tài khoản **Supabase** (miễn phí).
+- API Key của **Google Gemini** (miễn phí).
+
+### 2. Cài Đặt
 
 ```bash
-# Clone repository
-git clone https://github.com/yourusername/web-trai-cay2.git
+# 1. Clone code về máy
+git clone https://github.com/phongggnguyen/web-trai-cay2.git
 cd web-trai-cay2
 
-# Install dependencies
+# 2. Cài đặt các thư viện
 npm install
 
-# Setup environment variables
+# 3. Tạo file cấu hình môi trường
 cp .env.example .env.local
-# Edit .env.local với your configuration
+```
 
-# Run development server
+### 3. Cấu Hình
+Mở file `.env.local` và điền thông tin của bạn vào:
+
+```env
+# Supabase (Lấy trong Settings -> API)
+NEXT_PUBLIC_SUPABASE_URL=đường_dẫn_supabase_của_bạn
+NEXT_PUBLIC_SUPABASE_ANON_KEY=key_anon_của_bạn
+
+# Gemini AI (Lấy tại aistudio.google.com)
+GEMINI_API_KEY=key_gemini_của_bạn
+```
+
+### 4. Setup Database
+Vào SQL Editor của Supabase và chạy lần lượt các file trong thư mục dự án (hoặc copy nội dung query):
+1. `database.sql` (Tạo bảng)
+2. `supabase_rls_policies.sql` (Bảo mật)
+3. `supabase_storage_policies.sql` (Quyền truy cập ảnh)
+
+### 5. Chạy Dự Án
+
+```bash
+# Chạy môi trường development
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to see the result.
-
-### Build for Production
-
-```bash
-# Create optimized production build
-npm run build
-
-# Start production server
-npm start
-```
+Truy cập `http://localhost:3000` và thưởng thức! 🎉
 
 ---
 
-## 📁 Project Structure
+## 📁 Cấu Trúc Dự Án
+
+Dự án được tổ chức gọn gàng, dễ mở rộng:
 
 ```
 web-trai-cay2/
-├── app/                         # Next.js 15 App Router
-│   ├── (routes)/               # Route groups
-│   ├── _components/            # Page-specific components
-│   ├── layout.tsx              # Root layout với providers
-│   ├── page.tsx                # Homepage
-│   ├── error.tsx               # Error boundary
-│   ├── not-found.tsx           # 404 page
-│   └── loading.tsx             # Loading states
-├── components/                 # Reusable components
-│   ├── ui/                    # Generic UI (Button, Input, Card)
-│   ├── features/              # Feature components (ProductCard, CartItem)
-│   ├── Header.tsx             # Site header với navigation
-│   ├── Footer.tsx             # Site footer
-│   └── MobileMenu.tsx         # Mobile drawer menu
-├── context/                    # React Context
-│   └── GlobalContext.tsx      # Global state (cart, theme)
-├── hooks/                      # Custom React hooks
-│   ├── useCart.ts             # Cart operations với pricing
-│   ├── useLocalStorage.ts     # Type-safe localStorage
-│   ├── useDebounce.ts         # Debouncing utility
-│   └── useMediaQuery.ts       # Responsive design helpers
-├── lib/                        # Utilities & helpers
-│   ├── utils.ts               # Common utilities
-│   └── metadata.ts            # SEO metadata helpers
-├── types.ts                    # TypeScript definitions
-├── constants.ts                # App constants & mock data
-└── next.config.mjs            # Next.js configuration
+├── app/                        # Code chính của Next.js (App Router)
+│   ├── (public)/               # Các trang công khai (Home, Shop, Blog...)
+│   ├── admin/                  # Trang quản trị (cần đăng nhập admin)
+│   ├── api/                    # Các API (AI, Search...)
+│   ├── auth/                   # Đăng nhập/Đăng ký
+│   └── layout.tsx              # Layout chung cho toàn web
+│
+├── components/                 # Các component tái sử dụng
+│   ├── ui/                     # Nút, ô nhập liệu, card... (Atomic design)
+│   └── ...                     # Header, Footer, Menu...
+│
+├── lib/                        # Các hàm tiện ích (Utils)
+│   ├── supabase.ts             # Kết nối Database
+│   ├── gemini.ts               # Kết nối AI
+│   └── ...
+│
+├── hooks/                      # Custom Hooks (Logic tái sử dụng)
+├── context/                    # Quản lý state toàn cục (Giỏ hàng...)
+└── public/                     # Ảnh tĩnh, icon...
 ```
 
 ---
 
-## 🛠️ Tech Stack
+## 🤖 Hướng Dẫn Sử Dụng Tính Năng AI
 
-### Frontend
-- **Framework**: Next.js 15.5.9 (App Router)
-- **UI Library**: React 18.3.1
-- **Language**: TypeScript 5.6.3 (Strict Mode)
-- **Styling**: Tailwind CSS 3.4.14
-- **Icons**: Material Symbols Outlined
-- **Fonts**: Google Fonts (Plus Jakarta Sans, Manrope)
+### 1. Tạo Bài Viết Blog Tự Động
+1. Vào **Admin** -> **Quản lý Blog**.
+2. Bấm **"Tạo bài viết mới"**.
+3. Chọn thẻ **"Viết bằng AI"**.
+4. Upload 1 ảnh trái cây đẹp (Bắt buộc).
+5. Nhập tiêu đề (hoặc để trống cho AI tự nghĩ).
+6. Bấm **"Tạo nội dung với AI"**.
+7. Đợi 10s -> Có ngay bài viết xịn xò! Review và đăng thôi.
 
-### State Management
-- **Global State**: React Context API
-- **Persistence**: localStorage với auto-sync
-- **Notifications**: react-hot-toast
-
-### Developer Experience
-- **Linting**: ESLint với next/core-web-vitals
-- **Type Checking**: TypeScript strict mode
-- **Hot Reload**: Fast Refresh (HMR)
-- **Package Manager**: npm
+### 2. Tìm Kiếm Bằng Hình Ảnh
+1. Ở trang chủ, bấm vào icon 📷 trên thanh tìm kiếm.
+2. Tải ảnh lên hoặc chụp ảnh.
+3. Hệ thống sẽ trả về sản phẩm giống nhất trong cửa hàng.
 
 ---
 
-## 📸 Screenshots
+## 🤝 Đóng Góp (Contributing)
 
-### Homepage
-![Homepage](docs/screenshots/home.png)
-*Hero section với best sellers showcase*
-
-### Product Grid
-![Products](docs/screenshots/products.png)
-*Advanced filtering với category & price range*
-
-### Shopping Cart
-![Cart](docs/screenshots/cart.png)
-*Real-time cart management với pricing breakdown*
-
-### Mobile Experience
-![Mobile](docs/screenshots/mobile.png)
-*Responsive design với drawer navigation*
+Rất hoan nghênh mọi người đóng góp để dự án tốt hơn!
+1. Fork dự án.
+2. Tạo nhánh mới (`git checkout -b feature/TinhNangMoi`).
+3. Commit code (`git commit -m 'Thêm tính năng mới xịn xò'`).
+4. Push lên (`git push origin feature/TinhNangMoi`).
+5. Tạo Pull Request.
 
 ---
 
-## 🧪 Testing & Quality
+## 👤 Tác Giả
 
-### Run Tests
+**Phongg Nguyen**
 
-```bash
-# Type checking
-npm run type-check
-
-# Linting
-npm run lint
-
-# Build verification
-npm run build
-```
-
-### Code Quality Metrics
-- ✅ TypeScript Strict Mode: Enabled
-- ✅ ESLint Rules: Configured
-- ✅ Type Coverage: 100%
-- ✅ Build Status: Passing
-
----
-
-## 📈 Performance Metrics
-
-### Lighthouse Scores
-- **Performance**: 92/100
-- **Accessibility**: 95/100
-- **Best Practices**: 100/100
-- **SEO**: 100/100
-
-### Core Web Vitals
-- **First Contentful Paint (FCP)**: < 1.5s
-- **Largest Contentful Paint (LCP)**: < 2.5s
-- **Cumulative Layout Shift (CLS)**: < 0.1
-- **First Input Delay (FID)**: < 100ms
-
-### Bundle Analysis
-- **First Load JS**: ~125kB (optimal)
-- **Code Splitting**: Automatic
-- **Image Optimization**: next/image
-- **Tree Shaking**: Enabled
-
----
-
-## 🎨 Available Scripts
-
-```bash
-# Development
-npm run dev              # Start dev server (localhost:3000)
-
-# Building
-npm run build            # Create production build
-npm start                # Start production server
-
-# Code Quality
-npm run lint             # Run ESLint
-npm run type-check       # TypeScript validation
-```
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository
-2. Create feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit changes (`git commit -m 'Add AmazingFeature'`)
-4. Push to branch (`git push origin feature/AmazingFeature`)
-5. Open Pull Request
-
-Please ensure:
-- ✅ TypeScript types are properly defined
-- ✅ Code passes linting (`npm run lint`)
-- ✅ Build succeeds (`npm run build`)
-- ✅ Components are properly documented
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## 👤 Author
-
-**Your Name**
-
-- 🌐 Portfolio: [yourwebsite.com](https://yourwebsite.com)
-- 💼 LinkedIn: [linkedin.com/in/yourname](https://linkedin.com/in/yourname)
-- 📧 Email: your.email@example.com
-- 🐙 GitHub: [@yourusername](https://github.com/yourusername)
-
----
-
-## 🙏 Acknowledgments
-
-- Next.js team for amazing framework
-- Vercel for deployment platform
-- Tailwind CSS for utility-first CSS
-- Google Fonts for beautiful typography
-- React team for excellent documentation
-
----
-
-## 📝 Roadmap
-
-### Phase 1: MVP ✅ (Completed)
-- [x] Core e-commerce functionality
-- [x] Cart management
-- [x] Responsive design
-- [x] Dark mode
-
-### Phase 2: Enhancement 🚧 (In Progress)
-- [ ] User authentication
-- [ ] Payment integration
-- [ ] Order tracking
-- [ ] Admin dashboard
-
-### Phase 3: Scale 📅 (Planned)
-- [ ] API integration
-- [ ] Database (PostgreSQL)
-- [ ] Search functionality
-- [ ] Product reviews
-- [ ] Wishlist feature
+- 🐙 GitHub: [@phongggnguyen](https://github.com/phongggnguyen)
+- 📧 Email: phongggnguyen@example.com
 
 ---
 
 <div align="center">
 
-**⭐ If you found this project helpful, please give it a star!**
+**⭐ Nếu bạn thấy dự án này hay, hãy tặng mình 1 sao trên GitHub nhé!**
 
-Made with ❤️ and TypeScript
+**Được làm bằng ❤️ và rất nhiều cà phê ☕**
 
 </div>
