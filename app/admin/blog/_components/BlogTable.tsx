@@ -65,7 +65,7 @@ export const BlogTable: React.FC<BlogTableProps> = ({ blogs, onEdit, onDelete, o
                                 {/* Author */}
                                 <td className="px-4 py-3">
                                     <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
-                                        {blog.author}
+                                        {blog.author_name || 'Unknown'}
                                     </span>
                                 </td>
 
@@ -73,8 +73,8 @@ export const BlogTable: React.FC<BlogTableProps> = ({ blogs, onEdit, onDelete, o
                                 <td className="px-4 py-3">
                                     <span
                                         className={`px-2 py-0.5 rounded text-[11px] font-bold capitalize ${blog.status === 'published'
-                                                ? 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400'
-                                                : 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400'
+                                            ? 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400'
+                                            : 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400'
                                             }`}
                                     >
                                         {blog.status === 'published' ? 'Đã xuất bản' : 'Bản nháp'}
@@ -84,7 +84,7 @@ export const BlogTable: React.FC<BlogTableProps> = ({ blogs, onEdit, onDelete, o
                                 {/* Published Date */}
                                 <td className="px-4 py-3">
                                     <span className="text-sm text-gray-600 dark:text-gray-400">
-                                        {formatDate(blog.publishedAt)}
+                                        {formatDate(blog.published_at)}
                                     </span>
                                 </td>
 
