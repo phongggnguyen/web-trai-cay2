@@ -15,7 +15,7 @@ export default async function BlogPage() {
   ]);
 
   return (
-    <main className="flex-grow w-full max-w-[1280px] mx-auto px-4 md:px-10 py-8">
+    <main className="flex-grow w-full">
       <MasonryBlogContent initialPosts={posts} hotProduct={hotProduct} />
     </main>
   );

@@ -67,91 +67,93 @@ export default function MasonryBlogContent({ initialPosts, hotProduct }: Masonry
 
     return (
         <>
-            {/* Hero with Search */}
+            {/* Full Width Hero */}
             <BlogHero onSearch={handleSearch} />
 
-            {/* Main Content Layout */}
-            <div className="flex flex-col lg:flex-row gap-10">
-                {/* Left Column: Masonry Grid */}
-                <div className="lg:w-2/3">
-                    <div className="flex items-center justify-between mb-6">
-                        <h3 className="text-2xl font-bold text-text-main dark:text-white">
-                            Bài viết mới nhất
-                        </h3>
-                        <div className="flex gap-2">
-                            <button className="size-8 rounded-full border border-gray-200 dark:border-white/10 flex items-center justify-center hover:bg-primary hover:border-primary transition-colors">
-                                <span className="material-symbols-outlined text-[18px] dark:text-white text-text-main">grid_view</span>
-                            </button>
-                            <button className="size-8 rounded-full border border-gray-200 dark:border-white/10 flex items-center justify-center hover:bg-primary hover:border-primary transition-colors">
-                                <span className="material-symbols-outlined text-[18px] dark:text-white text-text-main">view_list</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* Masonry Grid using CSS Columns */}
-                    {paginatedPosts.length > 0 ? (
-                        <div className="columns-1 md:columns-2 gap-6 space-y-6">
-                            {paginatedPosts.map((post, index) => (
-                                <MasonryBlogCard
-                                    key={post.id}
-                                    post={post}
-                                    variant={getVariant(index)}
-                                />
-                            ))}
-                        </div>
-                    ) : (
-                        <div className="text-center py-16">
-                            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 dark:bg-white/5 mb-4">
-                                <span className="material-symbols-outlined text-4xl text-gray-400">article</span>
-                            </div>
-                            <h3 className="text-xl font-bold text-text-main dark:text-white mb-2">
-                                Không tìm thấy bài viết
+            {/* Main Content Layout with Constraints */}
+            <div className="w-full max-w-[1280px] mx-auto px-4 md:px-10 py-12">
+                <div className="flex flex-col lg:flex-row gap-10">
+                    {/* Left Column: Masonry Grid */}
+                    <div className="lg:w-2/3">
+                        <div className="flex items-center justify-between mb-6">
+                            <h3 className="text-2xl font-bold text-text-main dark:text-white">
+                                Bài viết mới nhất
                             </h3>
-                            <p className="text-gray-500 dark:text-gray-400">
-                                Thử tìm kiếm với từ khóa khác nhé!
-                            </p>
-                        </div>
-                    )}
-
-                    {/* Pagination */}
-                    {totalPages > 1 && (
-                        <div className="flex justify-center mt-10 gap-2">
-                            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                                <button
-                                    key={page}
-                                    onClick={() => setCurrentPage(page)}
-                                    className={`size-10 rounded-full flex items-center justify-center transition-colors ${currentPage === page
-                                        ? 'bg-primary text-text-main font-bold'
-                                        : 'bg-white dark:bg-white/10 hover:bg-primary hover:text-text-main font-medium text-text-main dark:text-white'
-                                        }`}
-                                >
-                                    {page}
+                            <div className="flex gap-2">
+                                <button className="size-8 rounded-full border border-gray-200 dark:border-white/10 flex items-center justify-center hover:bg-primary hover:border-primary transition-colors">
+                                    <span className="material-symbols-outlined text-[18px] dark:text-white text-text-main">grid_view</span>
                                 </button>
-                            ))}
-                            {currentPage < totalPages && (
-                                <button
-                                    onClick={() => setCurrentPage(currentPage + 1)}
-                                    className="size-10 rounded-full bg-white dark:bg-white/10 flex items-center justify-center hover:bg-primary hover:text-text-main transition-colors font-medium text-text-main dark:text-white"
-                                >
-                                    <span className="material-symbols-outlined text-[18px]">arrow_forward_ios</span>
+                                <button className="size-8 rounded-full border border-gray-200 dark:border-white/10 flex items-center justify-center hover:bg-primary hover:border-primary transition-colors">
+                                    <span className="material-symbols-outlined text-[18px] dark:text-white text-text-main">view_list</span>
                                 </button>
-                            )}
+                            </div>
                         </div>
-                    )}
-                </div>
 
-                {/* Right Column: Sidebar */}
-                <aside className="lg:w-1/3 flex flex-col gap-8">
-                    <div className="lg:sticky lg:top-24 flex flex-col gap-8">
-                        <CategoriesWidget
-                            activeCategory={activeCategory}
-                            onCategoryChange={handleCategoryChange}
-                        />
-                        <RecentPostsWidget posts={initialPosts} limit={3} />
-                        <ProductSuggestionWidget product={hotProduct} />
-                        <NewsletterWidget />
+                        {/* Masonry Grid using CSS Columns */}
+                        {paginatedPosts.length > 0 ? (
+                            <div className="columns-1 md:columns-2 gap-6 space-y-6">
+                                {paginatedPosts.map((post, index) => (
+                                    <MasonryBlogCard
+                                        key={post.id}
+                                        post={post}
+                                        variant={getVariant(index)}
+                                    />
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="text-center py-16">
+                                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 dark:bg-white/5 mb-4">
+                                    <span className="material-symbols-outlined text-4xl text-gray-400">article</span>
+                                </div>
+                                <h3 className="text-xl font-bold text-text-main dark:text-white mb-2">
+                                    Không tìm thấy bài viết
+                                </h3>
+                                <p className="text-gray-500 dark:text-gray-400">
+                                    Thử tìm kiếm với từ khóa khác nhé!
+                                </p>
+                            </div>
+                        )}
+
+                        {/* Pagination */}
+                        {totalPages > 1 && (
+                            <div className="flex justify-center mt-10 gap-2">
+                                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                                    <button
+                                        key={page}
+                                        onClick={() => setCurrentPage(page)}
+                                        className={`size-10 rounded-full flex items-center justify-center transition-colors ${currentPage === page
+                                            ? 'bg-primary text-text-main font-bold'
+                                            : 'bg-white dark:bg-white/10 hover:bg-primary hover:text-text-main font-medium text-text-main dark:text-white'
+                                            }`}
+                                    >
+                                        {page}
+                                    </button>
+                                ))}
+                                {currentPage < totalPages && (
+                                    <button
+                                        onClick={() => setCurrentPage(currentPage + 1)}
+                                        className="size-10 rounded-full bg-white dark:bg-white/10 flex items-center justify-center hover:bg-primary hover:text-text-main transition-colors font-medium text-text-main dark:text-white"
+                                    >
+                                        <span className="material-symbols-outlined text-[18px]">arrow_forward_ios</span>
+                                    </button>
+                                )}
+                            </div>
+                        )}
                     </div>
-                </aside>
+
+                    {/* Right Column: Sidebar */}
+                    <aside className="lg:w-1/3 flex flex-col gap-8">
+                        <div className="lg:sticky lg:top-24 flex flex-col gap-8">
+                            <CategoriesWidget
+                                activeCategory={activeCategory}
+                                onCategoryChange={handleCategoryChange}
+                            />
+                            <RecentPostsWidget posts={initialPosts} limit={3} />
+                            <ProductSuggestionWidget product={hotProduct} />
+                            <NewsletterWidget />
+                        </div>
+                    </aside>
+                </div>
             </div>
         </>
     );
