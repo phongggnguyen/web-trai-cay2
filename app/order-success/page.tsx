@@ -27,14 +27,14 @@ function OrderSuccessContent() {
       <div className="relative z-10 flex flex-col items-center justify-center w-full min-h-[calc(100vh-80px)] p-4 transform scale-90 md:scale-75 origin-center">
 
         {/* Main Title Group - Reduced text sizes */}
-        <div className="flex flex-col items-center text-center gap-2 mt-4 animate-fade-in-up">
+        <div className="flex flex-col items-center text-center gap-6 mt-4 animate-fade-in-up">
           {/* Title with heavy stroke/shadow effect to match cartoon style */}
-          <h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-[#4CDF20] tracking-tight drop-shadow-[0_3px_0_rgba(0,0,0,1)] uppercase leading-tight"
+          <h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-[#4CDF20] tracking-wider drop-shadow-[0_3px_0_rgba(0,0,0,1)] uppercase leading-relaxed"
             style={{ WebkitTextStroke: '1.5px black' }}>
             Cảm ơn bạn <br className="hidden md:block" />
             đã tin chọn
           </h1>
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-[#FFA500] tracking-tight drop-shadow-[0_3px_0_rgba(0,0,0,1)] uppercase rotate-[-2deg] mt-1"
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-[#FFA500] tracking-wider drop-shadow-[0_3px_0_rgba(0,0,0,1)] uppercase rotate-[-2deg] mt-1"
             style={{ WebkitTextStroke: '1.5px black' }}>
             Tiệm Quả Nghiệp!
           </h2>
@@ -83,26 +83,26 @@ function OrderSuccessContent() {
         {/* Buttons Group */}
         <div className="flex flex-wrap items-center justify-center gap-4 mt-8 md:mt-12 w-full max-w-2xl">
 
-          {/* Share Button */}
-          <button className="group relative flex items-center justify-center min-w-[200px]">
+          {/* Home Button */}
+          <Link href="/" className="group relative flex items-center justify-center min-w-[200px]">
             <div className="absolute inset-0 bg-yellow-600 rounded-full translate-y-1.5 group-hover:translate-y-2.5 transition-transform"></div>
             <div className="relative bg-[#FF9900] border-[3px] border-black px-6 py-3 rounded-full flex items-center gap-2 w-full justify-center group-hover:-translate-y-1 transition-transform group-active:translate-y-1">
-              <span className="text-2xl filter drop-shadow">🥭</span>
+              <span className="text-2xl filter drop-shadow">🏠</span>
               <div className="flex flex-col items-start leading-none text-white drop-shadow-sm">
-                <span className="font-bold text-base uppercase">Chia Sẻ</span>
-                <span className="font-bold text-xs">Vụ Thu Hoạch!</span>
+                <span className="font-bold text-base uppercase">TRANG CHỦ</span>
+                <span className="font-bold text-xs">Về Cửa Hàng</span>
               </div>
             </div>
-          </button>
+          </Link>
 
-          {/* Continue Shopping Button */}
-          <Link href="/products" className="group relative flex items-center justify-center min-w-[200px]">
+          {/* View Details Button */}
+          <Link href="/profile" className="group relative flex items-center justify-center min-w-[200px]">
             <div className="absolute inset-0 bg-green-700 rounded-full translate-y-1.5 group-hover:translate-y-2.5 transition-transform"></div>
             <div className="relative bg-[#76E032] border-[3px] border-black px-6 py-3 rounded-full flex items-center gap-2 w-full justify-center group-hover:-translate-y-1 transition-transform group-active:translate-y-1">
-              <span className="text-2xl filter drop-shadow">🍉</span>
+              <span className="text-2xl filter drop-shadow">📄</span>
               <div className="flex flex-col items-start leading-none text-white drop-shadow-sm">
-                <span className="font-bold text-base uppercase">Khám Phá</span>
-                <span className="font-bold text-xs">Thêm Vườn Quả</span>
+                <span className="font-bold text-base uppercase">XEM CHI TIẾT</span>
+                <span className="font-bold text-xs">Đơn Hàng</span>
               </div>
             </div>
           </Link>
