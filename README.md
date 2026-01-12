@@ -146,29 +146,81 @@ Truy cập `http://localhost:3000` và thưởng thức! 🎉
 
 ## 📁 Cấu Trúc Dự Án
 
-Dự án được tổ chức gọn gàng, dễ mở rộng:
+Dự án được tổ chức gọn gàng theo **Next.js App Router**, dễ mở rộng và bảo trì:
 
 ```
 web-trai-cay2/
-├── app/                        # Code chính của Next.js (App Router)
-│   ├── (public)/               # Các trang công khai (Home, Shop, Blog...)
-│   ├── admin/                  # Trang quản trị (cần đăng nhập admin)
-│   ├── api/                    # Các API (AI, Search...)
-│   ├── auth/                   # Đăng nhập/Đăng ký
-│   └── layout.tsx              # Layout chung cho toàn web
+├── app/                           # Next.js App Router (Code chính)
+│   ├── about/                     # Trang Giới thiệu
+│   ├── admin/                     # Panel Quản trị (Admin)
+│   │   ├── blog/                  # Quản lý Blog (AI + Manual)
+│   │   ├── categories/            # Quản lý Danh mục
+│   │   ├── customers/             # Quản lý Khách hàng
+│   │   ├── orders/                # Quản lý Đơn hàng
+│   │   ├── products/              # Quản lý Sản phẩm
+│   │   ├── settings/              # Cài đặt Admin
+│   │   └── _components/           # Components dùng riêng Admin
+│   ├── api/                       # API Routes
+│   │   ├── generate-blog/         # API tạo blog bằng AI
+│   │   ├── image-search/          # API tìm kiếm bằng hình ảnh
+│   │   └── search/                # API tìm kiếm AI
+│   ├── auth/                      # Xác thực (Auth callback)
+│   ├── blog/                      # Blog công khai
+│   │   ├── [slug]/                # Trang chi tiết bài viết
+│   │   └── _components/           # Blog components
+│   ├── cart/                      # Giỏ hàng
+│   ├── checkout/                  # Thanh toán
+│   ├── contact/                   # Liên hệ
+│   ├── login/                     # Đăng nhập/Đăng ký
+│   ├── order-success/             # Trang xác nhận đơn hàng
+│   │   └── _components/           # Components trang cảm ơn
+│   │       ├── Receipt.tsx        # Component hóa đơn
+│   │       └── ActionButtons.tsx  # Component nút hành động
+│   ├── privacy/                   # Chính sách bảo mật
+│   ├── products/                  # Danh sách sản phẩm
+│   │   └── [id]/                  # Chi tiết sản phẩm
+│   ├── profile/                   # Trang cá nhân
+│   ├── terms/                     # Điều khoản sử dụng
+│   ├── layout.tsx                 # Layout chung
+│   ├── page.tsx                   # Trang chủ
+│   ├── globals.css                # CSS toàn cục
+│   └── error.tsx / not-found.tsx  # Error pages
 │
-├── components/                 # Các component tái sử dụng
-│   ├── ui/                     # Nút, ô nhập liệu, card... (Atomic design)
-│   └── ...                     # Header, Footer, Menu...
+├── components/                    # Components tái sử dụng
+│   ├── AIAssistant.tsx            # Chatbot AI
+│   ├── AISearch.tsx               # Tìm kiếm AI
+│   ├── Cart.tsx                   # Component giỏ hàng
+│   ├── Footer.tsx                 # Footer
+│   ├── Header.tsx                 # Header
+│   ├── ProductCard.tsx            # Card sản phẩm
+│   ├── SearchBar.tsx              # Thanh tìm kiếm
+│   └── ThemeToggle.tsx            # Chuyển đổi theme
 │
-├── lib/                        # Các hàm tiện ích (Utils)
-│   ├── supabase.ts             # Kết nối Database
-│   ├── gemini.ts               # Kết nối AI
-│   └── ...
+├── hooks/                         # Custom React Hooks
+│   ├── index.ts                   # Export hooks
+│   ├── useAdminAuth.ts            # Hook xác thực admin
+│   ├── useCategories.ts           # Hook danh mục
+│   ├── useOrder.ts                # Hook đơn hàng
+│   ├── useProducts.ts             # Hook sản phẩm
+│   └── useProfile.ts              # Hook profile
 │
-├── hooks/                      # Custom Hooks (Logic tái sử dụng)
-├── context/                    # Quản lý state toàn cục (Giỏ hàng...)
-└── public/                     # Ảnh tĩnh, icon...
+├── lib/                           # Thư viện tiện ích
+│   ├── supabase.ts                # Client Supabase
+│   ├── gemini.ts                  # Client Gemini AI
+│   ├── validation.ts              # Zod schemas
+│   └── utils.ts                   # Hàm tiện ích
+│
+├── context/                       # React Context (State toàn cục)
+│   └── GlobalContext.tsx          # Cart, Theme, User state
+│
+├── public/                        # Assets tĩnh
+│   └── images/                    # Hình ảnh
+│
+├── types.ts                       # TypeScript types
+├── constants.ts                   # Hằng số
+├── database.sql                   # Database schema
+├── supabase_rls_policies.sql      # Row Level Security
+└── package.json                   # Dependencies
 ```
 
 ---
