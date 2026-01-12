@@ -6,88 +6,130 @@ import { useSearchParams } from 'next/navigation';
 
 function OrderSuccessContent() {
   const searchParams = useSearchParams();
-  const orderId = searchParams.get('id');
+  const orderId = searchParams.get('id') || 'TQN123456';
+
+  // Mock data for the receipt bubble visualization
+  const receiptItems = [
+    { name: 'Sầu riêng', price: '30.000đ' },
+    { name: 'Dâu tây', price: '10.000đ' },
+    { name: 'Nho xanh', price: '10.000đ' },
+  ];
 
   return (
-    <div className="flex flex-col items-center py-8 px-4 md:px-10 lg:px-40 w-full max-w-[1440px] mx-auto gap-8">
-      {/* Success Hero */}
-      <section className="flex flex-col items-center gap-6 w-full max-w-3xl text-center py-8 animate-fade-in-up">
-        <div className="relative">
-          <div className="size-24 rounded-full bg-primary/20 flex items-center justify-center animate-pulse">
-            <div className="size-16 rounded-full bg-primary flex items-center justify-center text-white shadow-lg shadow-primary/40">
-              <span className="material-symbols-outlined text-4xl">check</span>
-            </div>
-          </div>
-          <div className="absolute -right-4 -bottom-2 rotate-12 bg-white dark:bg-surface-dark px-3 py-1 rounded-full border border-border-color dark:border-border-dark shadow-sm">
-            <span className="text-xs font-bold text-primary">Success!</span>
-          </div>
-        </div>
-        <div className="flex flex-col gap-3">
-          <h1 className="text-2xl md:text-4xl font-extrabold text-text-main dark:text-white tracking-tight">Cảm ơn bạn!</h1>
-          <p className="text-gray-500 dark:text-gray-400 text-base md:text-lg max-w-lg mx-auto leading-relaxed">
-            Đơn hàng <span className="font-bold text-text-main dark:text-white">#{orderId?.slice(0, 8) || '...'}</span> của bạn đã được tiếp nhận thành công.
-            <br className="hidden md:block" />
-            <span className="italic text-primary font-medium">"Nghiệp này là nghiệp tốt!"</span> Trái cây tươi ngon sẽ sớm đến tay bạn.
-          </p>
-        </div>
-        <div className="flex flex-wrap justify-center gap-4 mt-2">
-          <Link href="/profile" className="flex h-12 items-center justify-center rounded-full bg-primary px-8 text-black font-bold hover:brightness-110 transition-all shadow-lg shadow-primary/25">
-            <span className="material-symbols-outlined mr-2 text-xl">local_shipping</span>
-            Theo dõi đơn hàng
-          </Link>
-          <Link
-            href="/products"
-            className="flex h-12 items-center justify-center rounded-full bg-background-light dark:bg-surface-dark px-8 text-primary font-bold hover:bg-primary/10 transition-all border border-transparent hover:border-primary/20"
-          >
-            Tiếp tục mua sắm
-          </Link>
-        </div>
-      </section>
+    <div className="relative min-h-[calc(100vh-80px)] w-full overflow-hidden font-display">
+      {/* Background Image - Adjusted background size to contain or cover better */}
+      <div
+        className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat pointer-events-none opacity-90"
+        style={{ backgroundImage: "url('/images/img-checkout.png')" }}
+      />
 
-      {/* Order Status Tracker */}
-      <section className="w-full max-w-4xl bg-surface-light dark:bg-surface-dark rounded-2xl border border-border-color dark:border-border-dark p-6 md:p-8 shadow-sm">
-        <div className="flex flex-col gap-6">
-          <div className="flex items-center justify-between">
-            <h3 className="text-lg font-bold text-text-main dark:text-white">Trạng thái đơn hàng</h3>
-            <span className="text-sm font-medium text-primary bg-primary/10 px-3 py-1 rounded-full">Đang xử lý</span>
-          </div>
-          <div className="relative pt-2">
-            {/* Progress Bar Background */}
-            <div className="h-2 w-full bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
-              <div className="h-full bg-primary w-[35%] rounded-full shadow-[0_0_10px_rgba(76,223,32,0.6)]"></div>
-            </div>
-            {/* Milestones */}
-            <div className="flex justify-between mt-4 text-xs md:text-sm font-medium text-gray-500 dark:text-gray-400">
-              <div className="text-primary font-bold flex flex-col items-center gap-1 relative">
-                <span className="size-2 bg-primary rounded-full absolute -top-3 left-1/2 transform -translate-x-1/2"></span>
-                Đã đặt hàng
-                <span className="font-normal text-[10px] opacity-80">{new Date().toLocaleTimeString('vi-VN')}</span>
-              </div>
-              <div className="text-primary font-bold flex flex-col items-center gap-1 relative">
-                <span className="size-2 bg-primary rounded-full absolute -top-3 left-1/2 transform -translate-x-1/2"></span>
-                Đang xử lý
-              </div>
-              <div className="flex flex-col items-center gap-1">
-                Đang giao hàng
-              </div>
-              <div className="flex flex-col items-center gap-1">
-                Đã giao hàng
-              </div>
-            </div>
-          </div>
-          <div className="flex items-center gap-2 text-sm text-green-700 dark:text-green-300 bg-green-50 dark:bg-green-900/20 p-3 rounded-xl mt-2">
-            <span className="material-symbols-outlined">schedule</span>
-            Dự kiến giao hàng: <span className="font-bold">Trong vòng 2 giờ</span>
+      {/* Content Overlay - Added scale transform for the '75%' effect requested */}
+      <div className="relative z-10 flex flex-col items-center justify-center w-full min-h-[calc(100vh-80px)] p-4 transform scale-90 md:scale-75 origin-center">
+
+        {/* Main Title Group - Reduced text sizes */}
+        <div className="flex flex-col items-center text-center gap-2 mt-4 animate-fade-in-up">
+          {/* Title with heavy stroke/shadow effect to match cartoon style */}
+          <h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-[#4CDF20] tracking-tight drop-shadow-[0_3px_0_rgba(0,0,0,1)] uppercase leading-tight"
+            style={{ WebkitTextStroke: '1.5px black' }}>
+            Cảm ơn bạn <br className="hidden md:block" />
+            đã tin chọn
+          </h1>
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-[#FFA500] tracking-tight drop-shadow-[0_3px_0_rgba(0,0,0,1)] uppercase rotate-[-2deg] mt-1"
+            style={{ WebkitTextStroke: '1.5px black' }}>
+            Tiệm Quả Nghiệp!
+          </h2>
+        </div>
+
+        {/* Order ID Banner */}
+        <div className="mt-6 relative max-w-xl w-full flex justify-center animate-scale-in delay-100">
+          {/* Ribbon-like background shape */}
+          <div className="bg-white border-[3px] border-black px-6 py-3 rounded-full shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transform -rotate-1">
+            <span className="text-sm md:text-lg font-bold text-gray-800">
+              Mã đơn hàng của bạn là: <span className="font-extrabold">#{orderId}</span>
+            </span>
           </div>
         </div>
-      </section>
+
+        {/* Receipt Bubble (Right Side absolute on desktop, relative on mobile) */}
+        <div className="mt-6 md:mt-0 md:absolute md:right-[5%] md:top-[30%] w-64 bg-white p-5 rounded-xl border-[3px] border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,0.2)] rotate-3 animate-float hidden lg:block">
+          <div className="absolute -top-5 -right-5 text-3xl">🍓</div>
+          <div className="absolute -bottom-3 -left-3 text-3xl">🍇</div>
+
+          <h3 className="font-bold text-base border-b-2 border-dashed border-gray-300 pb-2 mb-2">Hóa đơn</h3>
+          <div className="flex flex-col gap-1.5 text-xs">
+            {receiptItems.map((item, idx) => (
+              <div key={idx} className="flex justify-between">
+                <span>{item.name}</span>
+                <span className="font-bold">{item.price}</span>
+              </div>
+            ))}
+            <div className="flex justify-between text-gray-500">
+              <span>Giao hàng</span>
+              <span>Tặng</span>
+            </div>
+            <div className="flex justify-between text-gray-500">
+              <span>Thanh toán</span>
+              <span>3.000đ</span>
+            </div>
+            <div className="flex justify-between font-bold text-base border-t-2 border-black pt-2 mt-1">
+              <span>Tổng cộng</span>
+              <span>60.000đ</span>
+            </div>
+          </div>
+          {/* Speech bubble tail */}
+          <div className="absolute top-1/2 -left-3 w-5 h-5 bg-white border-l-[3px] border-b-[3px] border-black transform rotate-45"></div>
+        </div>
+
+        {/* Buttons Group */}
+        <div className="flex flex-wrap items-center justify-center gap-4 mt-8 md:mt-12 w-full max-w-2xl">
+
+          {/* Share Button */}
+          <button className="group relative flex items-center justify-center min-w-[200px]">
+            <div className="absolute inset-0 bg-yellow-600 rounded-full translate-y-1.5 group-hover:translate-y-2.5 transition-transform"></div>
+            <div className="relative bg-[#FF9900] border-[3px] border-black px-6 py-3 rounded-full flex items-center gap-2 w-full justify-center group-hover:-translate-y-1 transition-transform group-active:translate-y-1">
+              <span className="text-2xl filter drop-shadow">🥭</span>
+              <div className="flex flex-col items-start leading-none text-white drop-shadow-sm">
+                <span className="font-bold text-base uppercase">Chia Sẻ</span>
+                <span className="font-bold text-xs">Vụ Thu Hoạch!</span>
+              </div>
+            </div>
+          </button>
+
+          {/* Continue Shopping Button */}
+          <Link href="/products" className="group relative flex items-center justify-center min-w-[200px]">
+            <div className="absolute inset-0 bg-green-700 rounded-full translate-y-1.5 group-hover:translate-y-2.5 transition-transform"></div>
+            <div className="relative bg-[#76E032] border-[3px] border-black px-6 py-3 rounded-full flex items-center gap-2 w-full justify-center group-hover:-translate-y-1 transition-transform group-active:translate-y-1">
+              <span className="text-2xl filter drop-shadow">🍉</span>
+              <div className="flex flex-col items-start leading-none text-white drop-shadow-sm">
+                <span className="font-bold text-base uppercase">Khám Phá</span>
+                <span className="font-bold text-xs">Thêm Vườn Quả</span>
+              </div>
+            </div>
+          </Link>
+
+        </div>
+
+        {/* Social Icons */}
+        <div className="flex gap-3 mt-6">
+          <button className="bg-black text-white p-1.5 rounded-full hover:scale-110 transition-transform">
+            <span className="material-symbols-outlined text-xl">facebook</span>
+          </button>
+          <button className="bg-black text-white p-1.5 rounded-full hover:scale-110 transition-transform">
+            <span className="material-symbols-outlined text-xl">photo_camera</span>
+          </button>
+          <button className="bg-black text-white p-1.5 rounded-full hover:scale-110 transition-transform">
+            <span className="material-symbols-outlined text-xl">smart_display</span>
+          </button>
+        </div>
+
+      </div>
     </div>
   );
 }
 
 export default function OrderSuccessPage() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Đang tải...</div>}>
       <OrderSuccessContent />
     </Suspense>
   );
