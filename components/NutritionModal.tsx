@@ -125,7 +125,7 @@ export default function NutritionModal({ isOpen, onClose, orderId }: NutritionMo
                 onClick={(e) => e.stopPropagation()}
             >
                 {/* Header */}
-                <div className="sticky top-0 z-10 flex items-center justify-between p-6 bg-gradient-to-r from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10 border-b border-gray-200 dark:border-border-dark">
+                <div className="sticky top-0 z-20 flex items-center justify-between p-6 bg-gradient-to-r from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10 border-b border-gray-200 dark:border-border-dark backdrop-blur-sm">
                     <div className="flex items-center gap-3">
                         <div className="p-2 bg-primary/20 rounded-lg">
                             <span className="material-symbols-outlined text-primary text-2xl">restaurant_menu</span>
