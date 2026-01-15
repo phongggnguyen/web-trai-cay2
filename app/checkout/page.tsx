@@ -93,7 +93,19 @@ export default function CheckoutPage() {
 
       if (itemsError) throw itemsError;
 
-      // 3. Cleanup & Redirect
+      // 3. Send confirmation email (non-blocking)
+      if (email && email.trim()) {
+        fetch('/api/send-order-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ orderId: order.id })
+        }).catch(err => {
+          // Don't block checkout on email failure
+          console.error('Email sending failed:', err);
+        });
+      }
+
+      // 4. Cleanup & Redirect
       toast.success('Đặt hàng thành công!');
       clearCart();
       router.push(`/order-success?id=${order.id}`);
