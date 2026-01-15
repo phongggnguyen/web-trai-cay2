@@ -260,3 +260,39 @@ export interface Review {
     avatar_url?: string;
   };
 }
+
+/**
+ * Nutrition Analysis Types
+ */
+
+/**
+ * Nutrition analysis result from AI
+ */
+export interface NutritionAnalysis {
+  summary: string;
+  recommendation: string;
+  nutritionBreakdown: {
+    [key: string]: 'low' | 'medium' | 'high';
+  };
+}
+
+/**
+ * Suggested product with nutritional reason
+ */
+export interface SuggestedProduct {
+  id: string;
+  name: string;
+  reason: string;
+  price: number;
+  image: string;
+  category?: string;
+  unit: string;
+}
+
+/**
+ * Complete nutrition response
+ */
+export interface NutritionResponse {
+  analysis: NutritionAnalysis;
+  suggestedProducts: SuggestedProduct[];
+}

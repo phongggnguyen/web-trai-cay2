@@ -8,6 +8,7 @@ import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import { Product } from '../../types';
 import ReviewModal from '../../components/ReviewModal';
+import NutritionModal from '../../components/NutritionModal';
 
 export default function ProfilePage() {
     const { user, logout, addToCart } = useGlobal();
@@ -25,6 +26,8 @@ export default function ProfilePage() {
     const [reviewedItems, setReviewedItems] = useState<Record<string, boolean>>({});
     const [reviewModalOpen, setReviewModalOpen] = useState(false);
     const [selectedReviewItem, setSelectedReviewItem] = useState<any>(null);
+    const [nutritionModalOpen, setNutritionModalOpen] = useState(false);
+    const [selectedOrderForNutrition, setSelectedOrderForNutrition] = useState<string | null>(null);
 
     // Profile Form State
     const [fullName, setFullName] = useState('');
@@ -162,6 +165,11 @@ export default function ProfilePage() {
             console.error('Error re-ordering:', error);
             toast.error('Có lỗi xảy ra khi đặt hàng lại.');
         }
+    };
+
+    const handleViewNutrition = (orderId: string) => {
+        setSelectedOrderForNutrition(orderId);
+        setNutritionModalOpen(true);
     };
 
     const filteredOrders = orders.filter(order => {
@@ -512,6 +520,13 @@ export default function ProfilePage() {
                                                     {isExpanded ? 'Thu gọn' : 'Chi tiết'}
                                                 </button>
                                                 <button
+                                                    onClick={() => handleViewNutrition(order.id)}
+                                                    className="flex-1 sm:flex-none px-4 py-2 rounded-lg border border-orange-300 dark:border-orange-500/30 bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 text-sm font-bold hover:bg-orange-100 dark:hover:bg-orange-500/20 transition-colors flex items-center justify-center gap-2"
+                                                >
+                                                    <span className="material-symbols-outlined text-[18px]">restaurant_menu</span>
+                                                    Dinh dưỡng
+                                                </button>
+                                                <button
                                                     onClick={() => handleReorder(order)}
                                                     className="flex-1 sm:flex-none px-4 py-2 rounded-lg bg-primary text-[#0d160b] text-sm font-bold hover:bg-primary/90 transition-colors flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(76,223,32,0.2)]"
                                                 >
@@ -539,6 +554,15 @@ export default function ProfilePage() {
                     orderId={selectedReviewItem.orderId}
                     userId={user!.id}
                     onSuccess={handleReviewSuccess}
+                />
+            )}
+
+            {/* Nutrition Modal */}
+            {selectedOrderForNutrition && (
+                <NutritionModal
+                    isOpen={nutritionModalOpen}
+                    onClose={() => setNutritionModalOpen(false)}
+                    orderId={selectedOrderForNutrition}
                 />
             )}
         </div>

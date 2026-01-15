@@ -390,3 +390,199 @@ VÍ DỤ CÂU TRẢ LỜI TỐT:
 "Cherry Đỏ Size 30+ có giá 520,000đ/kg, xuất xứ từ Úc, đang giảm 20% từ giá gốc 650,000đ. Sản phẩm này rất được yêu thích, bạn có muốn thêm vào giỏ hàng không? 🍒"`;
 }
 
+// ============== NUTRITION ANALYSIS FUNCTIONS ==============
+
+export interface OrderItem {
+    product_id: string;
+    product_name: string;
+    quantity: number;
+    unit: string;
+}
+
+export interface NutritionAnalysis {
+    summary: string;
+    recommendation: string;
+    nutritionBreakdown: {
+        [key: string]: 'low' | 'medium' | 'high';
+    };
+}
+
+export interface ProductForSuggestion {
+    id: string;
+    name: string;
+    category: string;
+    price: number;
+    image: string;
+    unit: string;
+}
+
+export interface SuggestedProduct extends ProductForSuggestion {
+    reason: string;
+}
+
+/**
+ * Analyze nutrition of an order based on its items
+ * @param orderItems List of items in the order
+ * @returns Nutrition analysis with summary and recommendations
+ */
+export async function analyzeOrderNutrition(
+    orderItems: OrderItem[]
+): Promise<NutritionAnalysis> {
+    const itemsDescription = orderItems
+        .map(item => `${item.product_name} (${item.quantity} ${item.unit})`)
+        .join(', ');
+
+    const prompt = `Bạn là chuyên gia dinh dưỡng cho cửa hàng trái cây "Tiệm Quả Nghiệp".
+
+Phân tích đơn hàng sau về mặt dinh dưỡng:
+${itemsDescription}
+
+Hãy đánh giá:
+1. Tóm tắt ngắn gọn về giá trị dinh dưỡng tổng thể (1-2 câu)
+2. Đề xuất loại dưỡng chất hoặc trái cây nào nên bổ sung thêm để cân bằng dinh dưỡng
+3. Đánh giá mức độ các nhóm dưỡng chất chính
+
+VÍ DỤ PHÂN TÍCH:
+- Nếu có nhiều cherry, cam: "Giàu vitamin C và chất chốngoxy hóa"
+- Nếu thiếu chất xơ: "Nên bổ sung trái cây giàu chất xơ như táo, lê"
+- Nếu nhiều đường: "Cần cân bằng với trái cây ít đường"
+
+QUAN TRỌNG: Chỉ trả về JSON object theo format sau, KHÔNG thêm text khác:
+{
+  "summary": "Tóm tắt ngắn gọn về dinh dưỡng của đơn hàng",
+  "recommendation": "Đề xuất bổ sung gì để cân bằng dinh dưỡng",
+  "nutritionBreakdown": {
+    "vitamin_c": "high/medium/low",
+    "fiber": "high/medium/low",
+    "antioxidants": "high/medium/low",
+    "sugar": "high/medium/low"
+  }
+}`;
+
+    const response = await callGeminiAPI(buildGeminiPayload(prompt));
+
+    try {
+        // Extract JSON from response
+        const jsonMatch = response.match(/\{[\s\S]*\}/);
+        if (!jsonMatch) {
+            throw new Error('Không tìm thấy JSON trong response');
+        }
+
+        const result = JSON.parse(jsonMatch[0]);
+
+        return {
+            summary: result.summary || 'Không thể phân tích dinh dưỡng',
+            recommendation: result.recommendation || 'Không có đề xuất',
+            nutritionBreakdown: result.nutritionBreakdown || {},
+        };
+    } catch (error) {
+        console.error('Error parsing nutrition analysis:', error, response);
+
+        // Fallback response
+        return {
+            summary: 'Đơn hàng có nhiều loại trái cây tươi ngon.',
+            recommendation: 'Hãy tiếp tục duy trì chế độ ăn uống cân bằng.',
+            nutritionBreakdown: {},
+        };
+    }
+}
+
+/**
+ * Suggest products to complement the nutrition of an order
+ * @param nutritionAnalysis Result from analyzeOrderNutrition
+ * @param allProducts List of all available products in database
+ * @returns List of suggested products with reasons
+ */
+export async function suggestNutritionProducts(
+    nutritionAnalysis: NutritionAnalysis,
+    allProducts: ProductForSuggestion[]
+): Promise<SuggestedProduct[]> {
+    const productsJSON = JSON.stringify(
+        allProducts.map((p) => ({
+            id: p.id,
+            name: p.name,
+            category: p.category,
+        }))
+    );
+
+    const prompt = `Bạn là chuyên gia dinh dưỡng cho cửa hàng trái cây "Tiệm Quả Nghiệp".
+
+Phân tích dinh dưỡng của đơn hàng hiện tại:
+- Tóm tắt: ${nutritionAnalysis.summary}
+- Đề xuất: ${nutritionAnalysis.recommendation}
+
+Danh sách sản phẩm hiện có:
+${productsJSON}
+
+NHIỆM VỤ BẮT BUỘC:
+Hãy chọn TỐI THIỂU 1 và TỐI ĐA 3 sản phẩm phù hợp nhất để bổ sung dinh dưỡng cho đơn hàng này.
+BẮT BUỘC phải chọn ít nhất 1 sản phẩm dựa trên lời khuyên đã phân tích ở trên.
+
+HƯỚNG DẪN CHỌN SẢN PHẨM:
+- Nếu đề xuất thiếu vitamin C → ổi, cam, kiwi, chanh, bưởi
+- Nếu đề xuất thiếu vitamin A → cà rốt, cà chua, đu đủ, xoài
+- Nếu đề xuất thiếu chất xơ → táo, lê, dưa lưới, mận
+- Nếu đề xuất giảm đường → bơ, cà chua, dưa chuột
+- Nếu đề xuất tăng kali → chuối, bơ, dưa hấu
+- Nếu đề xuất chất chống oxy hóa → việt quất, dâu tây, nho
+
+QUAN TRỌNG: 
+1. BẮT BUỘC phải trả về ít nhất 1 sản phẩm, KHÔNG ĐƯỢC trả về mảng rỗng []
+2. Chỉ trả về JSON array theo format sau, KHÔNG thêm text khác:
+[
+  {
+    "id": "product_id_from_list",
+    "reason": "Lý do ngắn gọn (tối đa 15 từ)"
+  }
+]
+
+VÍ DỤ KẾT QUẢ ĐÚNG:
+[
+  {
+    "id": "abc123",
+    "reason": "Giàu vitamin C, tốt cho hệ miễn dịch"
+  }
+]`;
+
+    const response = await callGeminiAPI(buildGeminiPayload(prompt));
+
+    console.log(`[Gemini AI] Raw response for nutrition suggestions:`, response);
+
+    try {
+        // Extract JSON array from response
+        const jsonMatch = response.match(/\[[\s\S]*\]/);
+        if (!jsonMatch) {
+            console.warn('Gemini response không chứa JSON array:', response);
+            return [];
+        }
+
+        const suggestions = JSON.parse(jsonMatch[0]);
+        console.log(`[Gemini AI] Parsed suggestions:`, suggestions);
+
+        if (!Array.isArray(suggestions)) {
+            console.warn('Gemini response không phải array:', suggestions);
+            return [];
+        }
+
+        // Map suggestions to full product objects
+        const suggestedProducts: SuggestedProduct[] = [];
+
+        for (const suggestion of suggestions) {
+            const product = allProducts.find(p => p.id === suggestion.id);
+            if (product) {
+                console.log(`[Gemini AI] ✓ Found product: ${product.name} (ID: ${suggestion.id})`);
+                suggestedProducts.push({
+                    ...product,
+                    reason: suggestion.reason || 'Tốt cho sức khỏe',
+                });
+            } else {
+                console.warn(`[Gemini AI] ✗ Product not found for ID: ${suggestion.id}`);
+            }
+        }
+
+        return suggestedProducts.slice(0, 3); // Limit to top 3
+    } catch (error) {
+        console.error('Error parsing nutrition suggestions:', error, response);
+        return [];
+    }
+}
