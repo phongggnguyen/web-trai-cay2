@@ -150,77 +150,220 @@ Dự án được tổ chức gọn gàng theo **Next.js App Router**, dễ mở
 
 ```
 web-trai-cay2/
-├── app/                           # Next.js App Router (Code chính)
-│   ├── about/                     # Trang Giới thiệu
-│   ├── admin/                     # Panel Quản trị (Admin)
-│   │   ├── blog/                  # Quản lý Blog (AI + Manual)
-│   │   ├── categories/            # Quản lý Danh mục
-│   │   ├── customers/             # Quản lý Khách hàng
-│   │   ├── orders/                # Quản lý Đơn hàng
-│   │   ├── products/              # Quản lý Sản phẩm
-│   │   ├── settings/              # Cài đặt Admin
-│   │   └── _components/           # Components dùng riêng Admin
-│   ├── api/                       # API Routes
-│   │   ├── generate-blog/         # API tạo blog bằng AI
-│   │   ├── image-search/          # API tìm kiếm bằng hình ảnh
-│   │   └── search/                # API tìm kiếm AI
-│   ├── auth/                      # Xác thực (Auth callback)
-│   ├── blog/                      # Blog công khai
-│   │   ├── [slug]/                # Trang chi tiết bài viết
-│   │   └── _components/           # Blog components
-│   ├── cart/                      # Giỏ hàng
-│   ├── checkout/                  # Thanh toán
-│   ├── contact/                   # Liên hệ
-│   ├── login/                     # Đăng nhập/Đăng ký
-│   ├── order-success/             # Trang xác nhận đơn hàng
-│   │   └── _components/           # Components trang cảm ơn
-│   │       ├── Receipt.tsx        # Component hóa đơn
-│   │       └── ActionButtons.tsx  # Component nút hành động
-│   ├── privacy/                   # Chính sách bảo mật
-│   ├── products/                  # Danh sách sản phẩm
-│   │   └── [id]/                  # Chi tiết sản phẩm
-│   ├── profile/                   # Trang cá nhân
-│   ├── terms/                     # Điều khoản sử dụng
-│   ├── layout.tsx                 # Layout chung
-│   ├── page.tsx                   # Trang chủ
-│   ├── globals.css                # CSS toàn cục
-│   └── error.tsx / not-found.tsx  # Error pages
+├── 📂 app/                              # Next.js App Router (Code chính)
+│   ├── about/                           # Trang Giới thiệu
+│   ├── admin/                           # Panel Quản trị (Admin)
+│   │   ├── _components/                 # Shared Admin Components
+│   │   │   ├── AdminSidebar.tsx         # Thanh điều hướng admin
+│   │   │   ├── DashboardCard.tsx        # Card hiển thị thống kê
+│   │   │   └── ProtectedRoute.tsx       # Bảo vệ route admin
+│   │   ├── blog/                        # Quản lý Blog
+│   │   │   ├── _components/             # Components cho Blog Admin
+│   │   │   │   ├── BlogForm.tsx         # Form tạo/sửa blog (Manual)
+│   │   │   │   ├── BlogFormAI.tsx       # Form tạo blog bằng AI
+│   │   │   │   └── BlogTable.tsx        # Bảng danh sách blog
+│   │   │   ├── create/                  # Trang tạo blog mới
+│   │   │   ├── edit/[id]/               # Trang chỉnh sửa blog
+│   │   │   └── page.tsx                 # Trang quản lý blog
+│   │   ├── categories/                  # Quản lý Danh mục
+│   │   │   ├── _components/             # Components danh mục
+│   │   │   │   └── CategoryForm.tsx     # Form tạo/sửa danh mục
+│   │   │   └── page.tsx                 # Trang quản lý danh mục
+│   │   ├── customers/                   # Quản lý Khách hàng
+│   │   │   ├── _components/             # Components khách hàng
+│   │   │   │   ├── CustomerDetail.tsx   # Chi tiết khách hàng
+│   │   │   │   ├── CustomerList.tsx     # Danh sách khách hàng
+│   │   │   │   └── CustomerStatsDisplay.tsx  # Thống kê khách hàng
+│   │   │   ├── hooks/                   # Hooks cho customers
+│   │   │   │   ├── useCustomersData.ts  # Hook lấy dữ liệu khách
+│   │   │   │   └── useCustomerOrders.ts # Hook lấy đơn hàng
+│   │   │   └── page.tsx                 # Trang quản lý khách hàng
+│   │   ├── orders/                      # Quản lý Đơn hàng
+│   │   │   ├── _components/             # Components đơn hàng
+│   │   │   │   ├── OrderDetailsModal.tsx  # Modal chi tiết đơn
+│   │   │   │   ├── OrderFilters.tsx     # Bộ lọc đơn hàng
+│   │   │   │   └── OrdersTable.tsx      # Bảng đơn hàng
+│   │   │   ├── hooks/                   # Hooks cho orders
+│   │   │   │   └── useOrdersData.ts     # Hook lấy dữ liệu đơn
+│   │   │   └── page.tsx                 # Trang quản lý đơn hàng
+│   │   ├── products/                    # Quản lý Sản phẩm
+│   │   │   ├── _components/             # Components sản phẩm
+│   │   │   │   ├── ProductForm.tsx      # Form tạo/sửa sản phẩm
+│   │   │   │   └── ProductsTable.tsx    # Bảng sản phẩm
+│   │   │   ├── create/                  # Trang tạo sản phẩm
+│   │   │   ├── edit/[id]/               # Trang chỉnh sửa sản phẩm
+│   │   │   ├── hooks/                   # Hooks cho products
+│   │   │   │   └── useProductsData.ts   # Hook lấy dữ liệu sản phẩm
+│   │   │   └── page.tsx                 # Trang quản lý sản phẩm
+│   │   ├── settings/                    # Cài đặt Admin
+│   │   │   └── page.tsx                 # Trang cài đặt
+│   │   ├── hooks/                       # Admin hooks
+│   │   │   └── useDashboardData.ts      # Hook dashboard stats
+│   │   ├── constants.ts                 # Admin constants
+│   │   ├── types.ts                     # Admin types
+│   │   ├── layout.tsx                   # Layout admin
+│   │   └── page.tsx                     # Dashboard chính
+│   │
+│   ├── api/                             # API Routes (Server-side)
+│   │   ├── ai-assistant/                # API Chatbot AI
+│   │   │   └── route.ts                 # Endpoint chat với Gemini
+│   │   ├── blog/                        # API Blog
+│   │   │   └── route.ts                 # Tạo blog tự động bằng AI
+│   │   ├── nutrition/                   # API Dinh dưỡng
+│   │   │   └── route.ts                 # Phân tích dinh dưỡng AI
+│   │   ├── search/                      # API Tìm kiếm
+│   │   │   ├── image/route.ts           # Tìm kiếm bằng hình ảnh
+│   │   │   └── route.ts                 # Tìm kiếm văn bản thông minh
+│   │   └── send-order-email/            # API Email
+│   │       └── route.ts                 # Gửi email xác nhận đơn
+│   │
+│   ├── auth/                            # Xác thực
+│   │   └── callback/                    # OAuth callback handler
+│   │       └── route.ts                 # Xử lý callback từ Supabase
+│   │
+│   ├── blog/                            # Blog công khai
+│   │   ├── _components/                 # Blog components
+│   │   │   ├── BlogContent.tsx          # Nội dung bài viết
+│   │   │   ├── BlogHero.tsx             # Hero section blog
+│   │   │   ├── BlogList.tsx             # Danh sách bài viết
+│   │   │   └── TagFilter.tsx            # Lọc theo tag
+│   │   ├── [slug]/                      # Chi tiết bài viết
+│   │   │   └── page.tsx                 # Trang chi tiết blog
+│   │   └── page.tsx                     # Trang danh sách blog
+│   │
+│   ├── cart/                            # Giỏ hàng
+│   │   └── page.tsx                     # Trang giỏ hàng
+│   ├── checkout/                        # Thanh toán
+│   │   └── page.tsx                     # Trang thanh toán
+│   ├── contact/                         # Liên hệ
+│   │   └── page.tsx                     # Trang liên hệ
+│   ├── login/                           # Đăng nhập/Đăng ký
+│   │   └── page.tsx                     # Trang xác thực
+│   │
+│   ├── order-success/                   # Trang xác nhận đơn hàng
+│   │   ├── _components/                 # Components trang thành công
+│   │   │   ├── ActionButtons.tsx        # Nút hành động
+│   │   │   └── Receipt.tsx              # Hóa đơn đơn hàng
+│   │   └── page.tsx                     # Trang xác nhận
+│   │
+│   ├── privacy/                         # Chính sách bảo mật
+│   │   └── page.tsx                     # Trang privacy policy
+│   │
+│   ├── products/                        # Sản phẩm
+│   │   ├── [id]/                        # Chi tiết sản phẩm
+│   │   │   └── page.tsx                 # Trang chi tiết
+│   │   └── page.tsx                     # Danh sách sản phẩm
+│   │
+│   ├── profile/                         # Hồ sơ cá nhân
+│   │   └── page.tsx                     # Trang profile + đơn hàng
+│   ├── terms/                           # Điều khoản
+│   │   └── page.tsx                     # Trang terms of service
+│   │
+│   ├── error.tsx                        # Error boundary
+│   ├── loading.tsx                      # Loading state
+│   ├── not-found.tsx                    # 404 page
+│   ├── layout.tsx                       # Root layout
+│   ├── page.tsx                         # Trang chủ (Homepage)
+│   └── globals.css                      # Global styles
 │
-├── components/                    # Components tái sử dụng
-│   ├── AIAssistant.tsx            # Chatbot AI
-│   ├── AISearch.tsx               # Tìm kiếm AI
-│   ├── Cart.tsx                   # Component giỏ hàng
-│   ├── Footer.tsx                 # Footer
-│   ├── Header.tsx                 # Header
-│   ├── ProductCard.tsx            # Card sản phẩm
-│   ├── SearchBar.tsx              # Thanh tìm kiếm
-│   └── ThemeToggle.tsx            # Chuyển đổi theme
+├── 📂 components/                       # Shared Components
+│   ├── features/                        # Feature components
+│   │   ├── ProductCard.tsx              # Card sản phẩm
+│   │   └── SearchBar.tsx                # Thanh tìm kiếm
+│   ├── ui/                              # UI components
+│   │   ├── Button.tsx                   # Button component
+│   │   └── Input.tsx                    # Input component
+│   ├── AIAssistant.tsx                  # Chatbot AI trợ lý
+│   ├── Footer.tsx                       # Footer trang web
+│   ├── Header.tsx                       # Header + Navigation
+│   ├── ImageSearchModal.tsx             # Modal tìm kiếm bằng ảnh
+│   ├── MobileMenu.tsx                   # Menu mobile responsive
+│   ├── NutritionModal.tsx               # Modal thông tin dinh dưỡng
+│   ├── ProductRecommendations.tsx       # Gợi ý sản phẩm
+│   ├── ReviewModal.tsx                  # Modal đánh giá sản phẩm
+│   └── ReviewSection.tsx                # Section hiển thị reviews
 │
-├── hooks/                         # Custom React Hooks
-│   ├── index.ts                   # Export hooks
-│   ├── useAdminAuth.ts            # Hook xác thực admin
-│   ├── useCategories.ts           # Hook danh mục
-│   ├── useOrder.ts                # Hook đơn hàng
-│   ├── useProducts.ts             # Hook sản phẩm
-│   └── useProfile.ts              # Hook profile
+├── 📂 hooks/                            # Custom React Hooks
+│   ├── useCart.ts                       # Hook quản lý giỏ hàng
+│   ├── useDebounce.ts                   # Hook debounce input
+│   ├── useLocalStorage.ts               # Hook localStorage
+│   ├── useMediaQuery.ts                 # Hook responsive
+│   ├── useOrder.ts                      # Hook quản lý đơn hàng
+│   ├── useProductRecommendations.ts     # Hook gợi ý sản phẩm
+│   └── index.ts                         # Export tất cả hooks
 │
-├── lib/                           # Thư viện tiện ích
-│   ├── supabase.ts                # Client Supabase
-│   ├── gemini.ts                  # Client Gemini AI
-│   ├── validation.ts              # Zod schemas
-│   └── utils.ts                   # Hàm tiện ích
+├── 📂 lib/                              # Libraries & Utilities
+│   ├── blog/                            # Blog utilities
+│   │   ├── blog-content-generator.ts    # Tạo nội dung blog AI
+│   │   ├── blog-data.ts                 # Lấy dữ liệu blog
+│   │   ├── blog-excerpt-generator.ts    # Tạo đoạn trích blog
+│   │   ├── blog-image-analyzer.ts       # Phân tích ảnh blog
+│   │   ├── blog-tag-generator.ts        # Tạo tags blog
+│   │   └── blog-title-generator.ts      # Tạo tiêu đề blog
+│   ├── products/                        # Product utilities
+│   │   └── product-data.ts              # Lấy dữ liệu sản phẩm
+│   ├── validations/                     # Zod validation schemas
+│   │   ├── blog.ts                      # Blog validation
+│   │   ├── product.ts                   # Product validation
+│   │   └── order.ts                     # Order validation
+│   ├── errors.ts                        # Error handling utilities
+│   ├── gemini.ts                        # Gemini AI client
+│   ├── metadata.ts                      # Next.js metadata helper
+│   ├── resend.ts                        # Resend email client
+│   ├── supabase.ts                      # Supabase client config
+│   └── utils.ts                         # Common utilities
 │
-├── context/                       # React Context (State toàn cục)
-│   └── GlobalContext.tsx          # Cart, Theme, User state
+├── 📂 context/                          # React Context
+│   └── GlobalContext.tsx                # Global state (Cart, User, Theme)
 │
-├── public/                        # Assets tĩnh
-│   └── images/                    # Hình ảnh
+├── 📂 emails/                           # Email templates
+│   └── OrderConfirmation.tsx            # Email xác nhận đơn hàng
 │
-├── types.ts                       # TypeScript types
-├── constants.ts                   # Hằng số
-├── database.sql                   # Database schema
-├── supabase_rls_policies.sql      # Row Level Security
-└── package.json                   # Dependencies
+├── 📂 public/                           # Static assets
+│   └── images/                          # Hình ảnh tĩnh
+│
+├── 📂 migrations/                       # Database migrations
+│   └── update_categories_schema.sql     # Migration scripts
+│
+├── 📂 openspec/                         # OpenSpec workflow
+│   ├── archive/                         # Archived changes
+│   └── specs/                           # Active specs
+│
+├── 📂 .agent/                           # Agent workflows
+│   └── workflows/                       # Workflow definitions
+│       ├── openspec-apply.md            # Apply OpenSpec changes
+│       ├── openspec-archive.md          # Archive changes
+│       └── openspec-proposal.md         # Create proposals
+│
+├── 📄 SQL Files                         # Database setup scripts
+│   ├── database.sql                     # Main database schema
+│   ├── supabase_rls_policies.sql        # Row-Level Security
+│   ├── supabase_storage_policies.sql    # Storage security
+│   ├── add_reviews_feature.sql          # Reviews feature
+│   ├── add_email_logs_table.sql         # Email logging
+│   ├── fix_storage_rls.sql              # Storage RLS fixes
+│   ├── update_reviews_for_orders.sql    # Reviews migration
+│   ├── add_on_delete_set_null_to_order_items.sql  # Order items constraint
+│   ├── DISABLE_RLS_FOR_DEV.sql          # Dev environment helper
+│   └── current_schema.sql               # Current schema snapshot
+│
+├── 📄 Config Files
+│   ├── package.json                     # Dependencies
+│   ├── tsconfig.json                    # TypeScript config
+│   ├── tailwind.config.ts               # Tailwind CSS config
+│   ├── next.config.mjs                  # Next.js config
+│   ├── postcss.config.js                # PostCSS config
+│   ├── .eslintrc.json                   # ESLint config
+│   ├── .env.example                     # Environment variables template
+│   └── .gitignore                       # Git ignore rules
+│
+├── 📄 Project Files
+│   ├── types.ts                         # TypeScript types chung
+│   ├── constants.ts                     # Constants chung
+│   ├── task.md                          # Task tracking
+│   ├── AGENTS.md                        # Agent documentation
+│   ├── metadata.json                    # Project metadata
+│   └── README.md                        # Documentation (File này)
 ```
 
 ---
