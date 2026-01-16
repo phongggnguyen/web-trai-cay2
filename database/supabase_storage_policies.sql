@@ -47,3 +47,52 @@ USING (bucket_id = 'product-images');
 -- 3. Public bucket: YES (để mọi người xem được ảnh)
 -- 4. File size limit: 5MB (hoặc tùy ý)
 -- 5. Allowed MIME types: image/* (chỉ cho phép ảnh)
+
+-- ============================================
+-- STORAGE POLICIES FOR CATEGORY IMAGES BUCKET
+-- ============================================
+
+-- Bước 1: Xóa policies cũ nếu có
+DROP POLICY IF EXISTS "Anyone can view category images" ON storage.objects;
+DROP POLICY IF EXISTS "Authenticated users can upload category images" ON storage.objects;
+DROP POLICY IF EXISTS "Authenticated users can update category images" ON storage.objects;
+DROP POLICY IF EXISTS "Authenticated users can delete category images" ON storage.objects;
+
+-- Bước 2: Policy cho VIEWING images (ai cũng xem được)
+CREATE POLICY "Anyone can view category images"
+ON storage.objects
+FOR SELECT
+TO public
+USING (bucket_id = 'category-images');
+
+-- Bước 3: Policy cho UPLOADING images (authenticated users)
+CREATE POLICY "Authenticated users can upload category images"
+ON storage.objects
+FOR INSERT
+TO authenticated
+WITH CHECK (bucket_id = 'category-images');
+
+-- Bước 4: Policy cho UPDATING images (authenticated users)
+CREATE POLICY "Authenticated users can update category images"
+ON storage.objects
+FOR UPDATE
+TO authenticated
+USING (bucket_id = 'category-images')
+WITH CHECK (bucket_id = 'category-images');
+
+-- Bước 5: Policy cho DELETING images (authenticated users)
+CREATE POLICY "Authenticated users can delete category images"
+ON storage.objects
+FOR DELETE
+TO authenticated
+USING (bucket_id = 'category-images');
+
+-- ============================================
+-- QUAN TRỌNG: Đảm bảo bucket đã được tạo!
+-- ============================================
+-- Nếu bucket 'category-images' chưa tồn tại, cần tạo qua Dashboard:
+-- 1. Vào Storage → New bucket
+-- 2. Tên: category-images
+-- 3. Public bucket: YES (để mọi người xem được ảnh)
+-- 4. File size limit: 5MB
+-- 5. Allowed MIME types: image/jpeg, image/png, image/webp

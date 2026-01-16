@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS public.categories (
   name TEXT NOT NULL,
   slug TEXT NOT NULL UNIQUE,
   image_url TEXT,
+  background_image TEXT,
   description TEXT,
   CONSTRAINT categories_pkey PRIMARY KEY (id)
 );
