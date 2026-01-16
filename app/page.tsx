@@ -5,9 +5,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useGlobal } from '../context/GlobalContext';
 import { supabase } from '../lib/supabase';
+import ProductRecommendations from '../components/ProductRecommendations';
 
 export default function HomePage() {
-  const { addToCart } = useGlobal();
+  const { addToCart, user } = useGlobal();
   const [bestSellers, setBestSellers] = React.useState<any[]>([]);
   const [categories, setCategories] = React.useState<any[]>([]);
   const [loading, setLoading] = React.useState(true);
@@ -195,6 +196,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Product Recommendations - Chỉ hiển thị khi user đã đăng nhập */}
+      {user && <ProductRecommendations userId={user.id} />}
 
       {/* Features */}
       <section className="px-4 py-16 md:px-10">

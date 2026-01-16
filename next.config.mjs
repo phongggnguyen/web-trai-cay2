@@ -22,6 +22,11 @@ const nextConfig = {
         protocol: "https",
         hostname: "svgrepo.com",
         pathname: "/**"
+      },
+      {
+        protocol: "https",
+        hostname: "vbhkpkfygmgqattwgahk.supabase.co",
+        pathname: "/**"
       }
     ]
   }
