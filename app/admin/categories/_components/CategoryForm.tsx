@@ -1,17 +1,20 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { categorySchema, type CategoryFormInput, type Category } from '../types';
+import { ImageUpload } from './ImageUpload';
 
 interface Props {
     category?: Category | null;
-    onSubmit: (data: CategoryFormInput) => Promise<void>;
+    onSubmit: (data: CategoryFormInput, imageFile?: File | null, currentImageUrl?: string | null) => Promise<void>;
     onCancel: () => void;
 }
 
 export function CategoryForm({ category, onSubmit, onCancel }: Props) {
+    const [imageFile, setImageFile] = useState<File | null>(null);
+
     const {
         register,
         handleSubmit,
@@ -26,7 +29,7 @@ export function CategoryForm({ category, onSubmit, onCancel }: Props) {
 
     const handleFormSubmit = async (data: CategoryFormInput) => {
         try {
-            await onSubmit(data);
+            await onSubmit(data, imageFile, category?.background_image);
         } catch (error) {
             // Error handling done in hook
         }
@@ -71,6 +74,13 @@ export function CategoryForm({ category, onSubmit, onCancel }: Props) {
                     </p>
                 )}
             </div>
+
+            {/* Background Image Upload */}
+            <ImageUpload
+                currentImage={category?.background_image}
+                onImageSelect={setImageFile}
+                uploading={isSubmitting}
+            />
 
             {/* Slug Preview */}
             {category && (

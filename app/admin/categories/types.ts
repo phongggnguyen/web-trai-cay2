@@ -6,6 +6,7 @@ export interface Category {
     name: string;
     slug: string;
     description: string | null;
+    background_image?: string | null; // Background image URL for category
     created_at: string;
     product_count?: number; // Number of products in this category
 }

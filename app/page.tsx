@@ -53,7 +53,7 @@ export default function HomePage() {
           const mappedCategories = categoriesRes.data.map((item: any) => ({
             title: item.name,
             desc: item.description,
-            img: item.image_url
+            img: item.background_image || item.image_url // Ưu tiên background_image, fallback về image_url
           }));
           setCategories(mappedCategories);
         }

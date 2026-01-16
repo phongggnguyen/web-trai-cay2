@@ -2,14 +2,15 @@ import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { supabase } from '../../../../lib/supabase';
 import { generateSlug } from '../../products/utils/generateSlug';
+import { useImageUpload } from './useImageUpload';
 import type { Category, CategoryFormData } from '../types';
 
 interface UseCategoriesDataReturn {
     categories: Category[];
     loading: boolean;
     error: string | null;
-    createCategory: (data: CategoryFormData) => Promise<void>;
-    updateCategory: (id: string, data: CategoryFormData) => Promise<void>;
+    createCategory: (data: CategoryFormData, imageFile?: File | null) => Promise<void>;
+    updateCategory: (id: string, data: CategoryFormData, imageFile?: File | null, currentImageUrl?: string | null) => Promise<void>;
     deleteCategory: (id: string) => Promise<void>;
     refetch: () => Promise<void>;
 }
@@ -18,6 +19,7 @@ export function useCategoriesData(): UseCategoriesDataReturn {
     const [categories, setCategories] = useState<Category[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const { uploadImage, deleteImage } = useImageUpload();
 
     const fetchCategories = async () => {
         try {
@@ -51,10 +53,16 @@ export function useCategoriesData(): UseCategoriesDataReturn {
         }
     };
 
-    const createCategory = async (data: CategoryFormData) => {
+    const createCategory = async (data: CategoryFormData, imageFile?: File | null) => {
         try {
             // Generate slug from category name
             const slug = generateSlug(data.name);
+
+            // Upload image if provided
+            let imageUrl: string | null = null;
+            if (imageFile) {
+                imageUrl = await uploadImage(imageFile);
+            }
 
             // Insert into database
             const { data: newCategory, error: insertError } = await supabase
@@ -63,6 +71,7 @@ export function useCategoriesData(): UseCategoriesDataReturn {
                     name: data.name,
                     slug: slug,
                     description: data.description || null,
+                    background_image: imageUrl,
                 })
                 .select()
                 .single();
@@ -90,10 +99,22 @@ export function useCategoriesData(): UseCategoriesDataReturn {
         }
     };
 
-    const updateCategory = async (id: string, data: CategoryFormData) => {
+    const updateCategory = async (id: string, data: CategoryFormData, imageFile?: File | null, currentImageUrl?: string | null) => {
         try {
             // Generate new slug from updated name
             const slug = generateSlug(data.name);
+
+            // Handle image upload/delete
+            let imageUrl: string | null | undefined = currentImageUrl;
+
+            if (imageFile) {
+                // Delete old image if exists
+                if (currentImageUrl) {
+                    await deleteImage(currentImageUrl);
+                }
+                // Upload new image
+                imageUrl = await uploadImage(imageFile);
+            }
 
             // Update database
             const { data: updatedCategory, error: updateError } = await supabase
@@ -102,6 +123,7 @@ export function useCategoriesData(): UseCategoriesDataReturn {
                     name: data.name,
                     slug: slug,
                     description: data.description || null,
+                    background_image: imageUrl,
                 })
                 .eq('id', id)
                 .select()
@@ -135,6 +157,11 @@ export function useCategoriesData(): UseCategoriesDataReturn {
             if (category && category.product_count && category.product_count > 0) {
                 toast.error(`Không thể xóa danh mục có ${category.product_count} sản phẩm. Vui lòng chuyển sản phẩm sang danh mục khác trước.`);
                 throw new Error('Category has products');
+            }
+
+            // Delete background image if exists
+            if (category?.background_image) {
+                await deleteImage(category.background_image);
             }
 
             // Delete from database

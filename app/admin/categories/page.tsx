@@ -29,12 +29,12 @@ export default function AdminCategoriesPage() {
     const totalCategories = categories.length;
     const totalProducts = categories.reduce((sum, cat) => sum + (cat.product_count || 0), 0);
 
-    const handleFormSubmit = async (data: CategoryFormInput) => {
+    const handleFormSubmit = async (data: CategoryFormInput, imageFile?: File | null, currentImageUrl?: string | null) => {
         try {
             if (editingCategory) {
-                await updateCategory(editingCategory.id, data);
+                await updateCategory(editingCategory.id, data, imageFile, currentImageUrl);
             } else {
-                await createCategory(data);
+                await createCategory(data, imageFile);
             }
             setIsFormOpen(false);
             setEditingCategory(null);
