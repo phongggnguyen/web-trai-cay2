@@ -17,40 +17,46 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border-color dark:border-border-dark bg-surface-light/95 dark:bg-surface-dark/95 backdrop-blur-md px-4 py-3 md:px-10 transition-colors duration-200">
-      <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-4">
+    <header className="sticky top-0 z-50 w-full bg-surface-light/80 dark:bg-surface-dark/80 backdrop-blur-xl px-4 py-5 md:px-10 transition-all duration-200 border-b border-transparent relative">
+      {/* Gradient border effect */}
+      <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-border-color dark:via-primary/30 to-transparent"></div>
+      <div className="mx-auto flex max-w-[1280px] items-center justify-between gap-4">
         {/* Logo */}
         <Link
           href="/"
-          className="flex items-center gap-3 cursor-pointer group"
+          className="flex items-center gap-3 transition-transform hover:scale-105"
         >
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/20 text-primary group-hover:bg-primary group-hover:text-text-main transition-colors">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary-dark text-white shadow-lg shadow-primary/30">
             <span className="material-symbols-outlined text-[28px]">nutrition</span>
           </div>
-          <div className="hidden md:flex flex-col">
-            <h1 className="text-xl font-extrabold tracking-tight text-text-main dark:text-white">Tiệm Quả Nghiệp</h1>
-            <span className="text-[10px] font-bold text-text-muted dark:text-primary uppercase tracking-wider">Nghiệp tụ vành môi</span>
+          <div className="flex flex-col">
+            <span className="text-xl font-black tracking-tight text-text-main dark:text-white leading-none">
+              Tiệm Quả Nghiệp
+            </span>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-primary mt-1">
+              Nghiệp Tụ Vành Môi
+            </span>
           </div>
         </Link>
 
         {/* Nav Links */}
-        <nav className="hidden lg:flex items-center gap-8">
+        <nav className="hidden md:flex items-center gap-1">
           {[
-            { label: 'Trang chủ', path: '/' },
-            { label: 'Sản phẩm', path: '/products' },
-            { label: 'Về chúng tôi', path: '/about' },
-            { label: 'Blog', path: '/blog' },
-            { label: 'Liên hệ', path: '/contact' },
+            { name: 'Trang chủ', href: '/' },
+            { name: 'Sản phẩm', href: '/products' },
+            { name: 'Về chúng tôi', href: '/about' },
+            { name: 'Blog', href: '/blog' },
+            { name: 'Liên hệ', href: '/contact' },
           ].map((item) => (
             <Link
-              key={item.path}
-              href={item.path}
-              className={`text-sm font-medium transition-colors hover:text-primary ${isActive(item.path)
-                ? 'text-primary font-bold'
-                : 'text-text-main dark:text-gray-300'
+              key={item.name}
+              href={item.href}
+              className={`rounded-full px-5 py-2.5 text-base font-bold transition-all duration-200 ${pathname === item.href
+                  ? 'bg-primary/10 text-primary'
+                  : 'text-text-main dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/10 hover:text-primary'
                 }`}
             >
-              {item.label}
+              {item.name}
             </Link>
           ))}
         </nav>

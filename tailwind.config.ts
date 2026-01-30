@@ -14,17 +14,40 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        primary: "#4cdf20",
-        "primary-dark": "#3bc015",
-        "background-light": "#f6f8f6",
-        "background-dark": "#152111",
-        "surface-light": "#ffffff",
-        "surface-dark": "#1a2c15",
-        "text-main": "#111b0e",
-        "text-muted": "#609550",
-        "text-secondary": "#a0c695",
-        "border-color": "#eaf3e8",
-        "border-dark": "#2d4625"
+        // Primary Gradient System - Vibrant Green
+        primary: {
+          DEFAULT: "#4cdf20",
+          light: "#8FFF5F",
+          dark: "#3bc015",
+          darker: "#2D5016"
+        },
+        // Accent Colors - Warm tones for "ripe fruit" feel
+        accent: {
+          warm: "#FF6B35",
+          orange: "#F4A259",
+          yellow: "#FFE66D"
+        },
+        // Backgrounds
+        background: {
+          light: "#f6f8f6",
+          dark: "#0f1710" // Deeper "Forest Night"
+        },
+        // Surfaces
+        surface: {
+          light: "#ffffff",
+          dark: "#1a2c15"
+        },
+        // Text
+        text: {
+          main: "#111b0e",
+          muted: "#609550",
+          secondary: "#a0c695"
+        },
+        // Borders
+        border: {
+          color: "#eaf3e8",
+          dark: "#2d4625"
+        }
       },
       fontFamily: {
         display: ["var(--font-display)", "sans-serif"],

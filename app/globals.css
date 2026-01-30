@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  html {
+    /* Scale down UI on large screens: 16px -> 14px (87.5%) */
+    @apply text-[16px] lg:text-[14px];
+  }
+}
+
+
 /* Custom Animations for Hero Section */
 @keyframes fadeIn {
   from {
@@ -123,6 +131,40 @@
   }
 }
 
+@keyframes shine {
+  0% {
+    background-position: -200% center;
+  }
+
+  100% {
+    background-position: 200% center;
+  }
+}
+
+@keyframes hoverLift {
+  from {
+    transform: translateY(0) scale(1);
+  }
+
+  to {
+    transform: translateY(-8px) scale(1.02);
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 .animate-fade-in-up {
   animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
@@ -133,4 +175,43 @@
 
 .animate-float {
   animation: float 4s ease-in-out infinite;
+}
+
+.animate-shine {
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.3) 45%,
+      rgba(255, 255, 255, 0.5) 50%,
+      rgba(255, 255, 255, 0.3) 55%,
+      transparent 100%);
+  background-size: 200% 100%;
+  animation: shine 3s ease-in-out infinite;
+}
+
+.hover-lift {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(76, 223, 32, 0.2);
+}
+
+/* Glassmorphism utility */
+.glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dark .glass {
+  background: rgba(26, 44, 21, 0.4);
+  border: 1px solid rgba(76, 223, 32, 0.1);
+}
+
+/* Gradient background animation */
+.bg-gradient-animate {
+  background-size: 200% 200%;
+  animation: gradientShift 8s ease infinite;
 }

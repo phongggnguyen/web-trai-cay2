@@ -4,9 +4,9 @@ import Link from 'next/link';
 const Footer: React.FC = () => {
   return (
     <footer className="border-t border-border-color dark:border-border-dark bg-surface-light dark:bg-surface-dark pt-16 pb-8 transition-colors duration-200">
-      <div className="mx-auto max-w-[1440px] px-4 md:px-10">
+      <div className="mx-auto max-w-[1280px] px-4 md:px-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
-          
+
           {/* Brand */}
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-3 text-text-main dark:text-white">
@@ -16,7 +16,7 @@ const Footer: React.FC = () => {
               <h2 className="text-lg font-bold">Tiệm Quả Nghiệp</h2>
             </div>
             <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
-              "Nghiệp tụ vành môi - Ăn vô trôi hết." <br/>
+              "Nghiệp tụ vành môi - Ăn vô trôi hết." <br />
               Chúng tôi cung cấp trái cây tươi ngon, giúp bạn giải nghiệp qua đường ăn uống.
             </p>
             <div className="flex gap-4 mt-2">
@@ -54,9 +54,9 @@ const Footer: React.FC = () => {
             <h3 className="font-bold text-text-main dark:text-white mb-4">Đăng ký nhận tin</h3>
             <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">Nhận thông tin khuyến mãi và mã giảm giá mới nhất.</p>
             <div className="flex gap-2">
-              <input 
-                className="flex-1 bg-background-light dark:bg-black/20 border border-border-color dark:border-border-dark rounded-lg text-sm px-4 py-2 focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-colors dark:text-white placeholder-gray-400" 
-                placeholder="Email của bạn" 
+              <input
+                className="flex-1 bg-background-light dark:bg-black/20 border border-border-color dark:border-border-dark rounded-lg text-sm px-4 py-2 focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-colors dark:text-white placeholder-gray-400"
+                placeholder="Email của bạn"
                 type="email"
               />
               <button className="bg-primary text-text-main font-bold px-4 py-2 rounded-lg hover:bg-primary-dark transition-colors">
@@ -69,9 +69,9 @@ const Footer: React.FC = () => {
         <div className="border-t border-border-color dark:border-border-dark pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-gray-400">© 2024 Tiệm Quả Nghiệp. All rights reserved.</p>
           <div className="flex gap-4 text-gray-300 dark:text-gray-600">
-             <span className="material-symbols-outlined text-2xl">payments</span>
-             <span className="material-symbols-outlined text-2xl">credit_card</span>
-             <span className="material-symbols-outlined text-2xl">account_balance_wallet</span>
+            <span className="material-symbols-outlined text-2xl">payments</span>
+            <span className="material-symbols-outlined text-2xl">credit_card</span>
+            <span className="material-symbols-outlined text-2xl">account_balance_wallet</span>
           </div>
         </div>
       </div>
