@@ -16,6 +16,9 @@ dist-ssr
 .next/
 out/
 
+#antigravity kit
+.agent/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
