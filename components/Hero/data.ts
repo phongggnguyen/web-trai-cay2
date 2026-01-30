@@ -1,7 +1,7 @@
 export const heroSlides = [
     {
         id: 1,
-        image: "https://images.unsplash.com/photo-1546173159-315724a31696?q=80&w=2574&auto=format&fit=crop", // Cam/Quýt rực rỡ (tông vàng cam)
+        image: "/images/hero/slide-1.png", // AI-generated Orange/Citrus theme
         tag: "Vitamin C Bùng Nổ",
         title: "ĐÁNH THỨC NĂNG LƯỢNG",
         description: "Cung cấp Vitamin C tự nhiên giúp bạn sảng khoái suốt ngày dài. Cam vàng Ai Cập, Quýt Úc ngọt lịm đang chờ đón!",
@@ -13,7 +13,7 @@ export const heroSlides = [
     },
     {
         id: 2,
-        image: "https://images.unsplash.com/photo-1587049352851-8d4e8913d179?q=80&w=2680&auto=format&fit=crop", // Dâu đỏ mọng (tông đỏ hồng)
+        image: "/images/hero/slide-2.png", // AI-generated Strawberry/Summer theme
         tag: "Ngọt Ngào & Quyến Rũ",
         title: "DÂU TÂY MỌNG NƯỚC",
         description: "Những trái dâu căng mọng, đỏ rực từ nông trại Đà Lạt & Hàn Quốc. Vị ngọt thanh khiết tan ngay đầu lưỡi.",
@@ -25,7 +25,7 @@ export const heroSlides = [
     },
     {
         id: 3,
-        image: "https://images.unsplash.com/photo-1629854743477-742e7bb0e687?q=80&w=2670&auto=format&fit=crop", // Green Healthy (Bơ/Kiwi/Xanh)
+        image: "/images/hero/slide-3.png", // AI-generated Avocado/Green theme
         tag: "Sống Xanh Sống Khỏe",
         title: "ORGANIC TỰ NHIÊN",
         description: "Bơ sáp béo ngậy, Kiwi xanh thượng hạng. Nguồn dinh dưỡng xanh sạch cho lối sống Healthy của bạn.",
