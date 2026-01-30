@@ -53,15 +53,13 @@ const HeroCarousel = () => {
                         ))}
                     </Swiper>
 
-                    {/* Custom Navigation Arrows */}
-                    <div className="absolute bottom-8 right-8 z-20 hidden md:flex items-center gap-3">
-                        <button className="hero-prev flex h-12 w-12 items-center justify-center rounded-full glass hover:bg-white/20 text-white transition-all active:scale-95 disabled:opacity-50">
-                            <span className="material-symbols-outlined text-2xl">arrow_back</span>
-                        </button>
-                        <button className="hero-next flex h-12 w-12 items-center justify-center rounded-full glass hover:bg-white/20 text-white transition-all active:scale-95 disabled:opacity-50">
-                            <span className="material-symbols-outlined text-2xl">arrow_forward</span>
-                        </button>
-                    </div>
+                    {/* Custom Navigation Arrows (Centered Option A) */}
+                    <button className="hero-prev absolute left-4 top-1/2 z-20 flex -translate-y-1/2 h-12 w-12 items-center justify-center rounded-full glass hover:bg-white/30 text-white transition-all active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed group">
+                        <span className="material-symbols-outlined text-3xl transition-transform group-hover:-translate-x-1">chevron_left</span>
+                    </button>
+                    <button className="hero-next absolute right-4 top-1/2 z-20 flex -translate-y-1/2 h-12 w-12 items-center justify-center rounded-full glass hover:bg-white/30 text-white transition-all active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed group">
+                        <span className="material-symbols-outlined text-3xl transition-transform group-hover:translate-x-1">chevron_right</span>
+                    </button>
 
                     {/* Custom Pagination Container */}
                     <div className="hero-pagination absolute bottom-8 left-1/2 md:left-12 transform -translate-x-1/2 md:translate-x-0 z-20 flex gap-2 justify-center md:justify-start"></div>
