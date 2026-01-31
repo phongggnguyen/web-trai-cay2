@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 
 interface HeroSlideProps {
     slide: {
@@ -21,7 +21,7 @@ interface HeroSlideProps {
 
 const HeroSlide: React.FC<HeroSlideProps> = ({ slide, isActive }) => {
     // Animation variants
-    const textVariants = {
+    const textVariants: Variants = {
         hidden: { opacity: 0, y: 30 },
         visible: (custom: number) => ({
             opacity: 1,
@@ -34,7 +34,7 @@ const HeroSlide: React.FC<HeroSlideProps> = ({ slide, isActive }) => {
         })
     };
 
-    const imageVariants = {
+    const imageVariants: Variants = {
         hidden: { scale: 1.1 },
         visible: {
             scale: 1,
