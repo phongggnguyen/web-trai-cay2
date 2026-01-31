@@ -11,13 +11,25 @@ interface BlogTableProps {
 }
 
 export const BlogTable: React.FC<BlogTableProps> = ({ blogs, onEdit, onDelete, onView }) => {
-    const formatDate = (date: Date | null) => {
+    const formatDate = (date: Date | string | null) => {
         if (!date) return '-';
-        return new Intl.DateTimeFormat('vi-VN', {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-        }).format(date);
+
+        try {
+            // Convert to Date if it's a string
+            const dateObj = typeof date === 'string' ? new Date(date) : date;
+
+            // Check if valid date
+            if (isNaN(dateObj.getTime())) return '-';
+
+            return new Intl.DateTimeFormat('vi-VN', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+            }).format(dateObj);
+        } catch (error) {
+            console.error('Error formatting date:', error);
+            return '-';
+        }
     };
 
     return (

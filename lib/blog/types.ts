@@ -10,9 +10,9 @@ export interface BlogPost {
     author_id: string;
     author_name?: string; // Populated from join or default
     status: 'draft' | 'published';
-    published_at: Date | null;
-    created_at: Date;
-    updated_at: Date;
+    published_at: Date | string | null; // Supabase returns ISO string
+    created_at: Date | string; // Supabase returns ISO string
+    updated_at: Date | string; // Supabase returns ISO string
     tags: string[];
     views: number;
 }
@@ -39,7 +39,7 @@ export interface BlogPostSummary {
     slug: string;
     excerpt: string;
     cover_image: string | null;
-    published_at: Date | null;
+    published_at: Date | string | null; // Supabase returns ISO string
     tags: string[];
     views: number;
 }

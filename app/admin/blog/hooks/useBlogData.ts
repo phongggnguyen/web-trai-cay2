@@ -32,7 +32,13 @@ export function useBlogData(): UseBlogDataReturn {
                 .select('*')
                 .order('created_at', { ascending: false });
 
-            if (fetchError) throw fetchError;
+            if (fetchError) {
+                // Check if error is due to missing table
+                if (fetchError.code === 'PGRST116' || fetchError.message.includes('relation "public.blog_posts" does not exist')) {
+                    throw new Error('DATABASE_SETUP_REQUIRED');
+                }
+                throw fetchError;
+            }
 
             // Transform data to match BlogPost interface
             // For now, use default author name. Can be enhanced later with proper join
@@ -44,7 +50,12 @@ export function useBlogData(): UseBlogDataReturn {
             setBlogs(blogsWithAuthor as BlogPost[]);
         } catch (err: any) {
             console.error('Failed to fetch blogs:', err);
-            setError(err.message || 'Không thể tải danh sách bài viết');
+
+            if (err.message === 'DATABASE_SETUP_REQUIRED') {
+                setError('DATABASE_SETUP_REQUIRED');
+            } else {
+                setError(err.message || 'Không thể tải danh sách bài viết');
+            }
             toast.error('Không thể tải danh sách bài viết');
         } finally {
             setLoading(false);

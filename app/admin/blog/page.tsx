@@ -157,6 +157,60 @@ export default function AdminBlogPage() {
                 <div className="flex h-64 items-center justify-center">
                     <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
                 </div>
+            ) : error === 'DATABASE_SETUP_REQUIRED' ? (
+                <div className="rounded-xl border-2 border-orange-200 bg-orange-50 p-8 dark:border-orange-800 dark:bg-orange-900/20">
+                    <div className="flex items-start gap-4">
+                        <span className="material-symbols-outlined text-[48px] text-orange-500">database</span>
+                        <div className="flex-1 space-y-4">
+                            <div>
+                                <h3 className="text-xl font-black text-orange-900 dark:text-orange-200">
+                                    Cần setup Database
+                                </h3>
+                                <p className="mt-1 text-sm text-orange-700 dark:text-orange-300">
+                                    Bảng <code className="rounded bg-orange-200 dark:bg-orange-800 px-1.5 py-0.5 font-mono text-xs">blog_posts</code> chưa tồn tại trong Supabase.
+                                </p>
+                            </div>
+
+                            <div className="space-y-3">
+                                <p className="text-sm font-bold text-orange-900 dark:text-orange-200">
+                                    📝 Hướng dẫn setup:
+                                </p>
+                                <ol className="list-decimal list-inside space-y-2 text-sm text-orange-800 dark:text-orange-300">
+                                    <li>
+                                        Mở <strong>Supabase Dashboard</strong> → SQL Editor
+                                    </li>
+                                    <li>
+                                        Copy toàn bộ nội dung trong file{' '}
+                                        <code className="rounded bg-orange-200 dark:bg-orange-800 px-1.5 py-0.5 font-mono text-xs">
+                                            migrations/create_blog_posts.sql
+                                        </code>
+                                    </li>
+                                    <li>Paste vào SQL Editor và click <strong>Run</strong></li>
+                                    <li>Refresh lại trang này</li>
+                                </ol>
+                            </div>
+
+                            <div className="flex gap-3">
+                                <button
+                                    onClick={() => window.location.reload()}
+                                    className="flex items-center gap-2 rounded-lg bg-orange-500 px-4 py-2 font-bold text-white hover:bg-orange-600 transition-colors"
+                                >
+                                    <span className="material-symbols-outlined text-[18px]">refresh</span>
+                                    Refresh trang
+                                </button>
+                                <a
+                                    href="https://supabase.com/dashboard"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center gap-2 rounded-lg border-2 border-orange-500 px-4 py-2 font-bold text-orange-700 dark:text-orange-300 hover:bg-orange-100 dark:hover:bg-orange-900/30 transition-colors"
+                                >
+                                    <span className="material-symbols-outlined text-[18px]">open_in_new</span>
+                                    Mở Supabase
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             ) : error ? (
                 <div className="rounded-xl border border-red-200 bg-red-50 p-8 text-center dark:border-red-800 dark:bg-red-900/20">
                     <p className="text-red-600 dark:text-red-400">{error}</p>
