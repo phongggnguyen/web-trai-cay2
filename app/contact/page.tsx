@@ -14,7 +14,7 @@ export default function ContactPage() {
               Giải Nghiệp Ngay
             </h1>
             <p className="text-text-muted dark:text-[#a5d6a7] text-lg font-normal leading-normal">
-              Nghiệp tụ vành môi - Ăn vô trôi hết. <br className="hidden md:block"/>
+              Nghiệp tụ vành môi - Ăn vô trôi hết. <br className="hidden md:block" />
               Thắc mắc? Khiếu nại? Hay chỉ muốn khen ngon? Nhắn ngay cho Tiệm!
             </p>
           </div>
@@ -55,7 +55,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <p className="text-xs text-text-muted dark:text-[#a5d6a7] font-bold uppercase">Tổng hành dinh</p>
-                  <h3 className="text-text-main dark:text-white text-lg font-bold">Quận 1, TP. Hồ Chí Minh</h3>
+                  <h3 className="text-text-main dark:text-white text-lg font-bold">Đại học Cần Thơ, Ninh Kiều</h3>
                 </div>
               </div>
             </div>
@@ -77,14 +77,19 @@ export default function ContactPage() {
             </div>
 
             {/* Map Image Placeholder */}
-            <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-sm border border-[#d6e6d1] dark:border-[#2a4025]">
-              <img alt="Bản đồ chỉ đường đến Tiệm Quả Nghiệp tại Hồ Chí Minh" className="object-cover w-full h-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBy538Nvi8JN8VH9K77vuI2-pCFE7gEWKzq1IgroeaujHj7XnSaPjd29MVxTpLzYRn-X5UCCCjlCVYz50cJAn0Y2NjznyUQtddNLP7Wji_ZCwcpy9Ukl_dkWsOtLq4dB_t7Q04lSzIk2Mxwk7edwQEiHq7KNJBSj1_v9lSipm5XADWxp9GXi141ZXq9GGT5amDFqLH2Oji-lBipr2vH4BpnorWoit34sXuBt9_RUZuAEKlgUOVUSZsheS7mvptqQcOEHmWgyESYWwuZ"/>
-              <div className="absolute inset-0 bg-black/10 flex items-center justify-center pointer-events-none">
-                <button className="bg-white dark:bg-[#1e2e1a] text-text-main dark:text-white px-4 py-2 rounded-full font-bold shadow-lg flex items-center gap-2 pointer-events-auto hover:scale-105 transition-transform">
-                  <span className="material-symbols-outlined text-primary">map</span>
-                  Xem bản đồ
-                </button>
-              </div>
+            {/* Google Maps Embed */}
+            <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-sm border border-[#d6e6d1] dark:border-[#2a4025] group">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3928.841518408643!2d105.76842661471183!3d10.029933692830634!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31a0895a51d60719%3A0x9d76b0035f6d53d0!2zVHLGsOG7nW5nIMSQ4bqhaSBo4buNYyBD4bqnbiBUaMah!5e0!3m2!1svi!2s"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen={true}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="w-full h-full grayscale-[10%] group-hover:grayscale-0 transition-all duration-500"
+                title="Bản đồ Đại học Cần Thơ"
+              />
             </div>
           </div>
 
@@ -103,7 +108,7 @@ export default function ContactPage() {
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-text-muted">
                         <span className="material-symbols-outlined text-[20px]">person</span>
                       </div>
-                      <input className="w-full pl-10 pr-4 py-3 rounded-xl bg-background-light dark:bg-[#152111] border border-[#d6e6d1] dark:border-[#2a4025] focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder-[#a0bca0] dark:placeholder-[#4a5f45] text-text-main dark:text-white" placeholder="Nguyễn Văn A" type="text"/>
+                      <input className="w-full pl-10 pr-4 py-3 rounded-xl bg-background-light dark:bg-[#152111] border border-[#d6e6d1] dark:border-[#2a4025] focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder-[#a0bca0] dark:placeholder-[#4a5f45] text-text-main dark:text-white" placeholder="Nguyễn Văn A" type="text" />
                     </div>
                   </div>
                   <div className="space-y-2">
@@ -112,7 +117,7 @@ export default function ContactPage() {
                       <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-text-muted">
                         <span className="material-symbols-outlined text-[20px]">phone_iphone</span>
                       </div>
-                      <input className="w-full pl-10 pr-4 py-3 rounded-xl bg-background-light dark:bg-[#152111] border border-[#d6e6d1] dark:border-[#2a4025] focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder-[#a0bca0] dark:placeholder-[#4a5f45] text-text-main dark:text-white" placeholder="0909..." type="tel"/>
+                      <input className="w-full pl-10 pr-4 py-3 rounded-xl bg-background-light dark:bg-[#152111] border border-[#d6e6d1] dark:border-[#2a4025] focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder-[#a0bca0] dark:placeholder-[#4a5f45] text-text-main dark:text-white" placeholder="0909..." type="tel" />
                     </div>
                   </div>
                 </div>
@@ -122,7 +127,7 @@ export default function ContactPage() {
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-text-muted">
                       <span className="material-symbols-outlined text-[20px]">alternate_email</span>
                     </div>
-                    <input className="w-full pl-10 pr-4 py-3 rounded-xl bg-background-light dark:bg-[#152111] border border-[#d6e6d1] dark:border-[#2a4025] focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder-[#a0bca0] dark:placeholder-[#4a5f45] text-text-main dark:text-white" placeholder="example@email.com" type="email"/>
+                    <input className="w-full pl-10 pr-4 py-3 rounded-xl bg-background-light dark:bg-[#152111] border border-[#d6e6d1] dark:border-[#2a4025] focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder-[#a0bca0] dark:placeholder-[#4a5f45] text-text-main dark:text-white" placeholder="example@email.com" type="email" />
                   </div>
                 </div>
                 <div className="space-y-2">
