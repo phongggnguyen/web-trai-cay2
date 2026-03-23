@@ -1,4 +1,10 @@
-# 🍎 Tiệm Quả Nghiệp - Nền Tảng Thương Mại Điện Tử Trái Cây Cao Cấp
+# 🍎 Tiệm Quả Nghiệp (Nghiep Fruit Shop) - Premium Fruit E-commerce Platform
+
+*English version below | Phiên bản tiếng Việt ở bên dưới*
+
+---
+
+# 🇬🇧 ENGLISH VERSION
 
 <div align="center">
   
@@ -8,11 +14,130 @@
   [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4.14-38B2AC?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
   [![Supabase](https://img.shields.io/badge/Supabase-2.87.1-3ECF8E?logo=supabase&logoColor=white)](https://supabase.com/)
 
-**Website bán hàng hiện đại tích hợp AI thông minh**
+**Modern E-commerce Web Application Integrated with Smart AI**
 
 *Nghiệp tụ vành môi - Ăn vô trôi hết* 🎯
 
-[Tính Năng](#-tính-năng-chính) · [Công Nghệ](#-công-nghệ-sử-dụng) · [Cài Đặt](#-hướng-dẫn-cài-đặt) · [Cấu Trúc](#-cấu-trúc-dự-án)
+</div>
+
+---
+
+## ✨ Highlights
+
+This is not just a standard e-commerce website, but a highly optimized **Modern Web App**:
+
+- ⚡ **Blazing Fast**: Built on the latest **Next.js 15 App Router**, delivering extremely fast page loads via Server Components.
+- 🤖 **Artificial Intelligence (AI)**:
+  - **Auto Blog Generation**: Simply upload an image and Gemini AI writes a complete, SEO-optimized blog post natively.
+  - **Smart Search**: Search for fruits via images or natural language (e.g., "red sweet fruits").
+  - **Virtual Assistant**: 24/7 Chatbot ready to give product recommendations and advice.
+  - **AI Nutrition Analysis**: Analyzes nutritional value based on purchased items and provides health improvement suggestions.
+- 🎨 **Beautiful UI/UX**: Designed with **Tailwind CSS**, featuring dark/light mode toggle, fluid animations, and a fully responsive layout.
+- 🛒 **Smart Cart**: Real-time cart calculation that persists across reloads via localStorage.
+- 🔐 **Robust Security**: Authentication, authorization, and role management (Admin/User) powered by Supabase Auth and RLS.
+
+---
+
+## 🎯 Main Features
+
+### 🛍️ For Customers
+
+- **Product Discovery & Search**: Filter products by category, price, rating, or use the **AI NLP / Image search**.
+- **Checkout Flow**: Seamless 3-step checkout with multiple delivery options right down to standard/express delivery. 
+- **Order Tracking**: Keep track of orders from Pending to Delivered status.
+- **Reviews & Ratings**: Rate products and leave detailed reviews upon purchasing.
+- **AI Chatbot**: Real-time intelligent shopping assistant integrated into the storefront.
+- **Customer Profile**: Intuitive dashboard for profile editing, managing order history, and requesting one-click re-orders.
+
+### 🎛️ For Administrators (Admin)
+
+- **Interactive Dashboard**: View real-time shop revenue, latest orders, and customer statistics via beautiful charts (Recharts).
+- **Product & Category Management**: Seamlessly add, edit, lock, or delete items. Sync inventory and update prices instantly.
+- **Order Management**: Adjust order statuses, track customer details, and calculate revenue efficiently.
+- **Smart Blog CMS**:
+  - **AI Mode**: Upload a cover image and instantly get a 1000+ words SEO-ready article, complete with tags and an excerpt.
+  - **Manual Mode**: Rich text editor for detailed posting.
+
+---
+
+## 🛠️ Tech Stack
+
+### **Frontend**
+- **Next.js 15.5.9** (App Router)
+- **React 18.3**
+- **TypeScript 5.6**
+- **Tailwind CSS 3.4**
+- **Zod** (Data validation)
+- **Recharts** (Data visualization)
+
+### **Backend & Services**
+- **Supabase** (PostgreSQL, Auth, Storage)
+- **Google Gemini AI** (Smart search, chatbot, blog writing, nutrition analysis)
+- **Resend** (Email notifications and alerts)
+
+---
+
+## 🚀 Getting Started
+
+Follow these steps to run the project locally:
+
+### 1. Prerequisites
+- **Node.js** (v18 or higher)
+- **Supabase** account (Free tier)
+- **Google Gemini** API Key (Free tier)
+
+### 2. Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/phongggnguyen/web-trai-cay2.git
+cd web-trai-cay2
+
+# Install dependencies
+npm install
+
+# Create environment config
+cp .env.example .env.local
+```
+
+### 3. Configuration
+Add your API keys to `.env.local`:
+
+```env
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+
+# Gemini AI 
+GEMINI_API_KEY=your_gemini_api_key
+```
+
+### 4. Database Setup
+Run the SQL migration scripts in your Supabase SQL Editor found in the repository (e.g., `migrations/`, root `SQL Files/`).
+
+### 5. Run the Project
+```bash
+npm run dev
+```
+Navigate to `http://localhost:3000` to see your running application! 🎉
+
+---
+<br />
+<br />
+
+# 🇻🇳 PHIÊN BẢN TIẾNG VIỆT (VIETNAMESE VERSION)
+
+<div align="center">
+  
+  [![Next.js](https://img.shields.io/badge/Next.js-15.5.9-black?logo=next.js&logoColor=white)](https://nextjs.org/)
+  [![TypeScript](https://img.shields.io/badge/TypeScript-5.6.3-blue?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+  [![React](https://img.shields.io/badge/React-18.3.1-61DAFB?logo=react&logoColor=white)](https://react.dev/)
+  [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4.14-38B2AC?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+  [![Supabase](https://img.shields.io/badge/Supabase-2.87.1-3ECF8E?logo=supabase&logoColor=white)](https://supabase.com/)
+
+**Website bán hàng hiện đại tích hợp AI bài bản nhất**
+
+*Nghiệp tụ vành môi - Ăn vô trôi hết* 🎯
 
 </div>
 
@@ -20,17 +145,17 @@
 
 ## ✨ Điểm Nổi Bật
 
-Đây không chỉ là một web bán hàng bình thường, mà là một **Modern Web App** được tối ưu tận răng:
+Đây không chỉ là một web bán hàng thông thường, mà là một **Modern Web App** được cấu trúc và tối ưu chỉn chu:
 
-- ⚡ **Siêu Tốc Độ**: Chạy trên **Next.js 15 App Router** mới nhất, load trang cực nhanh nhờ Server Components.
+- ⚡ **Siêu Tốc Độ**: Chạy trên **Next.js 15 App Router** mới nhất, load trang cực nhanh với Server Components.
 - 🤖 **Trí Tuệ Nhân Tạo (AI)**:
-  - **Viết Blog Tự Động**: Chỉ cần upload ảnh, AI (Gemini) sẽ tự viết bài blog chuẩn SEO từ A-Z.
-  - **Tìm Kiếm Thông Minh**: Tìm trái cây bằng hình ảnh hoặc mô tả tự nhiên (VD: "trái gì màu đỏ ăn ngọt").
-  - **Trợ Lý Ảo**: Chatbot tư vấn 24/7, am hiểu về sản phẩm của shop.
-- 🎨 **Giao Diện Đẹp Mắt**: Thiết kế với **Tailwind CSS**, có chế độ Sáng/Tối (Dark Mode) xịn xò, hiệu ứng mượt mà.
-- 🛒 **Giỏ Hàng Thông Minh**: Tự động lưu giỏ hàng, tính toán giá tiền real-time, không mất khi F5.
-- 📱 **Tương Thích Mọi Thiết Bị**: Hiển thị đẹp trên cả điện thoại, máy tính bảng và desktop (Mobile-First).
-- 🔐 **Bảo Mật Cao**: Hệ thống đăng nhập/đăng ký với Supabase Auth, phân quyền Admin/Khách hàng chặt chẽ.
+  - **Viết Blog Tự Động**: Chỉ cần tải ảnh lên, AI (Gemini) sẽ tự viết bài blog chuẩn SEO từ A-Z.
+  - **Tìm Kiếm Thông Minh**: Tìm trái cây qua hình ảnh hoặc mô tả tự nhiên (VD: "trái gì có màu đỏ ăn rất ngọt").
+  - **Trợ Lý Ảo Chatbot**: Hoạt động 24/7, am hiểu về sản phẩm của shop để tư vấn khách hàng.
+  - **Phân Tích Dinh Dưỡng**: AI phân tích các giỏ hàng đã đặt, thông báo chi tiết lượng vitamin, đường, và cung cấp lời khuyên sức khỏe cho người mua.
+- 🎨 **Giao Diện Đẹp Mắt**: Thiết kế với **Tailwind CSS**, có chế độ Sáng/Tối (Dark/Light Mode) mượt mà, UX nổi bật responsive di động 100%.
+- 🛒 **Giỏ Hàng Thông Minh**: Tự động lưu giỏ hàng, tính toán giá tiền real-time, đồng bộ mượt mà ở nhiều tab.
+- 🔐 **Bảo Mật Cao**: Hệ thống đăng nhập/đăng ký bằng Supabase Auth, phân quyền Admin/Khách hàng với các Row-Level Security Policies cực kỳ bảo mật.
 
 ---
 
@@ -38,362 +163,99 @@
 
 ### 🛍️ Dành Cho Khách Hàng
 
-#### Mua Sắm & Trải Nghiệm
-- ✅ **Danh Mục Sản Phẩm**: Lướt xem trái cây với bộ lọc xịn (theo giá, loại, đánh giá).
-- ✅ **Tìm Kiếm Đỉnh Cao**:
-  - Gõ text: "Tìm quả gì giải nhiệt mùa hè" → AI tự hiểu và gợi ý dưa hấu, cam...
-  - Chụp ảnh: Chụp quả táo → AI nhận diện và tìm sản phẩm tương ứng.
-- ✅ **Đặt Hàng Nhanh Gọn**: Quy trình checkout 3 bước, lưu địa chỉ giao hàng.
-- ✅ **Lịch Sử Đơn Hàng**: Theo dõi trạng thái đơn hàng (đang xử lý, đang giao, đã giao).
-
-#### Tương Tác
-- ⭐ **Đánh Giá & Review**: Chấm sao, viết nhận xét cho sản phẩm.
-- 💬 **Chat Với AI**: Hỏi giá, hỏi công dụng, nhờ tư vấn quà tặng.
-- 👤 **Hồ Sơ Cá Nhân**: Quản lý thông tin, đổi mật khẩu, sổ địa chỉ.
-
----
+- **Danh Mục & Sản Phẩm**: Lướt xem trái cây với bộ lọc mạnh mẽ theo giá, loại, và đánh giá.
+- **Tìm Kiếm Đỉnh Cao**: 
+  - NLP (Natural Language Processing): Hiểu ngôn ngữ tự nhiên. 
+  - Image Search: Tải ảnh thực tế của trái cây lên AI sẽ tìm sản phẩm tương tự.
+- **Đặt Hàng Nhanh Gọn**: Quy trình checkout chuẩn, tích hợp hệ thống email tự động thông báo đơn qua Resend.
+- **Đánh Giá & Trải Nghiệm**: Chấm sao, để lại review các sản phẩm sau khi mua hàng.
+- **Hồ Sơ Cá Nhân**: Dễ dàng chỉnh sửa thông tin, xem hoặc đặt lại hàng (Reorder) chỉ bằng một nút bấm. Lịch sử mua hàng rõ ràng.
 
 ### 🎛️ Dành Cho Quản Trị Viên (Admin)
 
-#### Dashboard & Báo Cáo
-- 📊 **Biểu Đồ Doanh Thu**: Xem doanh thu theo ngày/tháng/năm trực quan (Recharts).
-- 📈 **Thống Kê**: Số lượng đơn hàng, khách hàng mới, sản phẩm bán chạy.
-- 👥 **Phân Tích Khách Hàng**: Xem ai mua nhiều, ai là khách hàng thân thiết.
-
-#### Quản Lý Cửa Hàng
-- 📦 **Sản Phẩm**: Thêm/Sửa/Xóa sản phẩm, upload ảnh nhanh chóng.
-- 🏷️ **Danh Mục**: Tạo các nhóm trái cây (Trái cây nhập khẩu, Trái cây Việt Nam...).
-- 🚚 **Đơn Hàng**: Xem chi tiết đơn, cập nhật trạng thái giao hàng.
-- 📝 **Quản Lý Blog (Đặc Biệt)**:
-  - **Chế Độ AI**: Upload ảnh bìa → Bùm! Có ngay bài viết 1000 từ + tiêu đề + tags.
-  - **Chế Độ Thủ Công**: Trình soạn thảo đầy đủ cho bài viết chuyên sâu.
+- **Dashboard Báo Cáo Thông Minh**: Xem doanh thu theo ngày/tháng/vùng bằng biểu đồ động sinh động (Recharts). Tổng quan cửa hàng trực quan nhất.
+- **Quản Lý Cửa Hàng**: 
+  - Thêm, sửa, xóa (soft-delete), đăng bán sản phẩm & danh mục dễ dàng. 
+  - Quản trị khách hàng: Quản lý vòng đời khách và thói quen mua hàng.
+- **Quản Lý Đơn Hàng**: Xử lý tình trạng giao hàng, in hóa đơn online.
+- **Blog CMS với Trí Tuệ Nhân Tạo**: Bỏ qua việc hì hục gõ phím viết bài SEO, upload hình bìa và 10 giây sau AI sẽ output ra toàn bộ bài viết format markdown. Admin vẫn có quyền tinh chỉnh viết tay nếu muốn.
 
 ---
 
 ## 🛠️ Công Nghệ Sử Dụng
 
-Dự án sử dụng các công nghệ mới và ổn định nhất hiện nay:
-
 ### **Frontend (Giao Diện)**
-| Công Nghệ | Phiên Bản | Mục Đích |
-|-----------|-----------|----------|
-| **Next.js** | 15.5.9 | Framework chính, dùng App Router hiện đại |
-| **React** | 18.3.1 | Thư viện UI |
-| **TypeScript** | 5.6.3 | Code an toàn, tránh lỗi ngớ ngẩn |
-| **Tailwind CSS** | 3.4.14 | Viết CSS cực nhanh, utility-first |
-| **Zod** | 4.2.1 | Kiểm tra dữ liệu (Validation) |
-| **Recharts** | 3.6.0 | Vẽ biểu đồ thống kê |
+- **Next.js 15.5.9** (App Router)
+- **React 18.3.1**
+- **TypeScript 5.6.3**
+- **Tailwind CSS 3.4**
+- **Zod** (Kiểm tra và chuẩn hóa Form)
+- **Recharts** (Vẽ biểu đồ thống kê)
 
 ### **Backend & Dịch Vụ**
-| Dịch Vụ | Mục Đích |
-|---------|----------|
-| **Supabase** | Database (PostgreSQL), Xác thực (Auth), Lưu trữ ảnh (Storage) |
-| **Gemini AI** | Trí tuệ nhân tạo của Google (Viết blog, Chatbot, Nhận diện ảnh) |
+- **Supabase** (Database PostgreSQL, Xác thực người dùng, Lưu trữ File Bucket)
+- **Gemini AI by Google** (Trí tuệ nhân tạo toàn năng tạo text và vision)
+- **Resend** (Gửi Email tự động cho khách hàng)
 
 ---
 
 ## 🚀 Hướng Dẫn Cài Đặt
 
-Chỉ cần vài bước là bạn có thể chạy dự án này trên máy:
+Chỉ cần vài bước là bạn có thể chạy dự án này trên máy nội bộ:
 
 ### 1. Chuẩn Bị
-- Cài sẵn **Node.js** (bản 18 trở lên).
-- Tài khoản **Supabase** (miễn phí).
-- API Key của **Google Gemini** (miễn phí).
+- Máy cài sẵn **Node.js** (Bản 18 trở lên).
+- Có tài khoản **Supabase** (Tạo miễn phí).
+- Lấy API Key của **Google Gemini** (Tạo miễn phí qua Google AI Studio).
 
-### 2. Cài Đặt
+### 2. Cài Đặt Gói Code
 
 ```bash
-# 1. Clone code về máy
+# 1. Tải source code
 git clone https://github.com/phongggnguyen/web-trai-cay2.git
 cd web-trai-cay2
 
-# 2. Cài đặt các thư viện
+# 2. Cài đặt các thư viện liên quan
 npm install
 
-# 3. Tạo file cấu hình môi trường
+# 3. Tạo file cấu hình môi trường (.env)
 cp .env.example .env.local
 ```
 
 ### 3. Cấu Hình
-Mở file `.env.local` và điền thông tin của bạn vào:
+Mở file `.env.local` của bạn và cấu hình các biến môi trường thiết yếu:
 
 ```env
-# Supabase (Lấy trong Settings -> API)
+# Supabase (Lấy trong Dashboard -> Settings -> API)
 NEXT_PUBLIC_SUPABASE_URL=đường_dẫn_supabase_của_bạn
 NEXT_PUBLIC_SUPABASE_ANON_KEY=key_anon_của_bạn
 
-# Gemini AI (Lấy tại aistudio.google.com)
+# Gemini AI
 GEMINI_API_KEY=key_gemini_của_bạn
 ```
 
 ### 4. Setup Database
-Vào SQL Editor của Supabase và chạy lần lượt các file trong thư mục dự án (hoặc copy nội dung query):
-1. `database.sql` (Tạo bảng)
-2. `supabase_rls_policies.sql` (Bảo mật)
-3. `supabase_storage_policies.sql` (Quyền truy cập ảnh)
+Vào SQL Editor của Supabase và chạy lần lượt các File Setup nằm trong thư mục gốc. Ví dụ: `database.sql`, `supabase_rls_policies.sql`, và vài migrations khác...
 
-### 5. Chạy Dự Án
+### 5. Khởi Động Dự Án
 
 ```bash
-# Chạy môi trường development
+# Chạy ở môi trường local development
 npm run dev
 ```
 
-Truy cập `http://localhost:3000` và thưởng thức! 🎉
-
----
-
-## 📁 Cấu Trúc Dự Án
-
-Dự án được tổ chức gọn gàng theo **Next.js App Router**, dễ mở rộng và bảo trì:
-
-```
-web-trai-cay2/
-├── 📂 app/                              # Next.js App Router (Code chính)
-│   ├── about/                           # Trang Giới thiệu
-│   ├── admin/                           # Panel Quản trị (Admin)
-│   │   ├── _components/                 # Shared Admin Components
-│   │   │   ├── AdminSidebar.tsx         # Thanh điều hướng admin
-│   │   │   ├── DashboardCard.tsx        # Card hiển thị thống kê
-│   │   │   └── ProtectedRoute.tsx       # Bảo vệ route admin
-│   │   ├── blog/                        # Quản lý Blog
-│   │   │   ├── _components/             # Components cho Blog Admin
-│   │   │   │   ├── BlogForm.tsx         # Form tạo/sửa blog (Manual)
-│   │   │   │   ├── BlogFormAI.tsx       # Form tạo blog bằng AI
-│   │   │   │   └── BlogTable.tsx        # Bảng danh sách blog
-│   │   │   ├── create/                  # Trang tạo blog mới
-│   │   │   ├── edit/[id]/               # Trang chỉnh sửa blog
-│   │   │   └── page.tsx                 # Trang quản lý blog
-│   │   ├── categories/                  # Quản lý Danh mục
-│   │   │   ├── _components/             # Components danh mục
-│   │   │   │   └── CategoryForm.tsx     # Form tạo/sửa danh mục
-│   │   │   └── page.tsx                 # Trang quản lý danh mục
-│   │   ├── customers/                   # Quản lý Khách hàng
-│   │   │   ├── _components/             # Components khách hàng
-│   │   │   │   ├── CustomerDetail.tsx   # Chi tiết khách hàng
-│   │   │   │   ├── CustomerList.tsx     # Danh sách khách hàng
-│   │   │   │   └── CustomerStatsDisplay.tsx  # Thống kê khách hàng
-│   │   │   ├── hooks/                   # Hooks cho customers
-│   │   │   │   ├── useCustomersData.ts  # Hook lấy dữ liệu khách
-│   │   │   │   └── useCustomerOrders.ts # Hook lấy đơn hàng
-│   │   │   └── page.tsx                 # Trang quản lý khách hàng
-│   │   ├── orders/                      # Quản lý Đơn hàng
-│   │   │   ├── _components/             # Components đơn hàng
-│   │   │   │   ├── OrderDetailsModal.tsx  # Modal chi tiết đơn
-│   │   │   │   ├── OrderFilters.tsx     # Bộ lọc đơn hàng
-│   │   │   │   └── OrdersTable.tsx      # Bảng đơn hàng
-│   │   │   ├── hooks/                   # Hooks cho orders
-│   │   │   │   └── useOrdersData.ts     # Hook lấy dữ liệu đơn
-│   │   │   └── page.tsx                 # Trang quản lý đơn hàng
-│   │   ├── products/                    # Quản lý Sản phẩm
-│   │   │   ├── _components/             # Components sản phẩm
-│   │   │   │   ├── ProductForm.tsx      # Form tạo/sửa sản phẩm
-│   │   │   │   └── ProductsTable.tsx    # Bảng sản phẩm
-│   │   │   ├── create/                  # Trang tạo sản phẩm
-│   │   │   ├── edit/[id]/               # Trang chỉnh sửa sản phẩm
-│   │   │   ├── hooks/                   # Hooks cho products
-│   │   │   │   └── useProductsData.ts   # Hook lấy dữ liệu sản phẩm
-│   │   │   └── page.tsx                 # Trang quản lý sản phẩm
-│   │   ├── settings/                    # Cài đặt Admin
-│   │   │   └── page.tsx                 # Trang cài đặt
-│   │   ├── hooks/                       # Admin hooks
-│   │   │   └── useDashboardData.ts      # Hook dashboard stats
-│   │   ├── constants.ts                 # Admin constants
-│   │   ├── types.ts                     # Admin types
-│   │   ├── layout.tsx                   # Layout admin
-│   │   └── page.tsx                     # Dashboard chính
-│   │
-│   ├── api/                             # API Routes (Server-side)
-│   │   ├── ai-assistant/                # API Chatbot AI
-│   │   │   └── route.ts                 # Endpoint chat với Gemini
-│   │   ├── blog/                        # API Blog
-│   │   │   └── route.ts                 # Tạo blog tự động bằng AI
-│   │   ├── nutrition/                   # API Dinh dưỡng
-│   │   │   └── route.ts                 # Phân tích dinh dưỡng AI
-│   │   ├── search/                      # API Tìm kiếm
-│   │   │   ├── image/route.ts           # Tìm kiếm bằng hình ảnh
-│   │   │   └── route.ts                 # Tìm kiếm văn bản thông minh
-│   │   └── send-order-email/            # API Email
-│   │       └── route.ts                 # Gửi email xác nhận đơn
-│   │
-│   ├── auth/                            # Xác thực
-│   │   └── callback/                    # OAuth callback handler
-│   │       └── route.ts                 # Xử lý callback từ Supabase
-│   │
-│   ├── blog/                            # Blog công khai
-│   │   ├── _components/                 # Blog components
-│   │   │   ├── BlogContent.tsx          # Nội dung bài viết
-│   │   │   ├── BlogHero.tsx             # Hero section blog
-│   │   │   ├── BlogList.tsx             # Danh sách bài viết
-│   │   │   └── TagFilter.tsx            # Lọc theo tag
-│   │   ├── [slug]/                      # Chi tiết bài viết
-│   │   │   └── page.tsx                 # Trang chi tiết blog
-│   │   └── page.tsx                     # Trang danh sách blog
-│   │
-│   ├── cart/                            # Giỏ hàng
-│   │   └── page.tsx                     # Trang giỏ hàng
-│   ├── checkout/                        # Thanh toán
-│   │   └── page.tsx                     # Trang thanh toán
-│   ├── contact/                         # Liên hệ
-│   │   └── page.tsx                     # Trang liên hệ
-│   ├── login/                           # Đăng nhập/Đăng ký
-│   │   └── page.tsx                     # Trang xác thực
-│   │
-│   ├── order-success/                   # Trang xác nhận đơn hàng
-│   │   ├── _components/                 # Components trang thành công
-│   │   │   ├── ActionButtons.tsx        # Nút hành động
-│   │   │   └── Receipt.tsx              # Hóa đơn đơn hàng
-│   │   └── page.tsx                     # Trang xác nhận
-│   │
-│   ├── privacy/                         # Chính sách bảo mật
-│   │   └── page.tsx                     # Trang privacy policy
-│   │
-│   ├── products/                        # Sản phẩm
-│   │   ├── [id]/                        # Chi tiết sản phẩm
-│   │   │   └── page.tsx                 # Trang chi tiết
-│   │   └── page.tsx                     # Danh sách sản phẩm
-│   │
-│   ├── profile/                         # Hồ sơ cá nhân
-│   │   └── page.tsx                     # Trang profile + đơn hàng
-│   ├── terms/                           # Điều khoản
-│   │   └── page.tsx                     # Trang terms of service
-│   │
-│   ├── error.tsx                        # Error boundary
-│   ├── loading.tsx                      # Loading state
-│   ├── not-found.tsx                    # 404 page
-│   ├── layout.tsx                       # Root layout
-│   ├── page.tsx                         # Trang chủ (Homepage)
-│   └── globals.css                      # Global styles
-│
-├── 📂 components/                       # Shared Components
-│   ├── features/                        # Feature components
-│   │   ├── ProductCard.tsx              # Card sản phẩm
-│   │   └── SearchBar.tsx                # Thanh tìm kiếm
-│   ├── ui/                              # UI components
-│   │   ├── Button.tsx                   # Button component
-│   │   └── Input.tsx                    # Input component
-│   ├── AIAssistant.tsx                  # Chatbot AI trợ lý
-│   ├── Footer.tsx                       # Footer trang web
-│   ├── Header.tsx                       # Header + Navigation
-│   ├── ImageSearchModal.tsx             # Modal tìm kiếm bằng ảnh
-│   ├── MobileMenu.tsx                   # Menu mobile responsive
-│   ├── NutritionModal.tsx               # Modal thông tin dinh dưỡng
-│   ├── ProductRecommendations.tsx       # Gợi ý sản phẩm
-│   ├── ReviewModal.tsx                  # Modal đánh giá sản phẩm
-│   └── ReviewSection.tsx                # Section hiển thị reviews
-│
-├── 📂 hooks/                            # Custom React Hooks
-│   ├── useCart.ts                       # Hook quản lý giỏ hàng
-│   ├── useDebounce.ts                   # Hook debounce input
-│   ├── useLocalStorage.ts               # Hook localStorage
-│   ├── useMediaQuery.ts                 # Hook responsive
-│   ├── useOrder.ts                      # Hook quản lý đơn hàng
-│   ├── useProductRecommendations.ts     # Hook gợi ý sản phẩm
-│   └── index.ts                         # Export tất cả hooks
-│
-├── 📂 lib/                              # Libraries & Utilities
-│   ├── blog/                            # Blog utilities
-│   │   ├── blog-content-generator.ts    # Tạo nội dung blog AI
-│   │   ├── blog-data.ts                 # Lấy dữ liệu blog
-│   │   ├── blog-excerpt-generator.ts    # Tạo đoạn trích blog
-│   │   ├── blog-image-analyzer.ts       # Phân tích ảnh blog
-│   │   ├── blog-tag-generator.ts        # Tạo tags blog
-│   │   └── blog-title-generator.ts      # Tạo tiêu đề blog
-│   ├── products/                        # Product utilities
-│   │   └── product-data.ts              # Lấy dữ liệu sản phẩm
-│   ├── validations/                     # Zod validation schemas
-│   │   ├── blog.ts                      # Blog validation
-│   │   ├── product.ts                   # Product validation
-│   │   └── order.ts                     # Order validation
-│   ├── errors.ts                        # Error handling utilities
-│   ├── gemini.ts                        # Gemini AI client
-│   ├── metadata.ts                      # Next.js metadata helper
-│   ├── resend.ts                        # Resend email client
-│   ├── supabase.ts                      # Supabase client config
-│   └── utils.ts                         # Common utilities
-│
-├── 📂 context/                          # React Context
-│   └── GlobalContext.tsx                # Global state (Cart, User, Theme)
-│
-├── 📂 emails/                           # Email templates
-│   └── OrderConfirmation.tsx            # Email xác nhận đơn hàng
-│
-├── 📂 public/                           # Static assets
-│   └── images/                          # Hình ảnh tĩnh
-│
-├── 📂 migrations/                       # Database migrations
-│   └── update_categories_schema.sql     # Migration scripts
-│
-├── 📂 openspec/                         # OpenSpec workflow
-│   ├── archive/                         # Archived changes
-│   └── specs/                           # Active specs
-│
-├── 📂 .agent/                           # Agent workflows
-│   └── workflows/                       # Workflow definitions
-│       ├── openspec-apply.md            # Apply OpenSpec changes
-│       ├── openspec-archive.md          # Archive changes
-│       └── openspec-proposal.md         # Create proposals
-│
-├── 📄 SQL Files                         # Database setup scripts
-│   ├── database.sql                     # Main database schema
-│   ├── supabase_rls_policies.sql        # Row-Level Security
-│   ├── supabase_storage_policies.sql    # Storage security
-│   ├── add_reviews_feature.sql          # Reviews feature
-│   ├── add_email_logs_table.sql         # Email logging
-│   ├── fix_storage_rls.sql              # Storage RLS fixes
-│   ├── update_reviews_for_orders.sql    # Reviews migration
-│   ├── add_on_delete_set_null_to_order_items.sql  # Order items constraint
-│   ├── DISABLE_RLS_FOR_DEV.sql          # Dev environment helper
-│   └── current_schema.sql               # Current schema snapshot
-│
-├── 📄 Config Files
-│   ├── package.json                     # Dependencies
-│   ├── tsconfig.json                    # TypeScript config
-│   ├── tailwind.config.ts               # Tailwind CSS config
-│   ├── next.config.mjs                  # Next.js config
-│   ├── postcss.config.js                # PostCSS config
-│   ├── .eslintrc.json                   # ESLint config
-│   ├── .env.example                     # Environment variables template
-│   └── .gitignore                       # Git ignore rules
-│
-├── 📄 Project Files
-│   ├── types.ts                         # TypeScript types chung
-│   ├── constants.ts                     # Constants chung
-│   ├── task.md                          # Task tracking
-│   ├── AGENTS.md                        # Agent documentation
-│   ├── metadata.json                    # Project metadata
-│   └── README.md                        # Documentation (File này)
-```
-
----
-
-## 🤖 Hướng Dẫn Sử Dụng Tính Năng AI
-
-### 1. Tạo Bài Viết Blog Tự Động
-1. Vào **Admin** -> **Quản lý Blog**.
-2. Bấm **"Tạo bài viết mới"**.
-3. Chọn thẻ **"Viết bằng AI"**.
-4. Upload 1 ảnh trái cây đẹp (Bắt buộc).
-5. Nhập tiêu đề (hoặc để trống cho AI tự nghĩ).
-6. Bấm **"Tạo nội dung với AI"**.
-7. Đợi 10s -> Có ngay bài viết xịn xò! Review và đăng thôi.
-
-### 2. Tìm Kiếm Bằng Hình Ảnh
-1. Ở trang chủ, bấm vào icon 📷 trên thanh tìm kiếm.
-2. Tải ảnh lên hoặc chụp ảnh.
-3. Hệ thống sẽ trả về sản phẩm giống nhất trong cửa hàng.
+Mở trình duyệt truy cập `http://localhost:3000` và thưởng thức thành quả! 🎉
 
 ---
 
 ## 🤝 Đóng Góp (Contributing)
 
-Rất hoan nghênh mọi người đóng góp để dự án tốt hơn!
-1. Fork dự án.
-2. Tạo nhánh mới (`git checkout -b feature/TinhNangMoi`).
-3. Commit code (`git commit -m 'Thêm tính năng mới xịn xò'`).
-4. Push lên (`git push origin feature/TinhNangMoi`).
-5. Tạo Pull Request.
+Rất hoan nghênh anh em dev đóng góp rèn dũa code base:
+1. Fork dự án
+2. Cắt nhánh tạo feature mới (`git checkout -b feature/CoolFeature`)
+3. Commit source (`git commit -m 'Thêm tính năng cực ngầu'`)
+4. Đẩy (Push) nhánh (`git push origin feature/CoolFeature`)
+5. Pull Request để review code.
 
 ---
 
@@ -404,12 +266,10 @@ Rất hoan nghênh mọi người đóng góp để dự án tốt hơn!
 - 🐙 GitHub: [@phongggnguyen](https://github.com/phongggnguyen)
 - 📧 Email: phongggnguyen@example.com
 
----
-
 <div align="center">
 
-**⭐ Nếu bạn thấy dự án này hay, hãy tặng mình 1 sao trên GitHub nhé!**
+**⭐ Nếu bạn thấy dự án này thú vị, đừng tiếc 1 sao (Star) trên GitHub nhé!**
 
-**Được làm bằng ❤️ và rất nhiều cà phê ☕**
+**Dự án được tạo nên bằng ❤️ và sự cố gắng không ngừng nghỉ ☕**
 
 </div>
